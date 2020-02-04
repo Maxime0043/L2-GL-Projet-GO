@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class Goban {
 
-	private AbstractPierre[][] plateau;
-	private HashMap <String, Chaine> hmChaine;
+	private int plateau;
+	private HashMap <String, Score> hmChaine;
 	private HashMap <String, Score> scores;
 	
 		
