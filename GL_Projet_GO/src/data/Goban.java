@@ -9,6 +9,6 @@ public class Goban {
 	private HashMap <String, Score> scores;
 	
 	public boolean existPierre (Coordonnee coord) {
-		
+	
 	}
 }

@@ -1,4 +1,4 @@
-package src.data;
+package data;
 
 public class Coordonnee {
 	private int x;
