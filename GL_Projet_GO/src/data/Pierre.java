@@ -12,4 +12,9 @@ public class Pierre extends AbstractPierre{
 	public boolean voisin(AbstractPierre[][] plateau) {
 		return false;
 	}
+
+	@Override
+	public boolean vivante() {
+		return true;
+	}
 }

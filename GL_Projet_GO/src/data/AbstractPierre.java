@@ -4,6 +4,7 @@ public abstract class AbstractPierre {
 	private Couleur couleur;
 	private int liberte;
 	private String nomChaine;
+	private boolean vivante;
 	
 	public AbstractPierre(Couleur couleur, int liberte, String nomChaine) {
 		this.couleur = couleur;
@@ -12,4 +13,5 @@ public abstract class AbstractPierre {
 	}
 	
 	public abstract boolean voisin(AbstractPierre[][] plateau);
+	public abstract boolean vivante();
 }

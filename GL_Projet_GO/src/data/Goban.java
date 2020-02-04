@@ -18,6 +18,7 @@ public class Goban {
 		if (plateau[coord.getX()][coord.getY()] != null) {
 			return true;
 		}
-		else return false;
+		else 
+			return false;
 	}
 }
