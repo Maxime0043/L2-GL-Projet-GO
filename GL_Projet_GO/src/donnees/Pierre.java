@@ -30,6 +30,7 @@ public class Pierre extends AbstractPierre{
 		return true;
 	}
 	
+	@Override
 	public boolean isMegaPierre() {
 		return false;
 	}

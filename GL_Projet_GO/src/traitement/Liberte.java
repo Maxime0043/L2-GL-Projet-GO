@@ -87,11 +87,6 @@ public class Liberte {
 					isCoinHautY = true;
 				}
 				
-				if((x == 0) && !isCoinHautX) {
-					nb_liberte--;
-					isCoinHautX = true;
-				}
-				
 				else {
 					if((plateau[x-1][y] != null) && !couleur.equals(plateau[x-1][y].getCouleur())) {
 						nb_liberte--;
@@ -139,15 +134,28 @@ public class Liberte {
 					isCoinBasY = true;
 				}
 				
-				if((x == taille_goban) && !isCoinBasX) {
-					nb_liberte--;
-					isCoinBasX = true;
-				}
-				
 				else {
 					if((plateau[x+1][y] != null) && !couleur.equals(plateau[x+1][y].getCouleur())) {
 						nb_liberte--;
 					}
+				}
+				
+				if((plateau[x-1][y] != null) && !couleur.equals(plateau[x-1][y].getCouleur())) {
+					nb_liberte--;
+				}
+				
+				if((plateau[x][y-1] != null) && !couleur.equals(plateau[x][y-1].getCouleur())) {
+					nb_liberte--;
+				}
+			}
+			
+			else {
+				if((plateau[x+1][y] != null) && !couleur.equals(plateau[x+1][y].getCouleur())) {
+					nb_liberte--;
+				}
+				
+				if((plateau[x][y+1] != null) && !couleur.equals(plateau[x][y+1].getCouleur())) {
+					nb_liberte--;
 				}
 				
 				if((plateau[x-1][y] != null) && !couleur.equals(plateau[x-1][y].getCouleur())) {
