@@ -1,9 +1,9 @@
 package traitement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import donnees.AbstractPierre;
+import donnees.Couleur;
 import donnees.ParametrePartie;
 
 
@@ -25,10 +25,54 @@ public class GoPierre {
 	
 	/**
 	 * 
+	 * @param numero
+	 */
+	public void addListeNoir(int numero) {
+		if(!liste_voisin_Noir.contains(numero))
+			liste_voisin_Noir.add(numero);
+	}
+	
+	/**
+	 * 
+	 * @param numero
+	 */
+	public void addListeBlanc(int numero) {
+		if(!liste_voisin_Blanc.contains(numero))
+			liste_voisin_Blanc.add(numero);
+	}
+	
+	/**
+	 * 
+	 * @param numero
+	 */
+	public void addListeRouge(int numero) {
+		if(!liste_voisin_Rouge.contains(numero))
+			liste_voisin_Rouge.add(numero);
+	}
+	
+	/**
+	 * 
+	 * @param couleur
+	 * @param numero
+	 */
+	public void addList(String couleur, int numero) {
+		if(couleur.equals(Couleur.NOIR.getCouleur())) {
+			addListeNoir(numero);
+		}
+		else if(couleur.equals(Couleur.BLANC.getCouleur())) {
+			addListeBlanc(numero);
+		}
+		else if(couleur.equals(Couleur.ROUGE.getCouleur())) {
+			addListeRouge(numero);
+		}
+	}
+	
+	/**
+	 * 
 	 * @param pierre
 	 * @return
 	 */
-	public boolean coinHautX(AbstractPierre pierre) {
+	public boolean bordHaut(AbstractPierre pierre) {
 		if(pierre.getX() == 0) {
 				return true;
 		}
@@ -41,8 +85,20 @@ public class GoPierre {
 	 * @param pierre
 	 * @return
 	 */
-	public boolean coinHautY(AbstractPierre pierre) {
+	public boolean bordGauche(AbstractPierre pierre) {
 		if(pierre.getY() == 0)
+			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param pierre
+	 * @return
+	 */
+	public boolean bordDroit(AbstractPierre pierre, int choix) {
+		if(pierre.getY() == ParametrePartie.TAILLE_GOBAN[choix])
 			return true;
 		
 		return false;
@@ -54,13 +110,8 @@ public class GoPierre {
 	 * @param choix
 	 * @return
 	 */
-	public boolean coinBasX(AbstractPierre pierre, int choix) {
-		int x = pierre.getX();
-		
-		if(pierre.isMegaPierre())
-			x = pierre.getX() + 1;
-
-		if(x == ParametrePartie.TAILLE_GOBAN[choix]) {
+	public boolean bordBas(AbstractPierre pierre, int choix) {
+		if(pierre.getX() == ParametrePartie.TAILLE_GOBAN[choix]) {
 				return true;
 		}
 		
@@ -73,7 +124,7 @@ public class GoPierre {
 	 * @param choix
 	 * @return
 	 */
-	public boolean coinBasY(AbstractPierre pierre, int choix) {
+	public boolean bordBasY(AbstractPierre pierre, int choix) {
 		int y = pierre.getY();
 		
 		if(pierre.isMegaPierre())
@@ -93,56 +144,122 @@ public class GoPierre {
 	 * @return
 	 */
 	public ArrayList<Integer> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int choix) {
+		String couleurPierre = pierre.getCouleur();
+		
 		int x = pierre.getX();
 		int y = pierre.getY();
+		
+		AbstractPierre haut = plateau[x-1][y];
+		AbstractPierre bas = plateau[x+1][y];
+		AbstractPierre gauche = plateau[x][y-1];
+		AbstractPierre droite = plateau[x][y+1];
 		
 		if(pierre.isMegaPierre()) {
 			
 		}
 		
 		else {
-			if(coinHautX(pierre)) {
-				if(!coinHautY(pierre)) {
-					
+			if(bordHaut(pierre)) {
+				if(!bordGauche(pierre) && pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
+					addList(gauche.getCouleur(), gauche.getNumero());
+				}
+				
+				else if(!bordDroit(pierre, choix) && pierreEnemieCollee(droite, couleurPierre, droite.getCouleur())) {
+					addList(droite.getCouleur(), droite.getNumero());
+				}
+				
+				if(pierreEnemieCollee(bas, couleurPierre, bas.getCouleur())) {
+					addList(bas.getCouleur(), bas.getNumero());
 				}
 			}
 			
-			else if(coinHautY(pierre)) {
+			else if(bordBas(pierre, choix)) {
+				if(!bordGauche(pierre) && pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
+					addList(gauche.getCouleur(), gauche.getNumero());
+				}
 				
-			}
-			
-			else if(coinBasX(pierre, choix)) {
-				if(!coinBasY(pierre, choix)) {
-					
+				else if(!bordDroit(pierre, choix) && pierreEnemieCollee(droite, couleurPierre, droite.getCouleur())) {
+					addList(droite.getCouleur(), droite.getNumero());
+				}
+				
+				if(pierreEnemieCollee(haut, couleurPierre, haut.getCouleur())) {
+					addList(haut.getCouleur(), haut.getNumero());
 				}
 			}
 			
-			else if(coinBasY(pierre, choix)) {
+			else if(bordGauche(pierre)) {
+				if(pierreEnemieCollee(haut, couleurPierre, haut.getCouleur())) {
+					addList(haut.getCouleur(), haut.getNumero());
+				}
 				
+				if(pierreEnemieCollee(bas, couleurPierre, bas.getCouleur())) {
+					addList(bas.getCouleur(), bas.getNumero());
+				}
+				
+				if(pierreEnemieCollee(droite, couleurPierre, droite.getCouleur())) {
+					addList(droite.getCouleur(), droite.getNumero());
+				}
+			}
+			
+			else if(bordDroit(pierre, choix)) {
+				if(pierreEnemieCollee(haut, couleurPierre, haut.getCouleur())) {
+					addList(haut.getCouleur(), haut.getNumero());
+				}
+				
+				if(pierreEnemieCollee(bas, couleurPierre, bas.getCouleur())) {
+					addList(bas.getCouleur(), bas.getNumero());
+				}
+				
+				if(pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
+					addList(gauche.getCouleur(), gauche.getNumero());
+				}
 			}
 			
 			else {
+				if(pierreEnemieCollee(haut, couleurPierre, haut.getCouleur())) {
+					addList(haut.getCouleur(), haut.getNumero());
+				}
 				
+				if(pierreEnemieCollee(bas, couleurPierre, bas.getCouleur())) {
+					addList(bas.getCouleur(), bas.getNumero());
+				}
+				
+				if(pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
+					addList(gauche.getCouleur(), gauche.getNumero());
+				}
+				
+				if(pierreEnemieCollee(droite, couleurPierre, droite.getCouleur())) {
+					addList(droite.getCouleur(), droite.getNumero());
+				}
 			}
 		}
 		
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param pierreEnnemi
+	 * @param couleurPierre
+	 * @param couleurEnnemi
+	 * @return
+	 */
 	public boolean pierreEnemieCollee(AbstractPierre pierreEnnemi, String couleurPierre, String couleurEnnemi) {
 		if(!couleurPierre.equals(couleurEnnemi)) {
 			int numero = pierreEnnemi.getNumero();
+			String[] couleurEnnemis = Couleur.couleurEnnemis(couleurPierre);
 			
-			if(couleurEnnemi.contentEquals(Couleur.))
+			for(String couleur : couleurEnnemis) {
+				if(couleur.equals(Couleur.NOIR.getCouleur()) && liste_voisin_Noir.contains(numero))
+					return true;
+				
+				if(couleur.equals(Couleur.BLANC.getCouleur()) && liste_voisin_Blanc.contains(numero))
+					return true;
+				
+				if(couleur.equals(Couleur.ROUGE.getCouleur()) && liste_voisin_Rouge.contains(numero))
+					return true;
+			}
 		}
-		
-//		if(liste_voisin.size() > 0) {
-//			int numero = pierreEnnemie.getNumero();
-//			
-//			if(liste_voisin.containsValue(numero)) {
-//				if(liste_voisin.get)
-//			}
-//		}
 		
 		return false;
 	}
