@@ -1,13 +1,22 @@
 package traitement;
 
 import donnees.AbstractPierre;
-import donnees.Couleur;
 import donnees.ParametrePartie;
+
+/**
+ * 
+ * @author 
+ *
+ */
 
 public class Liberte {
 	int nb_liberte;
 	AbstractPierre pierre;
 	
+	/**
+	 * 
+	 * @param pierre
+	 */
 	public Liberte(AbstractPierre pierre) {
 		this.pierre = pierre;
 		
@@ -17,50 +26,114 @@ public class Liberte {
 			nb_liberte = 4;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getLiberte() {
 		return nb_liberte;
 	}
 	
+	/**
+	 * 
+	 * @param plateau
+	 * @param choix
+	 */
 	public void updateLiberte(AbstractPierre[][] plateau, int choix) {
-		Couleur couleur = pierre.getCouleur();
+		String couleur = pierre.getCouleur();
+		int x = pierre.getX();
+		int y = pierre.getY();
+		int taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
 		
 		if(pierre.isMegaPierre()) {
 			
 		}
 		
 		else {
-			if(pierre.getX() == 0) {
+			if(x == 0) {
 				nb_liberte--;
 				
-				if(pierre.getY() == 0) {
-					nb_liberte--;
-					
-					
-				}
-				
-				
-			}
-			
-			else if(pierre.getY() == 0) {
-				nb_liberte--;
-				
-				if(pierre.getX() == 0) {
+				if(y == 0) {
 					nb_liberte--;
 				}
-			}
-			
-			else if(pierre.getX() == ParametrePartie.TAILLE_GOBAN[choix]) {
-				nb_liberte--;
 				
-				if(pierre.getY() == ParametrePartie.TAILLE_GOBAN[choix]) {
+				else {
+					if((plateau[x][y-1] != null) && !couleur.equals(plateau[x][y-1].getCouleur())) {
+						nb_liberte--;
+					}
+				}
+				
+				if((plateau[x+1][y] != null) && !couleur.equals(plateau[x+1][y].getCouleur())) {
+					nb_liberte--;
+				}
+				
+				if((plateau[x][y+1] != null) && !couleur.equals(plateau[x][y+1].getCouleur())) {
 					nb_liberte--;
 				}
 			}
 			
-			else if(pierre.getY() == ParametrePartie.TAILLE_GOBAN[choix]) {
+			else if(y == 0) {
 				nb_liberte--;
 				
-				if(pierre.getX() == ParametrePartie.TAILLE_GOBAN[choix]) {
+				if(x == 0) {
+					nb_liberte--;
+				}
+				
+				else {
+					if((plateau[x-1][y] != null) && !couleur.equals(plateau[x-1][y].getCouleur())) {
+						nb_liberte--;
+					}
+				}
+				
+				if((plateau[x+1][y] != null) && !couleur.equals(plateau[x+1][y].getCouleur())) {
+					nb_liberte--;
+				}
+				
+				if((plateau[x][y+1] != null) && !couleur.equals(plateau[x][y+1].getCouleur())) {
+					nb_liberte--;
+				}
+			}
+			
+			else if(x == taille_goban) {
+				nb_liberte--;
+				
+				if(y == taille_goban) {
+					nb_liberte--;
+				}
+				
+				else {
+					if((plateau[x][y+1] != null) && !couleur.equals(plateau[x][y+1].getCouleur())) {
+						nb_liberte--;
+					}
+				}
+				
+				if((plateau[x-1][y] != null) && !couleur.equals(plateau[x-1][y].getCouleur())) {
+					nb_liberte--;
+				}
+				
+				if((plateau[x][y-1] != null) && !couleur.equals(plateau[x][y-1].getCouleur())) {
+					nb_liberte--;
+				}
+			}
+			
+			else if(y == taille_goban) {
+				nb_liberte--;
+				
+				if(x == taille_goban) {
+					nb_liberte--;
+				}
+				
+				else {
+					if((plateau[x+1][y] != null) && !couleur.equals(plateau[x+1][y].getCouleur())) {
+						nb_liberte--;
+					}
+				}
+				
+				if((plateau[x-1][y] != null) && !couleur.equals(plateau[x-1][y].getCouleur())) {
+					nb_liberte--;
+				}
+				
+				if((plateau[x][y-1] != null) && !couleur.equals(plateau[x][y-1].getCouleur())) {
 					nb_liberte--;
 				}
 			}

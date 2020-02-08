@@ -19,7 +19,7 @@ public abstract class AbstractPierre {
 	public abstract boolean vivante();
 	public abstract boolean isMegaPierre();
 	
-	public Couleur getCouleur() {
-		return couleur;
+	public String getCouleur() {
+		return couleur.getCouleur();
 	}
 }

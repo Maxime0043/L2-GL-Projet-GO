@@ -1,17 +1,17 @@
 package donnees;
 
 public enum Couleur {
-	NOIR(0),
-	BLANC(1),
-	ROUGE(2);
+	NOIR("noir"),
+	BLANC("blanc"),
+	ROUGE("rouge");
 	
-	private int couleur;
+	private String couleur;
 	
-	Couleur(int couleur){
+	Couleur(String couleur){
 		this.couleur = couleur;
 	}
 	
-	public int getCouleur() {
+	public String getCouleur() {
 		return couleur;
 	}
 }
