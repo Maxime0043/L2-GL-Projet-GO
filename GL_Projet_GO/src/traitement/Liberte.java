@@ -49,132 +49,132 @@ public class Liberte {
 		
 		int x = pierre.getX();
 		int y = pierre.getY();
+		
 		AbstractPierre haut = plateau[x-1][y];
 		AbstractPierre bas = plateau[x+1][y];
 		AbstractPierre gauche = plateau[x][y-1];
 		AbstractPierre droite = plateau[x][y+1];
 		
 		if(pierre.isMegaPierre()) {
+			bas = plateau[x+2][y];
+			droite = plateau[x][y+2];
+		}
+		
+		if(x == 0) {
+			if(isBordHaut) {
+				nb_liberte--;
+				isBordHaut = true;
+			}
 			
+			if((y == 0) && !isBordGauche) {
+				nb_liberte--;
+				isBordGauche = true;
+			}
+			else {
+				if(gauche != null) {
+					nb_liberte--;
+				}
+			}
+			
+			if((y == taille_goban) && !isBordDroit) {
+				nb_liberte--;
+				isBordDroit = true;
+			}
+			else {
+				if(droite != null) {
+					nb_liberte--;
+				}
+			}
+			
+			if(bas != null) {
+				nb_liberte--;
+			}
+		}
+		
+		else if(x == taille_goban) {
+			if(!isBordBas) {
+				nb_liberte--;
+				isBordBas = true;
+			}
+			
+			if((y == 0) && !isBordGauche) {
+				nb_liberte--;
+				isBordGauche = true;
+			}
+			else {
+				if(gauche != null) {
+					nb_liberte--;
+				}
+			}
+			
+			if((y == taille_goban) && !isBordDroit) {
+				nb_liberte--;
+				isBordDroit = true;
+			}
+			else {
+				if(droite != null) {
+					nb_liberte--;
+				}
+			}
+			
+			if(haut != null) {
+				nb_liberte--;
+			}
+		}
+		
+		else if(y == 0) {
+			if(!isBordGauche) {
+				nb_liberte--;
+				isBordGauche = true;
+			}
+			
+			if(haut != null) {
+				nb_liberte--;
+			}
+			
+			if(bas != null) {
+				nb_liberte--;
+			}
+			
+			if(droite != null) {
+				nb_liberte--;
+			}
+		}
+		
+		else if(y == taille_goban) {
+			if(!isBordDroit) {
+				nb_liberte--;
+				isBordDroit = true;
+			}
+			
+			if(haut != null) {
+				nb_liberte--;
+			}
+			
+			if(bas != null) {
+				nb_liberte--;
+			}
+			
+			if(gauche != null) {
+				nb_liberte--;
+			}
 		}
 		
 		else {
-			if(x == 0) {
-				if(isBordHaut) {
-					nb_liberte--;
-					isBordHaut = true;
-				}
-				
-				if((y == 0) && !isBordGauche) {
-					nb_liberte--;
-					isBordGauche = true;
-				}
-				else {
-					if(gauche != null) {
-						nb_liberte--;
-					}
-				}
-				
-				if((y == taille_goban) && !isBordDroit) {
-					nb_liberte--;
-					isBordDroit = true;
-				}
-				else {
-					if(droite != null) {
-						nb_liberte--;
-					}
-				}
-				
-				if(bas != null) {
-					nb_liberte--;
-				}
+			if(haut != null) {
+				nb_liberte--;
 			}
 			
-			else if(x == taille_goban) {
-				if(!isBordBas) {
-					nb_liberte--;
-					isBordBas = true;
-				}
-				
-				if((y == 0) && !isBordGauche) {
-					nb_liberte--;
-					isBordGauche = true;
-				}
-				else {
-					if(gauche != null) {
-						nb_liberte--;
-					}
-				}
-				
-				if((y == taille_goban) && !isBordDroit) {
-					nb_liberte--;
-					isBordDroit = true;
-				}
-				else {
-					if(droite != null) {
-						nb_liberte--;
-					}
-				}
-				
-				if(haut != null) {
-					nb_liberte--;
-				}
+			if(bas != null) {
+				nb_liberte--;
 			}
 			
-			else if(y == 0) {
-				if(!isBordGauche) {
-					nb_liberte--;
-					isBordGauche = true;
-				}
-				
-				if(haut != null) {
-					nb_liberte--;
-				}
-				
-				if(bas != null) {
-					nb_liberte--;
-				}
-				
-				if(droite != null) {
-					nb_liberte--;
-				}
+			if(gauche != null) {
+				nb_liberte--;
 			}
 			
-			else if(y == taille_goban) {
-				if(!isBordDroit) {
-					nb_liberte--;
-					isBordDroit = true;
-				}
-				
-				if(haut != null) {
-					nb_liberte--;
-				}
-				
-				if(bas != null) {
-					nb_liberte--;
-				}
-				
-				if(gauche != null) {
-					nb_liberte--;
-				}
-			}
-			
-			else {
-				if(haut != null) {
-					nb_liberte--;
-				}
-				
-				if(bas != null) {
-					nb_liberte--;
-				}
-				
-				if(gauche != null) {
-					nb_liberte--;
-				}
-				
-				if(droite != null) {
-					nb_liberte--;
-				}
+			if(droite != null) {
+				nb_liberte--;
 			}
 		}
 	}

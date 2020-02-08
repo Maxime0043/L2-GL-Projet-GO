@@ -187,15 +187,15 @@ public class GoPierre {
 		int x = pierre.getX();
 		int y = pierre.getY();
 		
-		if(pierre.isMegaPierre()) {
-			x++;
-			y++;
-		}
-		
 		AbstractPierre haut = plateau[x-1][y];
 		AbstractPierre bas = plateau[x+1][y];
 		AbstractPierre gauche = plateau[x][y-1];
 		AbstractPierre droite = plateau[x][y+1];
+		
+		if(pierre.isMegaPierre()) {
+			bas = plateau[x+2][y];
+			droite = plateau[x][y+2];
+		}
 		
 		if(bordHaut(pierre)) {
 			if(!bordGauche(pierre) && pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
@@ -212,6 +212,8 @@ public class GoPierre {
 		}
 		
 		else if(bordBas(pierre, choix)) {
+			
+			
 			if(!bordGauche(pierre) && pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
 				addList(gauche.getCouleur(), gauche.getNumero());
 			}
