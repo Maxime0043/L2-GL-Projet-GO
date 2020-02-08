@@ -10,8 +10,13 @@ import donnees.ParametrePartie;
  */
 
 public class Liberte {
-	int nb_liberte;
-	AbstractPierre pierre;
+	private int nb_liberte;
+	private AbstractPierre pierre;
+	
+	private boolean isCoinHautX = false;
+	private boolean isCoinHautY = false;
+	private boolean isCoinBasX = false;
+	private boolean isCoinBasY = false;
 	
 	/**
 	 * 
@@ -51,10 +56,14 @@ public class Liberte {
 		
 		else {
 			if(x == 0) {
-				nb_liberte--;
-				
-				if(y == 0) {
+				if(!isCoinHautX) {
 					nb_liberte--;
+					isCoinHautX = true;
+				}
+				
+				if((y == 0) && !isCoinHautY) {
+					nb_liberte--;
+					isCoinHautY = true;
 				}
 				
 				else {
@@ -73,10 +82,14 @@ public class Liberte {
 			}
 			
 			else if(y == 0) {
-				nb_liberte--;
-				
-				if(x == 0) {
+				if(!isCoinHautY) {
 					nb_liberte--;
+					isCoinHautY = true;
+				}
+				
+				if((x == 0) && !isCoinHautX) {
+					nb_liberte--;
+					isCoinHautX = true;
 				}
 				
 				else {
@@ -95,10 +108,14 @@ public class Liberte {
 			}
 			
 			else if(x == taille_goban) {
-				nb_liberte--;
-				
-				if(y == taille_goban) {
+				if(!isCoinBasX) {
 					nb_liberte--;
+					isCoinBasX = true;
+				}
+				
+				if((y == taille_goban) && !isCoinBasY) {
+					nb_liberte--;
+					isCoinBasY = true;
 				}
 				
 				else {
@@ -117,10 +134,14 @@ public class Liberte {
 			}
 			
 			else if(y == taille_goban) {
-				nb_liberte--;
-				
-				if(x == taille_goban) {
+				if(!isCoinBasY) {
 					nb_liberte--;
+					isCoinBasY = true;
+				}
+				
+				if((x == taille_goban) && !isCoinBasX) {
+					nb_liberte--;
+					isCoinBasX = true;
 				}
 				
 				else {
