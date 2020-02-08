@@ -36,6 +36,15 @@ public class GoPierre {
 	 * 
 	 * @param numero
 	 */
+	public void removeListeNoir(int numero) {
+		if(liste_voisin_Noir.contains(numero) && (liste_voisin_Noir.size() > 0))
+			liste_voisin_Noir.remove(numero);
+	}
+	
+	/**
+	 * 
+	 * @param numero
+	 */
 	public void addListeBlanc(int numero) {
 		if(!liste_voisin_Blanc.contains(numero))
 			liste_voisin_Blanc.add(numero);
@@ -45,8 +54,26 @@ public class GoPierre {
 	 * 
 	 * @param numero
 	 */
+	public void removeListeBlanc(int numero) {
+		if(liste_voisin_Blanc.contains(numero) && (liste_voisin_Blanc.size() > 0))
+			liste_voisin_Blanc.add(numero);
+	}
+	
+	/**
+	 * 
+	 * @param numero
+	 */
 	public void addListeRouge(int numero) {
 		if(!liste_voisin_Rouge.contains(numero))
+			liste_voisin_Rouge.add(numero);
+	}
+	
+	/**
+	 * 
+	 * @param numero
+	 */
+	public void removeListeRouge(int numero) {
+		if(liste_voisin_Rouge.contains(numero) && (liste_voisin_Rouge.size() > 0))
 			liste_voisin_Rouge.add(numero);
 	}
 	
@@ -64,6 +91,23 @@ public class GoPierre {
 		}
 		else if(couleur.equals(Couleur.ROUGE.getCouleur())) {
 			addListeRouge(numero);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param couleur
+	 * @param numero
+	 */
+	public void removeList(String couleur, int numero) {
+		if(couleur.equals(Couleur.NOIR.getCouleur())) {
+			removeListeNoir(numero);
+		}
+		else if(couleur.equals(Couleur.BLANC.getCouleur())) {
+			removeListeBlanc(numero);
+		}
+		else if(couleur.equals(Couleur.ROUGE.getCouleur())) {
+			removeListeRouge(numero);
 		}
 	}
 	
