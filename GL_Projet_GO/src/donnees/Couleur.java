@@ -1,4 +1,4 @@
-package data;
+package donnees;
 
 public enum Couleur {
 	NOIR(0),

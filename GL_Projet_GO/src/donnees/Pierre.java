@@ -1,4 +1,4 @@
-package data;
+package donnees;
 
 public class Pierre extends AbstractPierre{
 	private Coordonnee coord;

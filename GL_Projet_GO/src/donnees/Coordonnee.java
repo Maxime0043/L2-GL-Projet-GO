@@ -1,4 +1,4 @@
-package data;
+package donnees;
 
 public class Coordonnee {
 	private int x;
