@@ -11,8 +11,8 @@ public class Goban {
 	private int nb_Noir = 0;
 	private int nb_Blanc = 0;
 	
-	public Goban(int taille) {
-		plateau = new AbstractPierre[taille][taille];
+	public Goban(int choix) {
+		plateau = new AbstractPierre[ParametrePartie.TAILLE_GOBAN[choix]][ParametrePartie.TAILLE_GOBAN[choix]];
 		hmChaine = new HashMap <String, Chaine>();
 		scores = new HashMap <String, Score>();
 	}

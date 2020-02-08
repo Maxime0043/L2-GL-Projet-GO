@@ -16,17 +16,58 @@ public abstract class AbstractPierre {
 		this.numero = numero;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public abstract int getX();
+	
+	/***
+	 * 
+	 * @return
+	 */
 	public abstract int getY();
+	
+	/**
+	 * 
+	 * @param plateau
+	 * @return
+	 */
 	public abstract boolean voisin(AbstractPierre[][] plateau);
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public abstract boolean vivante();
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public abstract boolean isMegaPierre();
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getCouleur() {
 		return couleur.getCouleur();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getNumero() {
 		return numero;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getLiberte() {
+		return liberte.getLiberte();
 	}
 }
