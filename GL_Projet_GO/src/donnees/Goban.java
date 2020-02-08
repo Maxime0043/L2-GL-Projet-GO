@@ -2,6 +2,8 @@ package donnees;
 
 import java.util.HashMap;
 
+import traitement.Chaine;
+
 public class Goban {
 	
 	private AbstractPierre[][] plateau;

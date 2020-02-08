@@ -1,6 +1,8 @@
-package donnees;
+package traitement;
 
 import java.util.ArrayList;
+
+import donnees.AbstractPierre;
 
 public class Chaine {
 	
@@ -12,14 +14,11 @@ public class Chaine {
 	}
 	
 	public void addPierre (AbstractPierre pierre) {
-		chaine.add(pierre);
+		if(!chaine.contains(pierre))
+			chaine.add(pierre);
 	}
 	
-	public boolean vivante() {
-		if (this.liberte == 0) {
-			return false;
-		}
-		else
-			return true;
+	public boolean vivante(AbstractPierre[][] plateau, int choix) {
+		return Capture.isCapture(chaine, plateau, choix);
 	}
 }
