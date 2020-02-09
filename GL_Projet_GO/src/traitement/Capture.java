@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import donnees.AbstractPierre;
 
 public class Capture {
+	GoPierre gopierre;
+	
 	public Capture() {
-
+		gopierre = new GoPierre();
 	}
 	
 	public static boolean isCapture(AbstractPierre pierre, AbstractPierre[][] plateau, int choix) {
@@ -38,7 +40,6 @@ public class Capture {
 				return false;
 			}
 			
-			//Rajouter les cas où la pierre est sur une bordure
 			if(couleurHaut.equals(couleurBas) && couleurHaut.equals(couleurGauche) && couleurHaut.equals(couleurDroite)) {
 				return true;
 			}

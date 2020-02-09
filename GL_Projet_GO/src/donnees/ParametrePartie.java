@@ -13,5 +13,9 @@ public class ParametrePartie {
 	
 	public static final int[] TAILLE_GOBAN = {9, 19};
 	
-	private HashMap <String, Integer> hmHandicap; 
+	public static final int LARGEUR = 40;
+	
+	private HashMap<String, Integer> hmHandicap;
+	
+	
 }

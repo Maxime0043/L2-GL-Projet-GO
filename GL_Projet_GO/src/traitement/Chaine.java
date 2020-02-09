@@ -7,7 +7,6 @@ import donnees.AbstractPierre;
 public class Chaine {
 	
 	private ArrayList <AbstractPierre> chaine;
-	private int liberte;
 	
 	public Chaine() {
 		chaine = new ArrayList <AbstractPierre>();
