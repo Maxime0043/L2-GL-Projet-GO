@@ -11,30 +11,39 @@ public class GoPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
+	int choix = 0;
+	
+	int sizepx = ParametrePartie.LARGEUR_CASE;
+	int border = ParametrePartie.ECART;
+	int size = ParametrePartie.TAILLE_GOBAN[choix];
+	
 	public GoPanel() {
 		
 		
+	}
+	
+	public int getChoix() {
+		return choix;
+	}
+	
+	public void setChoix(int valeur) {
+		choix = valeur;
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.white);
-
-		drawDebugGrid(g);
+		
+		drawGrid(g);
 	}
-
-	private void drawDebugGrid(Graphics g) {
-		int width = getWidth();
-		int height = getHeight();
-		g.setColor(Color.GRAY);
-
-		for (int i = ParametrePartie.LARGEUR; i <= width; i += ParametrePartie.LARGEUR) {
-			g.drawLine(i, 1, i, height);
-		}
-
-		for (int i = ParametrePartie.LARGEUR; i <= height; i += ParametrePartie.LARGEUR) {
-			g.drawLine(1, i, width, i);
+	
+	private void drawGrid(Graphics g){
+		g.setColor(Color.BLACK);
+		
+		for(int i = 0 ; i < size ; i++){
+			g.drawLine(border, border+i*sizepx, border+(size-1)*sizepx, border+i*sizepx);
+			g.drawLine(border+i*sizepx, border, border+i*sizepx, border+(size-1)*sizepx);
 		}
 	}
 

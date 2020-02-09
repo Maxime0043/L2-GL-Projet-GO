@@ -3,7 +3,9 @@ package donnees;
 import java.util.HashMap;
 
 public class ParametrePartie {
-	public static final int WINDOW_TAILLE = 800;
+	public static final int LARGEUR_CASE = 40;
+	
+	public static final int ECART = 30;
 	
 	public static final int[] NOMBRE_JOUEUR = {1, 2, 3};
 	
@@ -12,8 +14,6 @@ public class ParametrePartie {
 	public static final int[] DIFIICULTE_IA = {0, 1};
 	
 	public static final int[] TAILLE_GOBAN = {9, 19};
-	
-	public static final int LARGEUR = 40;
 	
 	private HashMap<String, Integer> hmHandicap;
 	
