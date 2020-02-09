@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
@@ -13,13 +15,14 @@ public class GoPanel extends JPanel{
 	
 	int choix = 0;
 	
-	int sizepx = ParametrePartie.LARGEUR_CASE;
-	int border = ParametrePartie.ECART;
-	int size = ParametrePartie.TAILLE_GOBAN[choix];
+	int cellule = ParametrePartie.LARGEUR_CASE;
+	int ecart_window = ParametrePartie.ECART;
+	int taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
+	
+	
 	
 	public GoPanel() {
-		
-		
+		this.addMouseListener(new Souris());
 	}
 	
 	public int getChoix() {
@@ -41,10 +44,47 @@ public class GoPanel extends JPanel{
 	private void drawGrid(Graphics g){
 		g.setColor(Color.BLACK);
 		
-		for(int i = 0 ; i < size ; i++){
-			g.drawLine(border, border+i*sizepx, border+(size-1)*sizepx, border+i*sizepx);
-			g.drawLine(border+i*sizepx, border, border+i*sizepx, border+(size-1)*sizepx);
+		for(int i = 0 ; i < taille_goban ; i++){
+			g.drawLine(ecart_window, ecart_window + i * cellule, ecart_window + (taille_goban - 1) * cellule, ecart_window + i * cellule);
+			g.drawLine(ecart_window + i * cellule, ecart_window, ecart_window +i * cellule, ecart_window + (taille_goban - 1) * cellule);
 		}
+	}
+	
+	class Souris implements MouseListener{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			//On écrira le code ici
+			System.out.println("X : " + e.getX());
+			System.out.println("Y : " + e.getY());
+			
+			int x = (e.getX() - ecart_window / 2) / cellule;
+			int y = (e.getY() - ecart_window / 2) / cellule;
+			
+			System.out.println("\nTabX : " + x);
+			System.out.println("\nTabY : " + y + "\n");
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			
+		}
+
 	}
 
 }
