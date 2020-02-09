@@ -1,12 +1,10 @@
 package donnees;
 
-import traitement.Liberte;
-
 public class Pierre extends AbstractPierre{
 	private Coordonnee coord;
 	
-	public Pierre(Couleur couleur, Liberte liberte, String nomChaine, Coordonnee coord, int numero) {
-		super(couleur, liberte, nomChaine, numero);
+	public Pierre(Couleur couleur, String nomChaine, Coordonnee coord, int numero) {
+		super(couleur, nomChaine, numero);
 		this.coord = coord;
 	}
 	

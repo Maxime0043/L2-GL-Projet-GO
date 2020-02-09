@@ -9,7 +9,7 @@ public abstract class AbstractPierre {
 	private int numero;
 	
 	
-	public AbstractPierre(Couleur couleur, Liberte liberte, String nomChaine, int numero) {
+	public AbstractPierre(Couleur couleur, String nomChaine, int numero) {
 		this.couleur = couleur;
 		this.liberte = new Liberte(this);
 		this.nomChaine = nomChaine;
