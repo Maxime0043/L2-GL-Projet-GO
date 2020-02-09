@@ -3,7 +3,6 @@ package traitement;
 import java.util.ArrayList;
 
 import donnees.AbstractPierre;
-import donnees.Couleur;
 import donnees.ParametrePartie;
 
 
@@ -13,102 +12,29 @@ import donnees.ParametrePartie;
  *
  */
 public class GoPierre {
-	private ArrayList<Integer> liste_voisin_Noir;
-	private ArrayList<Integer> liste_voisin_Blanc;
-	private ArrayList<Integer> liste_voisin_Rouge;
+	
+	ArrayList<AbstractPierre> liste_voisin;
 	
 	public GoPierre() {
-		liste_voisin_Noir = new ArrayList<Integer>();
-		liste_voisin_Blanc = new ArrayList<Integer>();
-		liste_voisin_Rouge = new ArrayList<Integer>();
+		liste_voisin = new ArrayList<AbstractPierre>();
 	}
 	
 	/**
 	 * 
 	 * @param numero
 	 */
-	public void addListeNoir(int numero) {
-		if(!liste_voisin_Noir.contains(numero))
-			liste_voisin_Noir.add(numero);
+	public void addListe(AbstractPierre pierre) {
+		if(!liste_voisin.contains(pierre))
+			liste_voisin.add(pierre);
 	}
 	
 	/**
 	 * 
 	 * @param numero
 	 */
-	public void removeListeNoir(int numero) {
-		if(liste_voisin_Noir.contains(numero) && (liste_voisin_Noir.size() > 0))
-			liste_voisin_Noir.remove(numero);
-	}
-	
-	/**
-	 * 
-	 * @param numero
-	 */
-	public void addListeBlanc(int numero) {
-		if(!liste_voisin_Blanc.contains(numero))
-			liste_voisin_Blanc.add(numero);
-	}
-	
-	/**
-	 * 
-	 * @param numero
-	 */
-	public void removeListeBlanc(int numero) {
-		if(liste_voisin_Blanc.contains(numero) && (liste_voisin_Blanc.size() > 0))
-			liste_voisin_Blanc.add(numero);
-	}
-	
-	/**
-	 * 
-	 * @param numero
-	 */
-	public void addListeRouge(int numero) {
-		if(!liste_voisin_Rouge.contains(numero))
-			liste_voisin_Rouge.add(numero);
-	}
-	
-	/**
-	 * 
-	 * @param numero
-	 */
-	public void removeListeRouge(int numero) {
-		if(liste_voisin_Rouge.contains(numero) && (liste_voisin_Rouge.size() > 0))
-			liste_voisin_Rouge.add(numero);
-	}
-	
-	/**
-	 * 
-	 * @param couleur
-	 * @param numero
-	 */
-	public void addList(String couleur, int numero) {
-		if(couleur.equals(Couleur.NOIR.getCouleur())) {
-			addListeNoir(numero);
-		}
-		else if(couleur.equals(Couleur.BLANC.getCouleur())) {
-			addListeBlanc(numero);
-		}
-		else if(couleur.equals(Couleur.ROUGE.getCouleur())) {
-			addListeRouge(numero);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param couleur
-	 * @param numero
-	 */
-	public void removeList(String couleur, int numero) {
-		if(couleur.equals(Couleur.NOIR.getCouleur())) {
-			removeListeNoir(numero);
-		}
-		else if(couleur.equals(Couleur.BLANC.getCouleur())) {
-			removeListeBlanc(numero);
-		}
-		else if(couleur.equals(Couleur.ROUGE.getCouleur())) {
-			removeListeRouge(numero);
-		}
+	public void removeListe(AbstractPierre pierre) {
+		if(liste_voisin.contains(pierre) && (liste_voisin.size() > 0))
+			liste_voisin.remove(pierre);
 	}
 	
 	/**
@@ -181,7 +107,9 @@ public class GoPierre {
 	 * @param choix
 	 * @return
 	 */
-	public ArrayList<Integer> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int choix) {
+	public ArrayList<AbstractPierre> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int choix) {
+		liste_voisin.clear();
+		
 		String couleurPierre = pierre.getCouleur();
 		
 		int x = pierre.getX();
@@ -198,82 +126,82 @@ public class GoPierre {
 		}
 		
 		if(bordHaut(pierre)) {
-			if(!bordGauche(pierre) && pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
-				addList(gauche.getCouleur(), gauche.getNumero());
+			if(!bordGauche(pierre) && pierreEnemieExiste(gauche, couleurPierre, gauche.getCouleur())) {
+				addListe(gauche);
 			}
 			
-			else if(!bordDroit(pierre, choix) && pierreEnemieCollee(droite, couleurPierre, droite.getCouleur())) {
-				addList(droite.getCouleur(), droite.getNumero());
+			else if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite, couleurPierre, droite.getCouleur())) {
+				addListe(droite);
 			}
 			
-			if(pierreEnemieCollee(bas, couleurPierre, bas.getCouleur())) {
-				addList(bas.getCouleur(), bas.getNumero());
+			if(pierreEnemieExiste(bas, couleurPierre, bas.getCouleur())) {
+				addListe(bas);
 			}
 		}
 		
 		else if(bordBas(pierre, choix)) {
 			
 			
-			if(!bordGauche(pierre) && pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
-				addList(gauche.getCouleur(), gauche.getNumero());
+			if(!bordGauche(pierre) && pierreEnemieExiste(gauche, couleurPierre, gauche.getCouleur())) {
+				addListe(gauche);
 			}
 			
-			else if(!bordDroit(pierre, choix) && pierreEnemieCollee(droite, couleurPierre, droite.getCouleur())) {
-				addList(droite.getCouleur(), droite.getNumero());
+			else if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite, couleurPierre, droite.getCouleur())) {
+				addListe(droite);
 			}
 			
-			if(pierreEnemieCollee(haut, couleurPierre, haut.getCouleur())) {
-				addList(haut.getCouleur(), haut.getNumero());
+			if(pierreEnemieExiste(haut, couleurPierre, haut.getCouleur())) {
+				addListe(haut);
 			}
 		}
 		
 		else if(bordGauche(pierre)) {
-			if(pierreEnemieCollee(haut, couleurPierre, haut.getCouleur())) {
-				addList(haut.getCouleur(), haut.getNumero());
+			if(pierreEnemieExiste(haut, couleurPierre, haut.getCouleur())) {
+				addListe(haut);
 			}
 			
-			if(pierreEnemieCollee(bas, couleurPierre, bas.getCouleur())) {
-				addList(bas.getCouleur(), bas.getNumero());
+			if(pierreEnemieExiste(bas, couleurPierre, bas.getCouleur())) {
+				addListe(bas);
 			}
 			
-			if(pierreEnemieCollee(droite, couleurPierre, droite.getCouleur())) {
-				addList(droite.getCouleur(), droite.getNumero());
+			if(pierreEnemieExiste(droite, couleurPierre, droite.getCouleur())) {
+				addListe(droite);
 			}
 		}
 		
 		else if(bordDroit(pierre, choix)) {
-			if(pierreEnemieCollee(haut, couleurPierre, haut.getCouleur())) {
-				addList(haut.getCouleur(), haut.getNumero());
+			if(pierreEnemieExiste(haut, couleurPierre, haut.getCouleur())) {
+				addListe(haut);
 			}
 			
-			if(pierreEnemieCollee(bas, couleurPierre, bas.getCouleur())) {
-				addList(bas.getCouleur(), bas.getNumero());
+			if(pierreEnemieExiste(bas, couleurPierre, bas.getCouleur())) {
+				addListe(bas);
 			}
 			
-			if(pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
-				addList(gauche.getCouleur(), gauche.getNumero());
+			if(pierreEnemieExiste(gauche, couleurPierre, gauche.getCouleur())) {
+				addListe(gauche);
 			}
 		}
 		
 		else {
-			if(pierreEnemieCollee(haut, couleurPierre, haut.getCouleur())) {
-				addList(haut.getCouleur(), haut.getNumero());
+			if(pierreEnemieExiste(haut, couleurPierre, haut.getCouleur())) {
+				addListe(haut);
 			}
 			
-			if(pierreEnemieCollee(bas, couleurPierre, bas.getCouleur())) {
-				addList(bas.getCouleur(), bas.getNumero());
+			if(pierreEnemieExiste(bas, couleurPierre, bas.getCouleur())) {
+				addListe(bas);
 			}
 			
-			if(pierreEnemieCollee(gauche, couleurPierre, gauche.getCouleur())) {
-				addList(gauche.getCouleur(), gauche.getNumero());
+			if(pierreEnemieExiste(gauche, couleurPierre, gauche.getCouleur())) {
+				addListe(gauche);
 			}
 			
-			if(pierreEnemieCollee(droite, couleurPierre, droite.getCouleur())) {
-				addList(droite.getCouleur(), droite.getNumero());
+			if(pierreEnemieExiste(droite, couleurPierre, droite.getCouleur())) {
+				addListe(droite);
 			}
 		}
 		
-		return null;
+		return liste_voisin;
 	}
 	
 	/**
@@ -283,21 +211,9 @@ public class GoPierre {
 	 * @param couleurEnnemi
 	 * @return
 	 */
-	public boolean pierreEnemieCollee(AbstractPierre pierreEnnemi, String couleurPierre, String couleurEnnemi) {
+	public boolean pierreEnemieExiste(AbstractPierre pierreEnnemi, String couleurPierre, String couleurEnnemi) {
 		if((pierreEnnemi != null) && (!couleurPierre.equals(couleurEnnemi))) {
-			int numero = pierreEnnemi.getNumero();
-			String[] couleurEnnemis = Couleur.couleurEnnemis(couleurPierre);
-			
-			for(String couleur : couleurEnnemis) {
-				if(couleur.equals(Couleur.NOIR.getCouleur()) && liste_voisin_Noir.contains(numero))
-					return true;
-				
-				if(couleur.equals(Couleur.BLANC.getCouleur()) && liste_voisin_Blanc.contains(numero))
-					return true;
-				
-				if(couleur.equals(Couleur.ROUGE.getCouleur()) && liste_voisin_Rouge.contains(numero))
-					return true;
-			}
+			return true;
 		}
 		
 		return false;
