@@ -41,7 +41,7 @@ public class Go extends JFrame implements Runnable {
 		this.setSize(window_width, window_height);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setResizable(true);
+		this.setResizable(false);
 	}
 
 	@Override
