@@ -8,9 +8,10 @@ import javax.swing.JFrame;
 
 import donnees.ParametrePartie;
 
-public class Go extends JFrame implements Runnable{
+public class Go extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
+	
 	
 	GoPanel panel = new GoPanel();
 	private int window_width, window_height;
@@ -40,14 +41,14 @@ public class Go extends JFrame implements Runnable{
 		this.setSize(window_width, window_height);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setResizable(false);
+		this.setResizable(true);
 	}
 
 	@Override
 	public void run() {	
 		while (!stop) {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				System.out.println(e.getMessage());
 			}

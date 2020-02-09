@@ -8,7 +8,9 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import donnees.Cercle;
 import donnees.Coordonnee;
+import donnees.Couleur;
 import donnees.ParametrePartie;
 
 public class GoPanel extends JPanel{
@@ -21,12 +23,16 @@ public class GoPanel extends JPanel{
 	int ecart_window = ParametrePartie.ECART;
 	int taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
 	
-	ArrayList<Coordonnee> cercle;
+	private ArrayList<Cercle> cercle;
+	
+	private boolean noir = true;
+	private boolean blanc = false;
+	private boolean rouge = false;
 	
 	public GoPanel() {
 		this.addMouseListener(new Souris());
 		
-		cercle = new ArrayList<Coordonnee>();
+		cercle = new ArrayList<Cercle>();
 	}
 	
 	public int getChoix() {
@@ -59,18 +65,34 @@ public class GoPanel extends JPanel{
 		
 		int x, y;
 		
-		for(Coordonnee coordCercle : cercle) {
-			x = coordCercle.getX() * cellule + ecart_window / 2 - 5;
-			y = coordCercle.getY() * cellule + ecart_window / 2 - 5;
+		for(Cercle c : cercle) {
+			x = c.getX() * cellule + ecart_window / 2 - 5;
+			y = c.getY() * cellule + ecart_window / 2 - 5;
+			
+			setColor(g, c.getCouleur());
 			
 			g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
 		}
 	}
 	
-	public void addCercle(Coordonnee c) {
+	private void setColor(Graphics g, String couleur) {
+		if(couleur.equals(Couleur.NOIR.getCouleur())) {
+			g.setColor(Color.BLACK);
+		}
+		
+		else if(couleur.equals(Couleur.BLANC.getCouleur())) {
+			g.setColor(Color.WHITE);
+		}
+		
+		else if(couleur.equals(Couleur.ROUGE.getCouleur())) {
+			g.setColor(Color.RED);
+		}
+	}
+
+	public void addCercle(Cercle c) {
 		boolean result = true;
 		
-		for(Coordonnee coordCercle : cercle) {
+		for(Cercle coordCercle : cercle) {
 			if((c.getX() == coordCercle.getX()) && (c.getY() == coordCercle.getY())) {
 				result = false;
 			}
@@ -82,11 +104,11 @@ public class GoPanel extends JPanel{
 		}
 	}
 	
-	public void removeCercle(Coordonnee c) {
+	public void removeCercle(Cercle c) {
 		boolean result = false;
-		Coordonnee coord = null;
+		Cercle coord = null;
 		
-		for(Coordonnee coordCercle : cercle) {
+		for(Cercle coordCercle : cercle) {
 			if((c.getX() == coordCercle.getX()) && (c.getY() == coordCercle.getY())) {
 				coord = coordCercle;
 				result = true;
@@ -98,7 +120,7 @@ public class GoPanel extends JPanel{
 		}
 	}
 	
-	public ArrayList<Coordonnee> cercleListe(){
+	public ArrayList<Cercle> cercleListe(){
 		return cercle;
 	}
 	
@@ -124,7 +146,25 @@ public class GoPanel extends JPanel{
 			int x = (e.getX() - ecart_window / 2) / cellule;
 			int y = (e.getY() - ecart_window / 2) / cellule;
 			
-			addCercle(new Coordonnee(x, y));
+			if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
+				Coordonnee c = new Coordonnee(x, y);
+				
+				if(noir) {
+					addCercle(new Cercle(c, Couleur.NOIR));
+					noir = false;
+					blanc = true;
+				}
+				else if(blanc) {
+					addCercle(new Cercle(c, Couleur.BLANC));
+					blanc = false;
+					rouge = true;
+				}
+				else if(rouge) {
+					addCercle(new Cercle(c, Couleur.ROUGE));
+					noir = true;
+					rouge = false;
+				}
+			}
 		}
 
 		@Override
