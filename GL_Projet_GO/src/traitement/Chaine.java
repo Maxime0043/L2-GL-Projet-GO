@@ -6,10 +6,12 @@ import donnees.AbstractPierre;
 
 public class Chaine {
 	
-	private ArrayList <AbstractPierre> chaine;
+	private ArrayList<AbstractPierre> chaine;
+	private Capture capture;
 	
 	public Chaine() {
-		chaine = new ArrayList <AbstractPierre>();
+		chaine = new ArrayList<AbstractPierre>();
+		capture = new Capture();
 	}
 	
 	public void addPierre (AbstractPierre pierre) {
@@ -18,6 +20,6 @@ public class Chaine {
 	}
 	
 	public boolean vivante(AbstractPierre[][] plateau, int choix) {
-		return Capture.isCapture(chaine, plateau, choix);
+		return capture.isCapture(chaine, plateau, choix);
 	}
 }
