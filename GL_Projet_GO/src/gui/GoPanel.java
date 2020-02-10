@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import donnees.AbstractPierre;
 import donnees.Cercle;
 import donnees.Coordonnee;
 import donnees.Couleur;
@@ -95,6 +96,23 @@ public class GoPanel extends JPanel{
 			g.setColor(Color.RED);
 		}
 	}
+	
+	public Cercle getCercle(int x, int y) {
+		Cercle result = null;
+		
+		for(Cercle c : cercle) {
+			if((c.getX() == x) && (c.getY() == y)) {
+				result = c;
+			}
+		}
+		
+		if(result != null) {
+			return result;
+		}
+		else {
+			return null;
+		}
+	}
 
 	public void addCercle(Cercle c) {
 		boolean result = true;
@@ -123,6 +141,20 @@ public class GoPanel extends JPanel{
 			
 			goban.addPierre(new Pierre(c.getCouleur(), null, coordCercle, numero));
 			System.out.println("Ajout (" + c.getX() + ", " + c.getY() + ")");
+			System.out.println(goban.getPierre(c.getX(), c.getY()).getCouleur() + "\n");
+			
+			for(int i = 0 ; i < taille_goban ; i++) {
+				for(int j = 0 ; j < taille_goban ; j++) {
+					AbstractPierre pierre = goban.getPierre(i, j);
+					
+					if(goban.existPierre(i, j)) {
+						if(goban.isPierreCapture(pierre, choix)) {
+							System.out.println("Coucou");
+							removeCercle(getCercle(i, j));
+						}
+					}
+				}
+			}
 		}
 	}
 	
