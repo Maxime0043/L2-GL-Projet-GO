@@ -53,20 +53,40 @@ public class Liberte {
 	public void updateLiberte(AbstractPierre[][] plateau, int choix) {
 		nb_liberte = 0;
 		
-		if(!gopierre.bordHaut(pierre)) {
-			nb_liberte++;
+		if(pierre.isMegaPierre()) {
+			if(!gopierre.bordHaut(pierre)) {
+				nb_liberte += 2;
+			}
+			
+			if(!gopierre.bordBas(pierre, choix)) {
+				nb_liberte += 2;
+			}
+			
+			if(!gopierre.bordGauche(pierre)) {
+				nb_liberte += 2;
+			}
+			
+			if(!gopierre.bordDroit(pierre, choix)) {
+				nb_liberte += 2;
+			}
 		}
 		
-		if(!gopierre.bordBas(pierre, choix)) {
-			nb_liberte++;
-		}
-		
-		if(!gopierre.bordGauche(pierre)) {
-			nb_liberte++;
-		}
-		
-		if(!gopierre.bordDroit(pierre, choix)) {
-			nb_liberte++;
+		else {
+			if(!gopierre.bordHaut(pierre)) {
+				nb_liberte++;
+			}
+			
+			if(!gopierre.bordBas(pierre, choix)) {
+				nb_liberte++;
+			}
+			
+			if(!gopierre.bordGauche(pierre)) {
+				nb_liberte++;
+			}
+			
+			if(!gopierre.bordDroit(pierre, choix)) {
+				nb_liberte++;
+			}
 		}
 		
 		nb_liberte -= gopierre.voisins(pierre, plateau, choix).size();

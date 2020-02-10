@@ -144,22 +144,16 @@ public class GoPanel extends JPanel{
 			
 			for(int i = 0 ; i < taille_goban ; i++) {
 				for(int j = 0 ; j < taille_goban ; j++) {
-					if(goban.existPierre(i, j)) {
+					if(goban.existPierre(i, j)) {		
 						System.out.println("(" + i + ", " + j + ") " + goban.getPierre(i, j).getLiberte());
+						
+						if(goban.isPierreCapture(goban.getPierre(i, j), choix)) {
+							removeCercle(getCercle(i, j));
+						}
 					}
 				}
 			}
 			System.out.print("\n");
-			
-//			for(int i = 0 ; i < taille_goban ; i++) {
-//				for(int j = 0 ; j < taille_goban ; j++) {
-//					if(goban.existPierre(i, j)) {						
-//						if(goban.isPierreCapture(goban.getPierre(i, j), choix)) {
-//							removeCercle(getCercle(i, j));
-//						}
-//					}
-//				}
-//			}
 		}
 	}
 	
