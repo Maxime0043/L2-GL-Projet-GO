@@ -12,10 +12,19 @@ public class Capture {
 		gopierre = new GoPierre();
 	}
 	
+//	private boolean hasMemeCouleur(AbstractPierre pierre, AbstractPierre p1, AbstractPierre p2) {
+//		
+//	}
+	
 	public boolean isCapture(AbstractPierre pierre, AbstractPierre[][] plateau, int choix) {
+		pierre.updateLiberte(plateau, choix);
+		System.out.println(pierre.getLiberte());
+		
 		if(pierre.getLiberte() > 0) {
 			return false;
 		}
+		
+		System.out.println("Suite Capture");
 		
 		Couleur couleurPierre = pierre.getCouleur();
 		
@@ -32,16 +41,23 @@ public class Capture {
 			AbstractPierre droite1 = plateau[x][y+2];
 			AbstractPierre droite2 = plateau[x-1][y+2];
 			
-			Couleur couleurHaut1 = haut1.getCouleur();
-			Couleur couleurHaut2 = haut2.getCouleur();
-			Couleur couleurBas1 = bas1.getCouleur();
-			Couleur couleurBas2 = bas2.getCouleur();
-			Couleur couleurGauche1 = gauche1.getCouleur();
-			Couleur couleurGauche2 = gauche2.getCouleur();
-			Couleur couleurDroite1 = droite1.getCouleur();
-			Couleur couleurDroite2 = droite2.getCouleur();
+			Couleur couleurHaut1;
+			Couleur couleurHaut2;
+			Couleur couleurBas1;
+			Couleur couleurBas2;
+			Couleur couleurGauche1;
+			Couleur couleurGauche2;
+			Couleur couleurDroite1;
+			Couleur couleurDroite2;
 			
 			if(gopierre.bordHaut(pierre)) {
+				couleurBas1 = bas1.getCouleur();
+				couleurBas2 = bas2.getCouleur();
+				couleurGauche1 = gauche1.getCouleur();
+				couleurGauche2 = gauche2.getCouleur();
+				couleurDroite1 = droite1.getCouleur();
+				couleurDroite2 = droite2.getCouleur();
+				
 				if(gopierre.bordGauche(pierre)) {
 					if(couleurPierre.equals(couleurBas1) ||couleurPierre.equals(couleurBas2) ||  couleurPierre.equals(couleurDroite1) || couleurPierre.equals(couleurDroite2)) {
 						return false;
@@ -70,6 +86,13 @@ public class Capture {
 			}
 			
 			else if(gopierre.bordBas(pierre, choix)) {
+				couleurHaut1 = haut1.getCouleur();
+				couleurHaut2 = haut2.getCouleur();
+				couleurGauche1 = gauche1.getCouleur();
+				couleurGauche2 = gauche2.getCouleur();
+				couleurDroite1 = droite1.getCouleur();
+				couleurDroite2 = droite2.getCouleur();
+				 
 				if(gopierre.bordGauche(pierre)) {
 					if(couleurPierre.equals(couleurHaut1) ||couleurPierre.equals(couleurHaut2) ||  couleurPierre.equals(couleurDroite1) || couleurPierre.equals(couleurDroite2)) {
 						return false;
@@ -98,6 +121,13 @@ public class Capture {
 			}
 			
 			else if(gopierre.bordGauche(pierre)) {
+				couleurHaut1 = haut1.getCouleur();
+				couleurHaut2 = haut2.getCouleur();
+				couleurBas1 = bas1.getCouleur();
+				couleurBas2 = bas2.getCouleur();
+				couleurDroite1 = droite1.getCouleur();
+				couleurDroite2 = droite2.getCouleur();
+				
 				if(couleurPierre.equals(couleurHaut1) ||couleurPierre.equals(couleurHaut2) ||  couleurPierre.equals(couleurBas1) || 
 						couleurPierre.equals(couleurBas2) ||  couleurPierre.equals(couleurDroite1) || couleurPierre.equals(couleurDroite2)) {
 					return false;
@@ -108,6 +138,13 @@ public class Capture {
 			}
 			
 			else if(gopierre.bordDroit(pierre, choix)) {
+				couleurHaut1 = haut1.getCouleur();
+				couleurHaut2 = haut2.getCouleur();
+				couleurBas1 = bas1.getCouleur();
+				couleurBas2 = bas2.getCouleur();
+				couleurGauche1 = gauche1.getCouleur();
+				couleurGauche2 = gauche2.getCouleur();
+				
 				if(couleurPierre.equals(couleurHaut1) ||couleurPierre.equals(couleurHaut2) ||  couleurPierre.equals(couleurBas1) || 
 						couleurPierre.equals(couleurBas2) ||  couleurPierre.equals(couleurGauche1) || couleurPierre.equals(couleurGauche2)) {
 					return false;
@@ -118,6 +155,15 @@ public class Capture {
 			}
 			
 			else {
+				couleurHaut1 = haut1.getCouleur();
+				couleurHaut2 = haut2.getCouleur();
+				couleurBas1 = bas1.getCouleur();
+				couleurBas2 = bas2.getCouleur();
+				couleurGauche1 = gauche1.getCouleur();
+				couleurGauche2 = gauche2.getCouleur();
+				couleurDroite1 = droite1.getCouleur();
+				couleurDroite2 = droite2.getCouleur();
+				
 				if(couleurPierre.equals(couleurHaut1) ||couleurPierre.equals(couleurHaut2) ||  couleurPierre.equals(couleurBas1) || couleurPierre.equals(couleurBas2) ||  
 						couleurPierre.equals(couleurGauche1) || couleurPierre.equals(couleurGauche2) || couleurPierre.equals(couleurDroite1) || couleurPierre.equals(couleurDroite2)) {
 					return false;
@@ -135,13 +181,22 @@ public class Capture {
 			AbstractPierre gauche = plateau[x][y-1];
 			AbstractPierre droite = plateau[x][y+1];
 			
-			Couleur couleurHaut = haut.getCouleur();
-			Couleur couleurBas = bas.getCouleur();
-			Couleur couleurGauche = gauche.getCouleur();
-			Couleur couleurDroite = droite.getCouleur();
-			
+			Couleur couleurHaut;
+			Couleur couleurBas;
+			Couleur couleurGauche;
+			Couleur couleurDroite;
+			/*
+			couleurHaut = haut.getCouleur();
+			couleurBas = bas.getCouleur();
+			couleurGauche = gauche.getCouleur();
+			couleurDroite = droite.getCouleur();
+			*/
 			
 			if(gopierre.bordHaut(pierre)) {
+				couleurBas = bas.getCouleur();
+				couleurGauche = gauche.getCouleur();
+				couleurDroite = droite.getCouleur();
+				
 				if(gopierre.bordGauche(pierre)) {
 					if(couleurPierre.equals(couleurBas) || couleurPierre.equals(couleurDroite)) {
 						return false;
@@ -170,6 +225,10 @@ public class Capture {
 			}
 			
 			else if(gopierre.bordBas(pierre, choix)) {
+				couleurHaut = haut.getCouleur();
+				couleurGauche = gauche.getCouleur();
+				couleurDroite = droite.getCouleur();
+				
 				if(gopierre.bordGauche(pierre)) {
 					if(couleurPierre.equals(couleurHaut) || couleurPierre.equals(couleurDroite)) {
 						return false;
@@ -183,7 +242,7 @@ public class Capture {
 						return false;
 					}
 					
-					if(couleurBas.equals(couleurGauche)) {
+					if(couleurHaut.equals(couleurGauche)) {
 						return true;
 					}					
 				}
@@ -198,6 +257,10 @@ public class Capture {
 			}
 			
 			else if(gopierre.bordGauche(pierre)) {
+				couleurHaut = haut.getCouleur();
+				couleurBas = bas.getCouleur();
+				couleurDroite = droite.getCouleur();
+				
 				if(couleurPierre.equals(couleurHaut) || couleurPierre.equals(couleurBas) || couleurPierre.equals(couleurDroite)) {
 					return false;
 				}
@@ -207,6 +270,10 @@ public class Capture {
 			}
 			
 			else if(gopierre.bordDroit(pierre, choix)) {
+				couleurHaut = haut.getCouleur();
+				couleurBas = bas.getCouleur();
+				couleurGauche = gauche.getCouleur();
+				
 				if(couleurPierre.equals(couleurHaut) || couleurPierre.equals(couleurBas) || couleurPierre.equals(couleurGauche)) {
 					return false;
 				}
@@ -216,6 +283,11 @@ public class Capture {
 			}
 			
 			else {
+				couleurHaut = haut.getCouleur();
+				couleurBas = bas.getCouleur();
+				couleurGauche = gauche.getCouleur();
+				couleurDroite = droite.getCouleur();
+				
 				if(couleurPierre.equals(couleurHaut) || couleurPierre.equals(couleurBas) || couleurPierre.equals(couleurGauche) || couleurPierre.equals(couleurDroite)) {
 					return false;
 				}

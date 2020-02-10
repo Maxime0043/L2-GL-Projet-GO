@@ -13,20 +13,26 @@ public class Goban {
 	private HashMap<String, Score> scores;
 	private Capture capture;
 	
+	int taille_goban;
+	int choix;
+	
 	private int nb_Noir;
 	private int nb_Blanc;
 	private int nb_Rouge;
 	
 	public Goban(int choix) {
-		plateau = new AbstractPierre[ParametrePartie.TAILLE_GOBAN[choix]][ParametrePartie.TAILLE_GOBAN[choix]];
+		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
+		this.choix = choix;
+		
+		plateau = new AbstractPierre[taille_goban][taille_goban];
 		hmChaine = new HashMap <String, Chaine>();
 		scores = new HashMap <String, Score>();
 		capture = new Capture();
 	}
 	
 	public void initGoban(int choix) {
-		for(int i = 0 ; i < ParametrePartie.TAILLE_GOBAN[choix] ; i++) {
-			for(int j = 0 ; j < ParametrePartie.TAILLE_GOBAN[choix] ; j++) {
+		for(int i = 0 ; i < taille_goban ; i++) {
+			for(int j = 0 ; j < taille_goban ; j++) {
 				plateau[i][j] = null;
 			}
 		}
@@ -48,7 +54,10 @@ public class Goban {
 	}
 	
 	public AbstractPierre getPierre(int x, int y) {
-		return plateau[x][y];
+		AbstractPierre pierre = plateau[x][y];
+		pierre.updateLiberte(plateau, choix);
+		
+		return pierre;
 	}
 	
 	public void addPierre(AbstractPierre pierre) {

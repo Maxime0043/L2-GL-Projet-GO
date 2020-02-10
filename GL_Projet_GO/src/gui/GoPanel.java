@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import donnees.AbstractPierre;
 import donnees.Cercle;
 import donnees.Coordonnee;
 import donnees.Couleur;
@@ -74,8 +73,8 @@ public class GoPanel extends JPanel{
 		int x, y;
 		
 		for(Cercle c : cercle) {
-			x = c.getX() * cellule + ecart_window / 2 - 5;
-			y = c.getY() * cellule + ecart_window / 2 - 5;
+			x = c.getY() * cellule + ecart_window / 2 - 5;
+			y = c.getX() * cellule + ecart_window / 2 - 5;
 			
 			setColor(g, c.getCouleur());
 			
@@ -141,19 +140,26 @@ public class GoPanel extends JPanel{
 			
 			goban.addPierre(new Pierre(c.getCouleur(), null, coordCercle, numero));
 			System.out.println("Ajout (" + c.getX() + ", " + c.getY() + ")");
-			System.out.println(goban.getPierre(c.getX(), c.getY()).getCouleur() + "\n");
+			System.out.println(goban.getPierre(c.getX(), c.getY()).getCouleur());
 			
 			for(int i = 0 ; i < taille_goban ; i++) {
 				for(int j = 0 ; j < taille_goban ; j++) {
-					AbstractPierre pierre = goban.getPierre(i, j);
-					
 					if(goban.existPierre(i, j)) {
-						if(goban.isPierreCapture(pierre, choix)) {
-							removeCercle(getCercle(i, j));
-						}
+						System.out.println("(" + i + ", " + j + ") " + goban.getPierre(i, j).getLiberte());
 					}
 				}
 			}
+			System.out.print("\n");
+			
+//			for(int i = 0 ; i < taille_goban ; i++) {
+//				for(int j = 0 ; j < taille_goban ; j++) {
+//					if(goban.existPierre(i, j)) {						
+//						if(goban.isPierreCapture(goban.getPierre(i, j), choix)) {
+//							removeCercle(getCercle(i, j));
+//						}
+//					}
+//				}
+//			}
 		}
 	}
 	
@@ -198,8 +204,10 @@ public class GoPanel extends JPanel{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			int x = (e.getX() - ecart_window / 2) / cellule;
-			int y = (e.getY() - ecart_window / 2) / cellule;
+			int x = (e.getY() - ecart_window / 2) / cellule;
+			int y = (e.getX() - ecart_window / 2) / cellule;
+			
+			System.out.println(x + "   " + y);
 			
 			if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
 				Coordonnee c = new Coordonnee(x, y);

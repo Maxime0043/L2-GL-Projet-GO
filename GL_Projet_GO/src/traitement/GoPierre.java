@@ -13,17 +13,15 @@ import donnees.ParametrePartie;
  */
 public class GoPierre {
 	
-	ArrayList<AbstractPierre> liste_voisin;
-	
 	public GoPierre() {
-		liste_voisin = new ArrayList<AbstractPierre>();
+		
 	}
 	
 	/**
 	 * 
 	 * @param numero
 	 */
-	public void addListe(AbstractPierre pierre) {
+	public void addListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
 		if(!liste_voisin.contains(pierre))
 			liste_voisin.add(pierre);
 	}
@@ -32,7 +30,7 @@ public class GoPierre {
 	 * 
 	 * @param numero
 	 */
-	public void removeListe(AbstractPierre pierre) {
+	public void removeListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
 		if(liste_voisin.contains(pierre) && (liste_voisin.size() > 0))
 			liste_voisin.remove(pierre);
 	}
@@ -74,7 +72,7 @@ public class GoPierre {
 			y++;
 		}
 		
-		if(y == ParametrePartie.TAILLE_GOBAN[choix])
+		if(y == ParametrePartie.TAILLE_GOBAN[choix] - 1)
 			return true;
 		
 		return false;
@@ -93,7 +91,7 @@ public class GoPierre {
 			x++;
 		}
 		
-		if(x == ParametrePartie.TAILLE_GOBAN[choix]) {
+		if(x == ParametrePartie.TAILLE_GOBAN[choix] - 1) {
 				return true;
 		}
 		
@@ -108,32 +106,44 @@ public class GoPierre {
 	 * @return
 	 */
 	public ArrayList<AbstractPierre> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int choix) {
-		liste_voisin.clear();
+		ArrayList<AbstractPierre> liste_voisin = new ArrayList<AbstractPierre>();
 		
 		int x = pierre.getX();
 		int y = pierre.getY();
 		
-		AbstractPierre haut = plateau[x-1][y];
-		AbstractPierre bas = plateau[x+1][y];
-		AbstractPierre gauche = plateau[x][y-1];
-		AbstractPierre droite = plateau[x][y+1];
+		AbstractPierre haut = null;
+		AbstractPierre bas = null;
+		AbstractPierre gauche = null;
+		AbstractPierre droite = null;
+		
+		if(x > 0) {
+			haut = plateau[x-1][y];
+		}
+		if(x < ParametrePartie.TAILLE_GOBAN[choix] - 1) {
+			bas = plateau[x+1][y];
+		}
+		if(y > 0) {
+			gauche = plateau[x][y-1];
+		}
+		if(y < ParametrePartie.TAILLE_GOBAN[choix] - 1) {
+			droite = plateau[x][y+1];
+		}
 		
 		if(pierre.isMegaPierre()) {
-			bas = plateau[x+2][y];
-			droite = plateau[x][y+2];
+			//A remplir
 		}
 		
 		if(bordHaut(pierre)) {
 			if(!bordGauche(pierre) && pierreEnemieExiste(gauche)) {
-				addListe(gauche);
+				addListe(gauche, liste_voisin);
 			}
 			
 			else if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite)) {
-				addListe(droite);
+				addListe(droite, liste_voisin);
 			}
 			
 			if(pierreEnemieExiste(bas)) {
-				addListe(bas);
+				addListe(bas, liste_voisin);
 			}
 		}
 		
@@ -141,61 +151,61 @@ public class GoPierre {
 			
 			
 			if(!bordGauche(pierre) && pierreEnemieExiste(gauche)) {
-				addListe(gauche);
+				addListe(gauche, liste_voisin);
 			}
 			
 			else if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite)) {
-				addListe(droite);
+				addListe(droite, liste_voisin);
 			}
 			
 			if(pierreEnemieExiste(haut)) {
-				addListe(haut);
+				addListe(haut, liste_voisin);
 			}
 		}
 		
 		else if(bordGauche(pierre)) {
 			if(pierreEnemieExiste(haut)) {
-				addListe(haut);
+				addListe(haut, liste_voisin);
 			}
 			
 			if(pierreEnemieExiste(bas)) {
-				addListe(bas);
+				addListe(bas, liste_voisin);
 			}
 			
 			if(pierreEnemieExiste(droite)) {
-				addListe(droite);
+				addListe(droite, liste_voisin);
 			}
 		}
 		
 		else if(bordDroit(pierre, choix)) {
 			if(pierreEnemieExiste(haut)) {
-				addListe(haut);
+				addListe(haut, liste_voisin);
 			}
 			
 			if(pierreEnemieExiste(bas)) {
-				addListe(bas);
+				addListe(bas, liste_voisin);
 			}
 			
 			if(pierreEnemieExiste(gauche)) {
-				addListe(gauche);
+				addListe(gauche, liste_voisin);
 			}
 		}
 		
 		else {
 			if(pierreEnemieExiste(haut)) {
-				addListe(haut);
+				addListe(haut, liste_voisin);
 			}
 			
 			if(pierreEnemieExiste(bas)) {
-				addListe(bas);
+				addListe(bas, liste_voisin);
 			}
 			
 			if(pierreEnemieExiste(gauche)) {
-				addListe(gauche);
+				addListe(gauche, liste_voisin);
 			}
 			
 			if(pierreEnemieExiste(droite)) {
-				addListe(droite);
+				addListe(droite, liste_voisin);
 			}
 		}
 		

@@ -70,4 +70,8 @@ public abstract class AbstractPierre {
 	public int getLiberte() {
 		return liberte.getLiberte();
 	}
+	
+	public void updateLiberte(AbstractPierre[][] plateau, int choix) {
+		liberte.updateLiberte(plateau, choix);
+	}
 }
