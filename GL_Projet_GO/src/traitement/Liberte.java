@@ -61,7 +61,7 @@ public class Liberte {
 			AbstractPierre droite2 = plateau[x+1][y+2];
 			
 			if(x == 0) {
-				if(isBordHaut) {
+				if(!isBordHaut) {
 					nb_liberte -= 2;
 					isBordHaut = true;
 				}

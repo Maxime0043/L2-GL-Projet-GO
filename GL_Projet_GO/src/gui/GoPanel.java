@@ -33,6 +33,8 @@ public class GoPanel extends JPanel{
 		this.addMouseListener(new Souris());
 		
 		cercle = new ArrayList<Cercle>();
+		
+		this.setBackground(Color.decode("#F2B352"));
 	}
 	
 	public int getChoix() {

@@ -212,7 +212,7 @@ public class GoPierre {
 	 * @return
 	 */
 	public boolean pierreEnemieExiste(AbstractPierre pierreEnnemi, String couleurPierre, String couleurEnnemi) {
-		if((pierreEnnemi != null) && (!couleurPierre.equals(couleurEnnemi))) {
+		if(pierreEnnemi != null) {
 			return true;
 		}
 		
