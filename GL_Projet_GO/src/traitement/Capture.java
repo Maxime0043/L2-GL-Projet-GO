@@ -3,6 +3,7 @@ package traitement;
 import java.util.ArrayList;
 
 import donnees.AbstractPierre;
+import donnees.Couleur;
 
 public class Capture {
 	private GoPierre gopierre;
@@ -16,7 +17,7 @@ public class Capture {
 			return false;
 		}
 		
-		String couleurPierre = pierre.getCouleur();
+		Couleur couleurPierre = pierre.getCouleur();
 		
 		int x = pierre.getX();
 		int y = pierre.getY();
@@ -31,14 +32,14 @@ public class Capture {
 			AbstractPierre droite1 = plateau[x][y+2];
 			AbstractPierre droite2 = plateau[x-1][y+2];
 			
-			String couleurHaut1 = haut1.getCouleur();
-			String couleurHaut2 = haut2.getCouleur();
-			String couleurBas1 = bas1.getCouleur();
-			String couleurBas2 = bas2.getCouleur();
-			String couleurGauche1 = gauche1.getCouleur();
-			String couleurGauche2 = gauche2.getCouleur();
-			String couleurDroite1 = droite1.getCouleur();
-			String couleurDroite2 = droite2.getCouleur();
+			Couleur couleurHaut1 = haut1.getCouleur();
+			Couleur couleurHaut2 = haut2.getCouleur();
+			Couleur couleurBas1 = bas1.getCouleur();
+			Couleur couleurBas2 = bas2.getCouleur();
+			Couleur couleurGauche1 = gauche1.getCouleur();
+			Couleur couleurGauche2 = gauche2.getCouleur();
+			Couleur couleurDroite1 = droite1.getCouleur();
+			Couleur couleurDroite2 = droite2.getCouleur();
 			
 			if(gopierre.bordHaut(pierre)) {
 				if(gopierre.bordGauche(pierre)) {
@@ -134,10 +135,10 @@ public class Capture {
 			AbstractPierre gauche = plateau[x][y-1];
 			AbstractPierre droite = plateau[x][y+1];
 			
-			String couleurHaut = haut.getCouleur();
-			String couleurBas = bas.getCouleur();
-			String couleurGauche = gauche.getCouleur();
-			String couleurDroite = droite.getCouleur();
+			Couleur couleurHaut = haut.getCouleur();
+			Couleur couleurBas = bas.getCouleur();
+			Couleur couleurGauche = gauche.getCouleur();
+			Couleur couleurDroite = droite.getCouleur();
 			
 			
 			if(gopierre.bordHaut(pierre)) {
@@ -229,7 +230,7 @@ public class Capture {
 	
 	public boolean isCapture(ArrayList<AbstractPierre> chaine, AbstractPierre[][] plateau, int choix) {
 		ArrayList<AbstractPierre> voisin;
-		ArrayList<String> couleurPierres = new ArrayList<String>();
+		ArrayList<Couleur> couleurPierres = new ArrayList<Couleur>();
 		
 		for(AbstractPierre pierre : chaine) {
 			if(pierre.getLiberte() > 0) {

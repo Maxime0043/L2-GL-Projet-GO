@@ -8,10 +8,13 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import donnees.AbstractPierre;
 import donnees.Cercle;
 import donnees.Coordonnee;
 import donnees.Couleur;
+import donnees.Goban;
 import donnees.ParametrePartie;
+import donnees.Pierre;
 
 public class GoPanel extends JPanel{
 
@@ -25,6 +28,8 @@ public class GoPanel extends JPanel{
 	
 	private ArrayList<Cercle> cercle;
 	
+	Goban goban;
+	
 	private boolean noir = true;
 	private boolean blanc = false;
 	private boolean rouge = false;
@@ -33,6 +38,7 @@ public class GoPanel extends JPanel{
 		this.addMouseListener(new Souris());
 		
 		cercle = new ArrayList<Cercle>();
+		goban = new Goban(choix);
 		
 		this.setBackground(Color.decode("#F2B352"));
 	}
@@ -77,16 +83,16 @@ public class GoPanel extends JPanel{
 		}
 	}
 	
-	private void setColor(Graphics g, String couleur) {
-		if(couleur.equals(Couleur.NOIR.getCouleur())) {
+	private void setColor(Graphics g, Couleur couleur) {
+		if(couleur.equals(Couleur.NOIR)) {
 			g.setColor(Color.BLACK);
 		}
 		
-		else if(couleur.equals(Couleur.BLANC.getCouleur())) {
+		else if(couleur.equals(Couleur.BLANC)) {
 			g.setColor(Color.WHITE);
 		}
 		
-		else if(couleur.equals(Couleur.ROUGE.getCouleur())) {
+		else if(couleur.equals(Couleur.ROUGE)) {
 			g.setColor(Color.RED);
 		}
 	}
@@ -102,6 +108,21 @@ public class GoPanel extends JPanel{
 		
 		if(result) {
 			cercle.add(c);
+			
+			Coordonnee coordCercle = new Coordonnee(c.getX(), c.getY());
+			int numero;
+			
+			if(c.getCouleur().equals(Couleur.NOIR)) {
+				numero = goban.getNbNoir();
+			}
+			else if(c.getCouleur().equals(Couleur.BLANC)) {
+				numero = goban.getNbBlanc();
+			}
+			else {
+				numero = goban.getNbRouge();
+			}
+			
+			goban.addPierre(new Pierre(c.getCouleur(), null, coordCercle, numero));
 			System.out.println("Ajout (" + c.getX() + ", " + c.getY() + ")");
 		}
 	}

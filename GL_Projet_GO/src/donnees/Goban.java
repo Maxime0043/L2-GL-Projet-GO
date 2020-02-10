@@ -47,13 +47,13 @@ public class Goban {
 		if(plateau[x][y] == null) {
 			plateau[x][y] = pierre;
 			
-			if(pierre.getCouleur().equals(Couleur.NOIR.getCouleur())) {
+			if(pierre.getCouleur().equals(Couleur.NOIR)) {
 				nb_Noir++;
 			}
-			else if(pierre.getCouleur().equals(Couleur.BLANC.getCouleur())) {
+			else if(pierre.getCouleur().equals(Couleur.BLANC)) {
 				nb_Blanc++;
 			}
-			else if(pierre.getCouleur().equals(Couleur.ROUGE.getCouleur())) {
+			else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
 				nb_Rouge++;
 			}
 		}
@@ -67,13 +67,13 @@ public class Goban {
 			plateau[x][y] = null;
 		}
 		
-		if(pierre.getCouleur().equals(Couleur.NOIR.getCouleur())) {
+		if(pierre.getCouleur().equals(Couleur.NOIR)) {
 			nb_Noir--;
 		}
-		else if(pierre.getCouleur().equals(Couleur.BLANC.getCouleur())) {
+		else if(pierre.getCouleur().equals(Couleur.BLANC)) {
 			nb_Blanc--;
 		}
-		else if(pierre.getCouleur().equals(Couleur.ROUGE.getCouleur())) {
+		else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
 			nb_Rouge--;
 		}
 	}

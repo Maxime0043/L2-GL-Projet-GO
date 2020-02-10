@@ -51,8 +51,8 @@ public abstract class AbstractPierre {
 	 * 
 	 * @return
 	 */
-	public String getCouleur() {
-		return couleur.getCouleur();
+	public Couleur getCouleur() {
+		return couleur;
 	}
 	
 	/**

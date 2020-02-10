@@ -110,8 +110,6 @@ public class GoPierre {
 	public ArrayList<AbstractPierre> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int choix) {
 		liste_voisin.clear();
 		
-		String couleurPierre = pierre.getCouleur();
-		
 		int x = pierre.getX();
 		int y = pierre.getY();
 		
@@ -126,15 +124,15 @@ public class GoPierre {
 		}
 		
 		if(bordHaut(pierre)) {
-			if(!bordGauche(pierre) && pierreEnemieExiste(gauche, couleurPierre, gauche.getCouleur())) {
+			if(!bordGauche(pierre) && pierreEnemieExiste(gauche)) {
 				addListe(gauche);
 			}
 			
-			else if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite, couleurPierre, droite.getCouleur())) {
+			else if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite)) {
 				addListe(droite);
 			}
 			
-			if(pierreEnemieExiste(bas, couleurPierre, bas.getCouleur())) {
+			if(pierreEnemieExiste(bas)) {
 				addListe(bas);
 			}
 		}
@@ -142,61 +140,61 @@ public class GoPierre {
 		else if(bordBas(pierre, choix)) {
 			
 			
-			if(!bordGauche(pierre) && pierreEnemieExiste(gauche, couleurPierre, gauche.getCouleur())) {
+			if(!bordGauche(pierre) && pierreEnemieExiste(gauche)) {
 				addListe(gauche);
 			}
 			
-			else if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite, couleurPierre, droite.getCouleur())) {
+			else if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite)) {
 				addListe(droite);
 			}
 			
-			if(pierreEnemieExiste(haut, couleurPierre, haut.getCouleur())) {
+			if(pierreEnemieExiste(haut)) {
 				addListe(haut);
 			}
 		}
 		
 		else if(bordGauche(pierre)) {
-			if(pierreEnemieExiste(haut, couleurPierre, haut.getCouleur())) {
+			if(pierreEnemieExiste(haut)) {
 				addListe(haut);
 			}
 			
-			if(pierreEnemieExiste(bas, couleurPierre, bas.getCouleur())) {
+			if(pierreEnemieExiste(bas)) {
 				addListe(bas);
 			}
 			
-			if(pierreEnemieExiste(droite, couleurPierre, droite.getCouleur())) {
+			if(pierreEnemieExiste(droite)) {
 				addListe(droite);
 			}
 		}
 		
 		else if(bordDroit(pierre, choix)) {
-			if(pierreEnemieExiste(haut, couleurPierre, haut.getCouleur())) {
+			if(pierreEnemieExiste(haut)) {
 				addListe(haut);
 			}
 			
-			if(pierreEnemieExiste(bas, couleurPierre, bas.getCouleur())) {
+			if(pierreEnemieExiste(bas)) {
 				addListe(bas);
 			}
 			
-			if(pierreEnemieExiste(gauche, couleurPierre, gauche.getCouleur())) {
+			if(pierreEnemieExiste(gauche)) {
 				addListe(gauche);
 			}
 		}
 		
 		else {
-			if(pierreEnemieExiste(haut, couleurPierre, haut.getCouleur())) {
+			if(pierreEnemieExiste(haut)) {
 				addListe(haut);
 			}
 			
-			if(pierreEnemieExiste(bas, couleurPierre, bas.getCouleur())) {
+			if(pierreEnemieExiste(bas)) {
 				addListe(bas);
 			}
 			
-			if(pierreEnemieExiste(gauche, couleurPierre, gauche.getCouleur())) {
+			if(pierreEnemieExiste(gauche)) {
 				addListe(gauche);
 			}
 			
-			if(pierreEnemieExiste(droite, couleurPierre, droite.getCouleur())) {
+			if(pierreEnemieExiste(droite)) {
 				addListe(droite);
 			}
 		}
@@ -207,11 +205,9 @@ public class GoPierre {
 	/**
 	 * 
 	 * @param pierreEnnemi
-	 * @param couleurPierre
-	 * @param couleurEnnemi
 	 * @return
 	 */
-	public boolean pierreEnemieExiste(AbstractPierre pierreEnnemi, String couleurPierre, String couleurEnnemi) {
+	public boolean pierreEnemieExiste(AbstractPierre pierreEnnemi) {
 		if(pierreEnnemi != null) {
 			return true;
 		}

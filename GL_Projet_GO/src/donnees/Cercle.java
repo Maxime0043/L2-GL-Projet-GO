@@ -2,11 +2,11 @@ package donnees;
 
 public class Cercle {
 	Coordonnee coord;
-	String couleur;
+	Couleur couleur;
 	
 	public Cercle(Coordonnee coord, Couleur couleur) {
 		this.coord = coord;
-		this.couleur = couleur.getCouleur();
+		this.couleur = couleur;
 	}
 	
 	public int getX() {
@@ -17,7 +17,7 @@ public class Cercle {
 		return coord.getY();
 	}
 	
-	public String getCouleur() {
+	public Couleur getCouleur() {
 		return couleur;
 	}
 }

@@ -1,36 +1,27 @@
 package donnees;
 
 public enum Couleur {
-	NOIR("noir"),
-	BLANC("blanc"),
-	ROUGE("rouge");
+	NOIR,
+	BLANC,
+	ROUGE;
 	
-	private String couleur;
 	
-	Couleur(String couleur){
-		this.couleur = couleur;
-	}
-	
-	public String getCouleur() {
-		return couleur;
-	}
-	
-	public static String[] couleurEnnemis(String couleur) {
-		String[] ennemis = new String[2];
+	public static Couleur[] couleurEnnemis(String couleur) {
+		Couleur[] ennemis = new Couleur[2];
 		
-		if(couleur.equals(NOIR.getCouleur())) {
-			ennemis[0] = BLANC.getCouleur();
-			ennemis[1] = ROUGE.getCouleur();
+		if(couleur.equals(NOIR)) {
+			ennemis[0] = BLANC;
+			ennemis[1] = ROUGE;
 		}
 		
-		else if(couleur.equals(BLANC.getCouleur())) {
-			ennemis[0] = NOIR.getCouleur();
-			ennemis[1] = ROUGE.getCouleur();
+		else if(couleur.equals(BLANC)) {
+			ennemis[0] = NOIR;
+			ennemis[1] = ROUGE;
 		}
 		
 		else {
-			ennemis[0] = NOIR.getCouleur();
-			ennemis[1] = BLANC.getCouleur();
+			ennemis[0] = NOIR;
+			ennemis[1] = BLANC;
 		}
 		
 		return ennemis;
