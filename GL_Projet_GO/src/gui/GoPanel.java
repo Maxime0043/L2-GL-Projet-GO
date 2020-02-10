@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import donnees.AbstractPierre;
 import donnees.Cercle;
 import donnees.Coordonnee;
 import donnees.Couleur;
@@ -140,6 +139,8 @@ public class GoPanel extends JPanel{
 		
 		if(result) {
 			cercle.remove(coord);
+			
+			goban.removePierre(goban.getPierre(c.getX(), c.getY()));
 		}
 	}
 	

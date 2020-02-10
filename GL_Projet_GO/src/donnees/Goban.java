@@ -40,6 +40,10 @@ public class Goban {
 			return false;
 	}
 	
+	public AbstractPierre getPierre(int x, int y) {
+		return plateau[x][y];
+	}
+	
 	public void addPierre(AbstractPierre pierre) {
 		int x = pierre.getX();
 		int y = pierre.getY();

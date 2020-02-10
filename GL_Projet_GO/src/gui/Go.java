@@ -69,6 +69,8 @@ public class Go extends JFrame implements Runnable {
 	}
 
 	private void updateFrame() {
+		//Il faut ajouter tous les cercles ici (/!\ArrayList) et non dans GoPanel
+		
 		panel.repaint();
 	}
 	

@@ -1,7 +1,5 @@
 package donnees;
 
-import traitement.Liberte;
-
 public class MegaPierre extends AbstractPierre{
 
 	private Coordonnee[] coord;
