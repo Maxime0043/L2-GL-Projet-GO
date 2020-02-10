@@ -26,12 +26,10 @@ public class Liberte {
 	public Liberte(AbstractPierre pierre) {
 		this.pierre = pierre;
 		
-//		if(pierre.isMegaPierre())
-//			nb_liberte = 8;
-//		else
-//			nb_liberte = 4;
-		
-		nb_liberte = 0;
+		if(pierre.isMegaPierre())
+			nb_liberte = 8;
+		else
+			nb_liberte = 4;
 		
 		gopierre = new GoPierre();
 //		pierresAutour = new ArrayList<AbstractPierre>();
