@@ -149,7 +149,6 @@ public class GoPanel extends JPanel{
 					
 					if(goban.existPierre(i, j)) {
 						if(goban.isPierreCapture(pierre, choix)) {
-							System.out.println("Coucou");
 							removeCercle(getCercle(i, j));
 						}
 					}
