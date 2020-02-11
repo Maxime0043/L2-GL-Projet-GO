@@ -82,7 +82,7 @@ public class Moteur {
 		}
 		
 		int x = ecart_window;
-		int y = taille_goban * cellule + ecart_window + 5;
+		int y = taille_goban * cellule + 15;
 		
 		g.fillOval(x, y, 30, 30);
 	}
@@ -180,6 +180,7 @@ public class Moteur {
 						
 						if(goban.isPierreCapture(goban.getPierre(i, j), choix)) {
 							removeCercle(getCercle(i, j));
+							
 						}
 					}
 				}

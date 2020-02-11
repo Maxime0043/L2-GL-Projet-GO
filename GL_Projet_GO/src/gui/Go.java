@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -20,6 +21,7 @@ public class Go extends JFrame implements Runnable {
 	private Go instance = this;
 	
 	private boolean stop = false;
+	JCheckBox megaPierre;
 
 	public Go() {
 		super("Jeu de GO");
@@ -31,7 +33,7 @@ public class Go extends JFrame implements Runnable {
 //		window_height = 3* ParametrePartie.ECART + ParametrePartie.TAILLE_GOBAN[panel.getChoix()] * ParametrePartie.LARGEUR_CASE;
 		
 		window_width = 700;
-		window_height = 700;
+		window_height = 500;
 		
 		initLayout();
 	}
@@ -43,6 +45,10 @@ public class Go extends JFrame implements Runnable {
 		JButton button = new JButton("Lancer");
 		button.addActionListener(new Lancer());
 		actionJeu.add(button);
+		
+		megaPierre = new JCheckBox("MegaPierre");
+		megaPierre.addActionListener(new Cocher());
+		actionJeu.add(megaPierre);
 		
 		container.add(panel, BorderLayout.CENTER);
 		container.add(actionJeu, BorderLayout.SOUTH);
@@ -80,6 +86,15 @@ public class Go extends JFrame implements Runnable {
 		public void actionPerformed(ActionEvent e) {
 			Thread goThread = new Thread(instance);
 			goThread.start();
+		}
+		
+	}
+	
+	private class Cocher implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(megaPierre != null)
+				System.out.println("Cocher");
 		}
 		
 	}
