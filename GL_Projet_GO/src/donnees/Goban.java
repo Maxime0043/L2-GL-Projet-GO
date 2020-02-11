@@ -10,7 +10,7 @@ public class Goban {
 	
 	private AbstractPierre[][] plateau;
 	private HashMap<String, Chaine> hmChaine;
-	private HashMap<String, Score> scores;
+	private HashMap<Couleur, Score> scores;
 	private Capture capture;
 	
 	private int taille_goban;
@@ -26,7 +26,7 @@ public class Goban {
 		
 		plateau = new AbstractPierre[taille_goban][taille_goban];
 		hmChaine = new HashMap <String, Chaine>();
-		scores = new HashMap <String, Score>();
+		scores = new HashMap <Couleur, Score>();
 		capture = new Capture();
 	}
 	

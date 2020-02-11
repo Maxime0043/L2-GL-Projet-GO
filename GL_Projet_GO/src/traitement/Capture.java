@@ -36,6 +36,7 @@ public class Capture {
 					couleurP = p.getCouleur();
 					debut = false;
 				}
+				
 				else {
 					if(couleurP.equals(couleurPierre)) {
 						return false;

@@ -87,6 +87,8 @@ public class Liberte {
 			}
 		}
 		
+		System.out.println("Voisins : " + gopierre.voisins(pierre, plateau, choix).size());
+		
 		nb_liberte -= gopierre.voisins(pierre, plateau, choix).size();
 		
 //		ArrayList<AbstractPierre> voisins = gopierre.voisins(pierre, plateau, choix);

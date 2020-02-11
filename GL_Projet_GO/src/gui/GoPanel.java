@@ -56,6 +56,10 @@ public class GoPanel extends JPanel{
 		
 		drawGrid(g);
 		drawCercle(g);
+		
+		int xx = ecart_window;
+		int yy = taille_goban * cellule + 15;
+		g.fillOval(xx, yy, 15, 15);
 	}
 	
 	private void drawGrid(Graphics g){
@@ -139,13 +143,12 @@ public class GoPanel extends JPanel{
 			}
 			
 			goban.addPierre(new Pierre(c.getCouleur(), null, coordCercle, numero));
-			System.out.println("Ajout (" + c.getX() + ", " + c.getY() + ")");
-			System.out.println(goban.getPierre(c.getX(), c.getY()).getCouleur());
+			System.out.println("Ajout (" + c.getX() + ", " + c.getY() + ") Couleur : " + goban.getPierre(c.getX(), c.getY()).getCouleur());
 			
 			for(int i = 0 ; i < taille_goban ; i++) {
 				for(int j = 0 ; j < taille_goban ; j++) {
 					if(goban.existPierre(i, j)) {		
-						System.out.println("(" + i + ", " + j + ") " + goban.getPierre(i, j).getLiberte());
+						System.out.println("(" + i + ", " + j + ") liberte : " + goban.getPierre(i, j).getLiberte());
 						
 						if(goban.isPierreCapture(goban.getPierre(i, j), choix)) {
 							removeCercle(getCercle(i, j));
@@ -200,8 +203,6 @@ public class GoPanel extends JPanel{
 		public void mousePressed(MouseEvent e) {
 			int x = (e.getY() - ecart_window / 2) / cellule;
 			int y = (e.getX() - ecart_window / 2) / cellule;
-			
-			System.out.println(x + "   " + y);
 			
 			if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
 				Coordonnee c = new Coordonnee(x, y);
