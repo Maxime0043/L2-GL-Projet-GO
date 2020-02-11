@@ -14,6 +14,10 @@ public class Chaine {
 		capture = new Capture();
 	}
 	
+	public ArrayList<AbstractPierre> getChaine() {
+		return chaine;
+	}
+	
 	public void addPierre (AbstractPierre pierre) {
 		if(!chaine.contains(pierre))
 			chaine.add(pierre);

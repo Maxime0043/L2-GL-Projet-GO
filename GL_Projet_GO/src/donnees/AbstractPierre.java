@@ -5,15 +5,13 @@ import traitement.Liberte;
 public abstract class AbstractPierre {
 	private Couleur couleur;
 	private Liberte liberte;
-	private String nomChaine;
-	private int numero;
+	private int nomChaine;
 	
 	
 	public AbstractPierre(Couleur couleur, int numero) {
 		this.couleur = couleur;
 		this.liberte = new Liberte(this);
-		this.nomChaine = null;
-		this.numero = numero;
+		this.nomChaine = -1;
 	}
 
 	/**
@@ -55,16 +53,24 @@ public abstract class AbstractPierre {
 		return couleur;
 	}
 	
+	public void setNomChaine(int nomChaine) {
+		this.nomChaine = nomChaine;
+	}
+	
+	public int getNomChaine() {
+		return nomChaine;
+	}
+	
 	/**
 	 * 
 	 * @return
 	 */
-	public int getNumero() {
-		return numero;
-	}
-	
-	public String getNomChaine() {
-		return nomChaine;
+	public boolean hasChaine() {
+		if(this.nomChaine != -1) {
+			return true;
+		}
+		else
+			return false;
 	}
 	
 	/**
@@ -74,7 +80,11 @@ public abstract class AbstractPierre {
 	public int getLiberte() {
 		return liberte.getLiberte();
 	}
-	
+	/**
+	 * 
+	 * @param plateau
+	 * @param choix
+	 */
 	public void updateLiberte(AbstractPierre[][] plateau, int choix) {
 		liberte.updateLiberte(plateau, choix);
 	}
