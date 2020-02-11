@@ -69,6 +69,7 @@ public class Capture {
 		ArrayList<Couleur> couleurPierres = new ArrayList<Couleur>();
 		
 		for(AbstractPierre pierre : chaine) {
+			pierre.updateLiberte(plateau, choix);
 			if(pierre.getLiberte() > 0) {
 				return false;
 			}

@@ -115,6 +115,10 @@ public class Goban {
 		return capture.isCapture(chaine, plateau, choix);
 	}
 	
+	public HashMap<Integer, Chaine> get_hmChaine(){
+		return hmChaine;
+	}
+	
 	public int getNbNoir() {
 		return nb_Noir;
 	}
@@ -128,7 +132,7 @@ public class Goban {
 	}
 	
 	/**
-	 * 
+	 * apres avoir poser une pierre, permet de creer une chaine avec ses voisines ou de fusionner les chaines deja existante 
 	 * @param pierre
 	 */
 	public void addToChaine(AbstractPierre pierre) {
@@ -141,7 +145,11 @@ public class Goban {
 				if(pierreVoisine.hasChaine()) {
 					
 					if(pierre.hasChaine()) {
-						this.chaineFusion(pierre, pierreVoisine);
+						if (pierre.getNomChaine() < pierreVoisine.getNomChaine() ) {
+							this.chaineFusion(pierre, pierreVoisine);
+						}
+						else
+							this.chaineFusion(pierreVoisine, pierre);
 					}
 					else {
 						hmChaine.get(pierreVoisine.getNomChaine()).addPierre(pierre);
@@ -161,16 +169,31 @@ public class Goban {
 			}
 		}
 	}
-	
+	/**
+	 * Permet la fusion de deux chaines
+	 * @param p1, pierre dont on garde la chaine et où on ajoute celle de p2
+	 * @param p2, pierre dont on supprime la chaine
+	 */
 	public void chaineFusion(AbstractPierre p1, AbstractPierre p2) {
-		if( p1.getNomChaine() < p2.getNomChaine() ) {
-			Chaine c = new Chaine();
-			c = hmChaine.get(p2.getNomChaine());
-			for (AbstractPierre p) {
-				
-			}
+		int name = p2.getNomChaine();
+		for (AbstractPierre p : hmChaine.get(name).getChaine()) {
+			p.setNomChaine(p1.getNomChaine());
+			hmChaine.get(p1.getNomChaine()).addPierre(p);
 		}
+		hmChaine.remove(name);
 	}
+	
+	/**
+	 * Permet de supprimer la chaine et toute ses pierres du Goban
+	 * @param nomChaine
+	 */
+	public void removeChaine (int nomChaine) {
+		for (AbstractPierre p : hmChaine.get(nomChaine).getChaine()) {
+			this.removePierre(p);
+		}
+		hmChaine.remove(nomChaine);
+	}
+
 	
 	
 	

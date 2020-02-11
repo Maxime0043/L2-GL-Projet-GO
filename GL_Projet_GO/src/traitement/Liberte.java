@@ -1,5 +1,7 @@
 package traitement;
 
+import java.util.HashMap;
+
 import donnees.AbstractPierre;
 
 /**
@@ -43,6 +45,18 @@ public class Liberte {
 		return nb_liberte;
 	}
 	
+	
+	public boolean liberteChaine(int nomChaine, HashMap<Integer, Chaine> hmChaine, AbstractPierre[][] plateau, int choix) {
+		int liberte = 0;
+		for (AbstractPierre p : hmChaine.get(nomChaine).getChaine()) {
+			liberte += p.getLiberte();
+		}
+		if(liberte > 0) {
+			return true;
+		}
+		else 
+			return false;
+	}
 	/**
 	 * 
 	 * @param plateau
