@@ -9,10 +9,10 @@ public abstract class AbstractPierre {
 	private int numero;
 	
 	
-	public AbstractPierre(Couleur couleur, String nomChaine, int numero) {
+	public AbstractPierre(Couleur couleur, int numero) {
 		this.couleur = couleur;
 		this.liberte = new Liberte(this);
-		this.nomChaine = nomChaine;
+		this.nomChaine = null;
 		this.numero = numero;
 	}
 
@@ -61,6 +61,10 @@ public abstract class AbstractPierre {
 	 */
 	public int getNumero() {
 		return numero;
+	}
+	
+	public String getNomChaine() {
+		return nomChaine;
 	}
 	
 	/**

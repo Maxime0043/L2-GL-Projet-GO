@@ -4,7 +4,7 @@ public class Pierre extends AbstractPierre{
 	private Coordonnee coord;
 	
 	public Pierre(Couleur couleur, String nomChaine, Coordonnee coord, int numero) {
-		super(couleur, nomChaine, numero);
+		super(couleur, numero);
 		this.coord = coord;
 	}
 	
