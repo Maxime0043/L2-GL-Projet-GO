@@ -66,39 +66,32 @@ public class Capture {
 	 */
 	public boolean isCapture(ArrayList<AbstractPierre> chaine, AbstractPierre[][] plateau, int choix) {
 		ArrayList<AbstractPierre> voisin;
-		ArrayList<Couleur> couleurPierres = new ArrayList<Couleur>();
-		Couleur couleurVoisin;
-		boolean result;
+		Couleur couleurPierre, couleurVoisin = null;
+		boolean debut = true;
 		
 		for(AbstractPierre pierre : chaine) {
 			pierre.updateLiberte(plateau, choix);
+			
 			if(pierre.getLiberte() > 0) {
 				return false;
 			}
-			System.out.println("Liberte : " + pierre.getLiberte());
 			
-			result = true;
+			couleurPierre = pierre.getCouleur();
 			
 			voisin = gopierre.voisins(pierre, plateau, choix);
 			
 			for(AbstractPierre pierreVoisine : voisin) {
-				couleurVoisin = pierreVoisine.getCouleur();
-				
-				System.out.println("nombre couleur : " + couleurPierres.size());
-				
-				for(Couleur couleur : couleurPierres) {
-					if(couleur.equals(couleurVoisin)) {
-						result = false;
+				if(debut) {
+					if(!couleurPierre.equals(pierreVoisine.getCouleur())) {
+						couleurVoisin = pierreVoisine.getCouleur();
+						debut = false;
 					}
 				}
-				
-				if(result) {
-					couleurPierres.add(couleurVoisin);
+				else {
+					if(!couleurVoisin.equals(pierreVoisine.getCouleur()) && !couleurPierre.equals(pierreVoisine.getCouleur())) {
+						return false;
+					}
 				}
-			}
-			
-			if(couleurPierres.size() > 1) {
-				return false;
 			}
 		}
 		
