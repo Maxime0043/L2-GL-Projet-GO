@@ -38,7 +38,7 @@ public class GoPierre {
 	/**
 	 * 
 	 * @param pierre
-	 * @return
+	 * @return bool
 	 */
 	public boolean bordHaut(AbstractPierre pierre) {
 		if(pierre.getX() == 0) {
