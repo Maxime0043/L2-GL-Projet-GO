@@ -12,6 +12,11 @@ import donnees.Couleur;
 import donnees.ParametrePartie;
 import traitement.Moteur;
 
+/**
+ * 
+ * @author Maxime
+ *
+ */
 public class GoPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;

@@ -10,6 +10,11 @@ import donnees.Goban;
 import donnees.ParametrePartie;
 import donnees.Pierre;
 
+/**
+ * 
+ * @author Maxime
+ *
+ */
 public class Moteur {
 
 	int choix = 0;
