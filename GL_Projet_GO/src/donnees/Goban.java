@@ -5,13 +5,17 @@ import java.util.HashMap;
 
 import traitement.Capture;
 import traitement.Chaine;
+import traitement.GoPierre;
 
 public class Goban {
 	
 	private AbstractPierre[][] plateau;
-	private HashMap<String, Chaine> hmChaine;
+	private HashMap<Integer, Chaine> hmChaine;
+	private int nb_chaine;
 	private HashMap<Couleur, Score> scores;
 	private Capture capture;
+	private GoPierre gopierre;
+	private ArrayList<AbstractPierre> liste_voisin;
 	
 	private int taille_goban;
 	private int choix;
@@ -25,9 +29,12 @@ public class Goban {
 		this.choix = choix;
 		
 		plateau = new AbstractPierre[taille_goban][taille_goban];
-		hmChaine = new HashMap <String, Chaine>();
+		hmChaine = new HashMap <Integer, Chaine>();
+		nb_chaine = 0;
 		scores = new HashMap <Couleur, Score>();
 		capture = new Capture();
+		gopierre = new GoPierre();
+		liste_voisin = new ArrayList<AbstractPierre>();
 	}
 	
 	public void initGoban(int choix) {
@@ -66,6 +73,8 @@ public class Goban {
 		
 		if(plateau[x][y] == null) {
 			plateau[x][y] = pierre;
+			
+			this.addToChaine(pierre);
 			
 			if(pierre.getCouleur().equals(Couleur.NOIR)) {
 				nb_Noir++;
@@ -117,4 +126,79 @@ public class Goban {
 	public int getNbRouge() {
 		return nb_Rouge;
 	}
+	
+	/**
+	 * 
+	 * @param pierre
+	 */
+	public void addToChaine(AbstractPierre pierre) {
+		
+		liste_voisin = gopierre.voisins(pierre, plateau, taille_goban);
+		
+		if(liste_voisin != null) {
+			for(AbstractPierre pierreVoisine : liste_voisin) {
+				
+				if(pierreVoisine.hasChaine()) {
+					
+					if(pierre.hasChaine()) {
+						this.chaineFusion(pierre, pierreVoisine);
+					}
+					else {
+						hmChaine.get(pierreVoisine.getNomChaine()).addPierre(pierre);
+						pierre.setNomChaine(pierreVoisine.getNomChaine());
+					}
+				}
+				
+				else {
+					Chaine c = new Chaine();
+					c.addPierre(pierre);
+					pierre.setNomChaine(nb_chaine);
+					c.addPierre(pierreVoisine);
+					pierreVoisine.setNomChaine(nb_chaine);
+					hmChaine.put(nb_chaine, c);
+					nb_chaine ++;
+				}
+			}
+		}
+	}
+	
+	public void chaineFusion(AbstractPierre p1, AbstractPierre p2) {
+		if( p1.getNomChaine() < p2.getNomChaine() ) {
+			Chaine c = new Chaine();
+			c = hmChaine.get(p2.getNomChaine());
+			for (AbstractPierre p) {
+				
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
