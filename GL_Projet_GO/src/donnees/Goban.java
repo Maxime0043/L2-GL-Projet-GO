@@ -13,8 +13,8 @@ public class Goban {
 	private HashMap<String, Score> scores;
 	private Capture capture;
 	
-	int taille_goban;
-	int choix;
+	private int taille_goban;
+	private int choix;
 	
 	private int nb_Noir;
 	private int nb_Blanc;

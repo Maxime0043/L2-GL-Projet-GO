@@ -7,6 +7,8 @@ public class ParametrePartie {
 	
 	public static final int ECART = 30;
 	
+	public static final int ERREUR_NON_CONTROLEE = 5;
+	
 	public static final int TAILLE_CERCLE = 40;
 	
 	public static final int[] NOMBRE_JOUEUR = {1, 2, 3};

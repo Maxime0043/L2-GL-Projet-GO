@@ -73,8 +73,8 @@ public class GoPanel extends JPanel{
 		int x, y;
 		
 		for(Cercle c : cercle) {
-			x = c.getY() * cellule + ecart_window / 2 - 5;
-			y = c.getX() * cellule + ecart_window / 2 - 5;
+			x = c.getY() * cellule + ecart_window / 2 - ParametrePartie.ERREUR_NON_CONTROLEE;
+			y = c.getX() * cellule + ecart_window / 2 - ParametrePartie.ERREUR_NON_CONTROLEE;
 			
 			setColor(g, c.getCouleur());
 			
