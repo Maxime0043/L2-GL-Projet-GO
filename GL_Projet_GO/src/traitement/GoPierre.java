@@ -149,8 +149,6 @@ public class GoPierre {
 			}
 			
 			else if(bordBas(pierre, choix)) {
-				
-				
 				if(!bordGauche(pierre) && pierreEnemieExiste(gauche)) {
 					addListe(gauche, liste_voisin);
 				}
