@@ -64,6 +64,7 @@ public class Liberte {
 		else 
 			return false;
 	}
+	
 	/**
 	 * 
 	 * @param plateau
