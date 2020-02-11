@@ -170,7 +170,7 @@ public class Goban {
 		}
 	}
 	/**
-	 * Permet la fusion de deux chaines
+	 * Permet la fusion de deux chaines.
 	 * @param p1, pierre dont on garde la chaine et où on ajoute celle de p2
 	 * @param p2, pierre dont on supprime la chaine
 	 */

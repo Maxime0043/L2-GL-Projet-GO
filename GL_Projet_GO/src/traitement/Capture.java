@@ -58,7 +58,7 @@ public class Capture {
 	}
 	
 	/**
-	 * 
+	 * .
 	 * @param chaine
 	 * @param plateau
 	 * @param choix

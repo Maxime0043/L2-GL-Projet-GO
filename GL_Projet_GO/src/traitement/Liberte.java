@@ -45,7 +45,14 @@ public class Liberte {
 		return nb_liberte;
 	}
 	
-	
+	/**
+	 * 
+	 * @param nomChaine
+	 * @param hmChaine
+	 * @param plateau
+	 * @param choix
+	 * @return
+	 */
 	public boolean liberteChaine(int nomChaine, HashMap<Integer, Chaine> hmChaine, AbstractPierre[][] plateau, int choix) {
 		int liberte = 0;
 		for (AbstractPierre p : hmChaine.get(nomChaine).getChaine()) {
