@@ -141,7 +141,7 @@ public class Moteur {
 						pierre = goban.getPierre(i, j);
 						
 						if(pierre.hasChaine()) {
-							System.out.println("Chaine " + pierre.getCouleur());
+							System.out.println("pierre " + pierre.getCouleur() + " [" + i + "," + j +"]" + "chaine n° " + pierre.getNomChaine() + "\n");
 							
 							if(goban.isPierreCapture(goban.getChaine(pierre.getNomChaine()), choix)) {
 								removeCercle(goban.getChaine(pierre.getNomChaine()));
@@ -154,6 +154,7 @@ public class Moteur {
 					}
 				}
 			}
+			System.out.println("--------------------------------------------------------------------------------");
 			/*-----------------------------------------------------------------------------*/
 		}
 	}

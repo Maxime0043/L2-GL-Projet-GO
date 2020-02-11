@@ -138,6 +138,11 @@ public class Goban {
 		Couleur couleurVoisin;
 		
 		ArrayList<AbstractPierre> liste_voisin = gopierre.voisins(pierre, plateau, choix);
+		System.out.println("Liste pierres voisines de [" + pierre.getX() + "," + pierre.getY() + "]:");
+		for(AbstractPierre p : liste_voisin) {
+			System.out.println("[" + p.getX() + "," + p.getY() + "]");
+		}
+		System.out.println("Fin Liste\n");
 		
 		if(liste_voisin.size() != 0) {
 			for(AbstractPierre pierreVoisine : liste_voisin) {
@@ -146,7 +151,7 @@ public class Goban {
 				if(couleurPierre.equals(couleurVoisin)) {
 					if(pierreVoisine.hasChaine()) {
 						
-						if(pierre.hasChaine()) {
+						if(pierre.hasChaine() && (pierre.getNomChaine() != pierreVoisine.getNomChaine())) {
 							if (pierre.getNomChaine() < pierreVoisine.getNomChaine() ) {
 								this.chaineFusion(pierre, pierreVoisine);
 							}
@@ -160,13 +165,19 @@ public class Goban {
 					}
 					
 					else {
-						Chaine c = new Chaine();
-						c.addPierre(pierre);
-						pierre.setNomChaine(nb_chaine);
-						c.addPierre(pierreVoisine);
-						pierreVoisine.setNomChaine(nb_chaine);
-						hmChaine.put(nb_chaine, c);
-						nb_chaine ++;
+						if(pierre.hasChaine()) {
+							hmChaine.get(pierre.getNomChaine()).addPierre(pierreVoisine);
+							pierreVoisine.setNomChaine(pierre.getNomChaine());
+						}
+						else {
+							Chaine c = new Chaine();
+							c.addPierre(pierre);
+							pierre.setNomChaine(nb_chaine);
+							c.addPierre(pierreVoisine);
+							pierreVoisine.setNomChaine(nb_chaine);
+							hmChaine.put(nb_chaine, c);
+							nb_chaine ++;
+						}
 					}
 				}
 			}
