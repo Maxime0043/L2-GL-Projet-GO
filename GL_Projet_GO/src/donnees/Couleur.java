@@ -6,7 +6,7 @@ public enum Couleur {
 	ROUGE;
 	
 	
-	public static Couleur[] couleurEnnemis(String couleur) {
+	public static Couleur[] couleurEnnemis(Couleur couleur) {
 		Couleur[] ennemis = new Couleur[2];
 		
 		if(couleur.equals(NOIR)) {
