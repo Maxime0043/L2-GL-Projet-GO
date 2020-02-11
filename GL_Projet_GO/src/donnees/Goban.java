@@ -137,9 +137,9 @@ public class Goban {
 	 */
 	public void addToChaine(AbstractPierre pierre) {
 		
-		liste_voisin = gopierre.voisins(pierre, plateau, taille_goban);
+		liste_voisin = gopierre.voisins(pierre, plateau, choix);
 		
-		if(liste_voisin != null) {
+		if(liste_voisin.size() != 0) {
 			for(AbstractPierre pierreVoisine : liste_voisin) {
 				
 				if(pierreVoisine.hasChaine()) {
