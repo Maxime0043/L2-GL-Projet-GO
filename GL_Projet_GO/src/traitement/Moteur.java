@@ -85,20 +85,22 @@ public class Moteur {
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
 			Coordonnee c = new Coordonnee(x, y);
 			
-			if(noir) {
-				addCercle(new Cercle(c, Couleur.NOIR));
-				noir = false;
-				blanc = true;
-			}
-			else if(blanc) {
-				addCercle(new Cercle(c, Couleur.BLANC));
-				blanc = false;
-				rouge = true;
-			}
-			else if(rouge) {
-				addCercle(new Cercle(c, Couleur.ROUGE));
-				noir = true;
-				rouge = false;
+			if(!goban.existPierre(x, y)){
+				if(noir) {
+					addCercle(new Cercle(c, Couleur.NOIR));
+					noir = false;
+					blanc = true;
+				}
+				else if(blanc) {
+					addCercle(new Cercle(c, Couleur.BLANC));
+					blanc = false;
+					rouge = true;
+				}
+				else if(rouge) {
+					addCercle(new Cercle(c, Couleur.ROUGE));
+					noir = true;
+					rouge = false;
+				}
 			}
 		}
 	}

@@ -179,6 +179,7 @@ public class Goban {
 	 */
 	public void chaineFusion(AbstractPierre p1, AbstractPierre p2) {
 		int name = p2.getNomChaine();
+		
 		for (AbstractPierre p : hmChaine.get(name).getChaine()) {
 			p.setNomChaine(p1.getNomChaine());
 			hmChaine.get(p1.getNomChaine()).addPierre(p);
