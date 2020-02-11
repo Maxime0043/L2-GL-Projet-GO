@@ -9,8 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import donnees.ParametrePartie;
-
 public class Go extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;

@@ -43,10 +43,7 @@ public class Moteur {
 	public void paint(Graphics g) {
 		drawGrid(g);
 		drawCercle(g);
-		
-		int xx = ecart_window;
-		int yy = taille_goban * cellule + 15;
-		g.fillOval(xx, yy, 15, 15);
+		drawCouleurJoueur(g);
 	}
 	
 	private void drawGrid(Graphics g){
@@ -71,6 +68,23 @@ public class Moteur {
 			
 			g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
 		}
+	}
+	
+	private void drawCouleurJoueur(Graphics g) {
+		if(noir) {
+			g.setColor(Color.BLACK);
+		}
+		else if(blanc) {
+			g.setColor(Color.WHITE);
+		}
+		else {
+			g.setColor(Color.RED);
+		}
+		
+		int x = ecart_window;
+		int y = taille_goban * cellule + ecart_window + 5;
+		
+		g.fillOval(x, y, 30, 30);
 	}
 	
 	private void setColor(Graphics g, Couleur couleur) {
@@ -154,6 +168,8 @@ public class Moteur {
 				numero = goban.getNbRouge();
 			}
 			
+			
+			/*A modifier => placer d'abord les pierres puis dessiner les cercles en fonction*/
 			goban.addPierre(new Pierre(c.getCouleur(), null, coordCercle, numero));
 			System.out.println("Ajout (" + c.getX() + ", " + c.getY() + ") Couleur : " + goban.getPierre(c.getX(), c.getY()).getCouleur());
 			
@@ -169,6 +185,7 @@ public class Moteur {
 				}
 			}
 			System.out.print("\n");
+			/*-----------------------------------------------------------------------------*/
 		}
 	}
 	
