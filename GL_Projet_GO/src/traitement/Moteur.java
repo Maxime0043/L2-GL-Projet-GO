@@ -130,21 +130,19 @@ public class Moteur {
 			
 			/*A modifier => placer d'abord les pierres puis dessiner les cercles en fonction*/
 			goban.addPierre(new Pierre(c.getCouleur(), null, coordCercle, numero));
-			System.out.println("Ajout (" + c.getX() + ", " + c.getY() + ") Couleur : " + goban.getPierre(c.getX(), c.getY()).getCouleur());
 			
 			for(int i = 0 ; i < taille_goban ; i++) {
 				for(int j = 0 ; j < taille_goban ; j++) {
-					if(goban.existPierre(i, j)) {		
-						System.out.println("(" + i + ", " + j + ") liberte : " + goban.getPierre(i, j).getLiberte());
+					if(goban.existPierre(i, j)) {	
+						if(goban.getPierre(i, j).hasChaine())
+							System.out.println("Chaine");
 						
 						if(goban.isPierreCapture(goban.getPierre(i, j), choix)) {
 							removeCercle(getCercle(i, j));
-							
 						}
 					}
 				}
 			}
-			System.out.print("\n");
 			/*-----------------------------------------------------------------------------*/
 		}
 	}
