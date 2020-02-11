@@ -11,15 +11,14 @@ public class Goban {
 	
 	private AbstractPierre[][] plateau;
 	private HashMap<Integer, Chaine> hmChaine;
-	private int nb_chaine;
 	private HashMap<Couleur, Score> scores;
 	private Capture capture;
 	private GoPierre gopierre;
-	private ArrayList<AbstractPierre> liste_voisin;
 	
 	private int taille_goban;
 	private int choix;
-	
+
+	private int nb_chaine;
 	private int nb_Noir;
 	private int nb_Blanc;
 	private int nb_Rouge;
@@ -27,14 +26,13 @@ public class Goban {
 	public Goban(int choix) {
 		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
 		this.choix = choix;
+		nb_chaine = 0;
 		
 		plateau = new AbstractPierre[taille_goban][taille_goban];
 		hmChaine = new HashMap <Integer, Chaine>();
-		nb_chaine = 0;
 		scores = new HashMap <Couleur, Score>();
 		capture = new Capture();
 		gopierre = new GoPierre();
-		liste_voisin = new ArrayList<AbstractPierre>();
 	}
 	
 	public void initGoban(int choix) {
@@ -115,8 +113,8 @@ public class Goban {
 		return capture.isCapture(chaine, plateau, choix);
 	}
 	
-	public HashMap<Integer, Chaine> get_hmChaine(){
-		return hmChaine;
+	public ArrayList<AbstractPierre> getChaine(int nom){
+		return hmChaine.get(nom).getChaine();
 	}
 	
 	public int getNbNoir() {
@@ -136,35 +134,40 @@ public class Goban {
 	 * @param pierre
 	 */
 	public void addToChaine(AbstractPierre pierre) {
+		Couleur couleurPierre = pierre.getCouleur();
+		Couleur couleurVoisin;
 		
-		liste_voisin = gopierre.voisins(pierre, plateau, choix);
+		ArrayList<AbstractPierre> liste_voisin = gopierre.voisins(pierre, plateau, choix);
 		
 		if(liste_voisin.size() != 0) {
 			for(AbstractPierre pierreVoisine : liste_voisin) {
+				couleurVoisin = pierreVoisine.getCouleur();
 				
-				if(pierreVoisine.hasChaine()) {
-					
-					if(pierre.hasChaine()) {
-						if (pierre.getNomChaine() < pierreVoisine.getNomChaine() ) {
-							this.chaineFusion(pierre, pierreVoisine);
+				if(couleurPierre.equals(couleurVoisin)) {
+					if(pierreVoisine.hasChaine()) {
+						
+						if(pierre.hasChaine()) {
+							if (pierre.getNomChaine() < pierreVoisine.getNomChaine() ) {
+								this.chaineFusion(pierre, pierreVoisine);
+							}
+							else
+								this.chaineFusion(pierreVoisine, pierre);
 						}
-						else
-							this.chaineFusion(pierreVoisine, pierre);
+						else {
+							hmChaine.get(pierreVoisine.getNomChaine()).addPierre(pierre);
+							pierre.setNomChaine(pierreVoisine.getNomChaine());
+						}
 					}
+					
 					else {
-						hmChaine.get(pierreVoisine.getNomChaine()).addPierre(pierre);
-						pierre.setNomChaine(pierreVoisine.getNomChaine());
+						Chaine c = new Chaine();
+						c.addPierre(pierre);
+						pierre.setNomChaine(nb_chaine);
+						c.addPierre(pierreVoisine);
+						pierreVoisine.setNomChaine(nb_chaine);
+						hmChaine.put(nb_chaine, c);
+						nb_chaine ++;
 					}
-				}
-				
-				else {
-					Chaine c = new Chaine();
-					c.addPierre(pierre);
-					pierre.setNomChaine(nb_chaine);
-					c.addPierre(pierreVoisine);
-					pierreVoisine.setNomChaine(nb_chaine);
-					hmChaine.put(nb_chaine, c);
-					nb_chaine ++;
 				}
 			}
 		}

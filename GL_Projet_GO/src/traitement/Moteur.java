@@ -3,6 +3,7 @@ package traitement;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import donnees.AbstractPierre;
 import donnees.Cercle;
 import donnees.Coordonnee;
 import donnees.Couleur;
@@ -130,14 +131,22 @@ public class Moteur {
 			
 			/*A modifier => placer d'abord les pierres puis dessiner les cercles en fonction*/
 			goban.addPierre(new Pierre(c.getCouleur(), null, coordCercle, numero));
+			AbstractPierre pierre;
 			
 			for(int i = 0 ; i < taille_goban ; i++) {
 				for(int j = 0 ; j < taille_goban ; j++) {
 					if(goban.existPierre(i, j)) {	
-						if(goban.getPierre(i, j).hasChaine())
-							System.out.println("Chaine");
+						pierre = goban.getPierre(i, j);
 						
-						if(goban.isPierreCapture(goban.getPierre(i, j), choix)) {
+						if(pierre.hasChaine()) {
+							System.out.println("Chaine " + pierre.getCouleur());
+							
+							if(goban.isPierreCapture(goban.getChaine(pierre.getNomChaine()), choix)) {
+								removeCercle(goban.getChaine(pierre.getNomChaine()));
+							}
+						}
+						
+						else if(goban.isPierreCapture(pierre, choix)) {
 							removeCercle(getCercle(i, j));
 						}
 					}
@@ -162,6 +171,16 @@ public class Moteur {
 			cercle.remove(coord);
 			
 			goban.removePierre(goban.getPierre(c.getX(), c.getY()));
+		}
+	}
+	
+	public void removeCercle(ArrayList<AbstractPierre> chaine) {
+		Cercle cercle;
+		
+		for(AbstractPierre pierre : chaine) {
+			cercle = new Cercle(new Coordonnee(pierre.getX(), pierre.getY()), pierre.getCouleur());
+			
+			removeCercle(cercle);
 		}
 	}
 	
