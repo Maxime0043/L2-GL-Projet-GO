@@ -2,8 +2,11 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
@@ -35,6 +38,8 @@ public class GoPanel extends JPanel{
 		taille_goban = ParametrePartie.TAILLE_GOBAN[moteur.getChoix()];
 		
 		this.addMouseListener(new Souris());
+		this.addMouseMotionListener(new DeplacementSouris());
+		this.addKeyListener(new Touche());
 		
 		this.setBackground(Color.decode("#F2B352"));
 	}
@@ -65,6 +70,17 @@ public class GoPanel extends JPanel{
 			y = c.getX() * cellule + ecart_window / 2 - ParametrePartie.ERREUR_NON_CONTROLEE;
 			
 			setColor(g, c.getCouleur());
+			
+			g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
+		}
+		
+		Cercle survole = moteur.getSurvoleCercle();
+		
+		if(survole != null) {
+			x = survole.getY() * cellule + ecart_window / 2 - ParametrePartie.ERREUR_NON_CONTROLEE;
+			y = survole.getX() * cellule + ecart_window / 2 - ParametrePartie.ERREUR_NON_CONTROLEE;
+			
+			setColor(g, survole.getCouleur());
 			
 			g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
 		}
@@ -129,6 +145,39 @@ public class GoPanel extends JPanel{
 			
 		}
 
+	}
+	
+	private class DeplacementSouris implements MouseMotionListener{
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			moteur.survoleZone(e);
+		}
+		
+	}
+	
+	private class Touche implements KeyListener{
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			
+		}
+		
 	}
 
 }

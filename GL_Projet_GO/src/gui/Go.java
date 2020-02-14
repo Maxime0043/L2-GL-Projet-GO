@@ -64,7 +64,7 @@ public class Go extends JFrame implements Runnable {
 	public void run() {	
 		while (!stop) {
 			try {
-				Thread.sleep(200);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				System.out.println(e.getMessage());
 			}
@@ -76,8 +76,6 @@ public class Go extends JFrame implements Runnable {
 	}
 
 	private void updateFrame() {
-		//Il faut ajouter tous les cercles ici (/!\ArrayList) et non dans GoPanel
-		
 		panel.repaint();
 	}
 	

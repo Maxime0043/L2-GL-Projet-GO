@@ -27,10 +27,12 @@ public class Moteur {
 	Goban goban;
 	
 	private ArrayList<Cercle> cercle;
+	private Cercle survole;
 	
 	private boolean noir = true;
 	private boolean blanc = false;
 	private boolean rouge = false;
+	private boolean isMegaPierre = false;
 	
 	public Moteur() {
 		goban = new Goban(choix);
@@ -57,8 +59,20 @@ public class Moteur {
 		return rouge;
 	}
 	
+	public boolean getIsMegaPierre() {
+		return isMegaPierre;
+	}
+	
+	public void setIsMegaPierre(boolean bool) {
+		isMegaPierre = bool;
+	}
+	
 	public ArrayList<Cercle> getCercleList(){
 		return cercle;
+	}
+	
+	public Cercle getSurvoleCercle() {
+		return survole;
 	}
 	
 	public Cercle getCercle(int x, int y) {
@@ -102,6 +116,38 @@ public class Moteur {
 					rouge = false;
 				}
 			}
+		}
+	}
+	
+	public void survoleZone(MouseEvent e) {
+		int x = (e.getY() - ecart_window / 2) / cellule;
+		int y = (e.getX() - ecart_window / 2) / cellule;
+		Couleur couleur;
+		
+		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban) && (!goban.existPierre(x, y))) {
+			if(noir) {
+				couleur = Couleur.NOIR;
+			}
+			else if(blanc) {
+				couleur = Couleur.BLANC;
+			}
+			else {
+				couleur = Couleur.ROUGE;
+			}
+			
+			if(survole == null) {
+				survole = new Cercle(new Coordonnee(x, y), couleur);
+			}
+			
+			else if((x != survole.getX()) && (y != survole.getY())) {
+				survole.setX(x);
+				survole.setY(y);
+				survole.setCouleur(couleur);
+			}
+		}
+		
+		else {
+			survole = null;
 		}
 	}
 
