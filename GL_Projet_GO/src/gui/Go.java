@@ -64,7 +64,7 @@ public class Go extends JFrame implements Runnable {
 	public void run() {	
 		while (!stop) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(15); // Environ 64fps
 			} catch (InterruptedException e) {
 				System.out.println(e.getMessage());
 			}

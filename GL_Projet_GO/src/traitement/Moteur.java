@@ -135,15 +135,7 @@ public class Moteur {
 				couleur = Couleur.ROUGE;
 			}
 			
-			if(survole == null) {
-				survole = new Cercle(new Coordonnee(x, y), couleur);
-			}
-			
-			else if((x != survole.getX()) && (y != survole.getY())) {
-				survole.setX(x);
-				survole.setY(y);
-				survole.setCouleur(couleur);
-			}
+			survole = new Cercle(new Coordonnee(x, y), couleur);
 		}
 		
 		else {
