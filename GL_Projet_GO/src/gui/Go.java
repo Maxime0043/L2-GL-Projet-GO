@@ -2,23 +2,36 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 public class Go extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	JPanel actionJeu;
-	GoPanel panel = new GoPanel();
+	private Container container;
+	private JPanel menuPanel, goPanel, actionPanel;
+	private GoPanel gobanPanel;
+	
+	private int choix = 0;
+	private JRadioButton taille9, taille19;
+	
 	private int window_width, window_height;
 	
 	private Go instance = this;
+	private Thread goThread = new Thread(instance);
+
 	
 	private boolean stop = false;
 	JCheckBox megaPierre;
@@ -26,8 +39,9 @@ public class Go extends JFrame implements Runnable {
 	public Go() {
 		super("Jeu de GO");
 		
-		actionJeu = new JPanel();
-		panel = new GoPanel();
+		menuPanel = new JPanel();
+		goPanel = new JPanel();
+		actionPanel = new JPanel();
 		
 //		window_width = ParametrePartie.ECART + ParametrePartie.TAILLE_GOBAN[panel.getChoix()] * ParametrePartie.LARGEUR_CASE;
 //		window_height = 3* ParametrePartie.ECART + ParametrePartie.TAILLE_GOBAN[panel.getChoix()] * ParametrePartie.LARGEUR_CASE;
@@ -39,19 +53,54 @@ public class Go extends JFrame implements Runnable {
 	}
 
 	private void initLayout() {
-		Container container = this.getContentPane();
-		container.setLayout(new BorderLayout());
+		container = this.getContentPane();
+		container.setLayout(new FlowLayout());
 		
-		JButton button = new JButton("Lancer");
-		button.addActionListener(new Lancer());
-		actionJeu.add(button);
+		/*----------------Menu------------------*/
+		
+		menuPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		
+		JButton start = new JButton("Lancer");
+		start.addActionListener(new Lancer());
+		menuPanel.add(start, gbc);
+		
+		ButtonGroup tailleGroupe = new ButtonGroup();
+
+		gbc.gridy++;
+		taille9 = new JRadioButton("Taille 9*9", true);
+		taille9.addActionListener(new ChoixTaille());
+		tailleGroupe.add(taille9);
+		menuPanel.add(taille9, gbc);
+		
+		gbc.gridy++;
+		taille19 = new JRadioButton("Taille 19*19");
+		taille19.addActionListener(new ChoixTaille());
+		tailleGroupe.add(taille19);
+		menuPanel.add(taille19, gbc);
+
+		gbc.gridy++;
+		JButton quitter = new JButton("Quitter");
+		quitter.addActionListener(new Quitter());
+		menuPanel.add(quitter, gbc);
+		
+		this.setContentPane(menuPanel);
+		
+		/*----------------Go------------------*/
+		
+		goPanel.setLayout(new BorderLayout());
 		
 		megaPierre = new JCheckBox("MegaPierre");
 		megaPierre.addActionListener(new Cocher());
-		actionJeu.add(megaPierre);
+		actionPanel.add(megaPierre);
 		
-		container.add(panel, BorderLayout.CENTER);
-		container.add(actionJeu, BorderLayout.SOUTH);
+		
+		
+		/*----------------Parametres------------------*/
 		
 		this.setVisible(true);
 		this.setSize(window_width, window_height);
@@ -76,14 +125,44 @@ public class Go extends JFrame implements Runnable {
 	}
 
 	private void updateFrame() {
-		panel.repaint();
+		gobanPanel.repaint();
+	}
+	
+	public void changeFenetre(JPanel panel) {
+		this.setContentPane(panel);
+		this.revalidate();
+	}
+	
+	public void fermer() {
+		this.dispose();
 	}
 	
 	private class Lancer implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Thread goThread = new Thread(instance);
+			gobanPanel = new GoPanel(choix);
+			
+			goPanel.add(gobanPanel, BorderLayout.CENTER);
+			goPanel.add(actionPanel, BorderLayout.SOUTH);
+			
+			changeFenetre(goPanel);
+			
 			goThread.start();
+		}
+		
+	}
+	
+	private class ChoixTaille implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Object source = e.getSource();
+			
+			if(source == taille9) {
+				choix = 0;
+			}
+			else if(source == taille19) {
+				choix = 1;
+			}
 		}
 		
 	}
@@ -92,8 +171,16 @@ public class Go extends JFrame implements Runnable {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(megaPierre != null) {
-				panel.poseMegaPierre();
+				gobanPanel.poseMegaPierre();
 			}
+		}
+		
+	}
+	
+	private class Quitter implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			fermer();
 		}
 		
 	}

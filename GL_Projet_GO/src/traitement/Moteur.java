@@ -9,7 +9,6 @@ import donnees.Coordonnee;
 import donnees.Couleur;
 import donnees.Goban;
 import donnees.MegaPierre;
-import donnees.ParametrePartie;
 import donnees.Pierre;
 
 /**
@@ -19,11 +18,11 @@ import donnees.Pierre;
  */
 public class Moteur {
 
-	int choix = 0;
+	int choix;
 	
-	int cellule = ParametrePartie.LARGEUR_CASE;
-	int ecart_window = ParametrePartie.ECART;
-	int taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
+	int cellule;
+	int ecart_window;
+	int taille_goban;
 	
 	Goban goban;
 	GoPierre gopierre;
@@ -36,7 +35,12 @@ public class Moteur {
 	private boolean rouge = false;
 	private boolean isMegaPierre = false;
 	
-	public Moteur() {
+	public Moteur(int choix, int cellule, int ecart_window, int taille_goban) {
+		this.choix = choix;
+		this.cellule = cellule;
+		this.ecart_window = ecart_window;
+		this.taille_goban = taille_goban;
+		
 		goban = new Goban(choix);
 		gopierre = new GoPierre();
 		cercle = new ArrayList<Cercle>();
