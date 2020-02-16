@@ -8,7 +8,7 @@ public abstract class AbstractPierre {
 	private int nomChaine;
 	
 	
-	public AbstractPierre(Couleur couleur, int numero) {
+	public AbstractPierre(Couleur couleur) {
 		this.couleur = couleur;
 		this.liberte = new Liberte(this);
 		this.nomChaine = -1;
@@ -25,19 +25,6 @@ public abstract class AbstractPierre {
 	 * @return
 	 */
 	public abstract int getY();
-	
-	/**
-	 * 
-	 * @param plateau
-	 * @return
-	 */
-	public abstract boolean voisin(AbstractPierre[][] plateau);
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public abstract boolean vivante();
 	
 	/**
 	 * 
@@ -80,6 +67,7 @@ public abstract class AbstractPierre {
 	public int getLiberte() {
 		return liberte.getLiberte();
 	}
+	
 	/**
 	 * 
 	 * @param plateau

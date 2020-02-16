@@ -66,23 +66,40 @@ public class GoPanel extends JPanel{
 		int x, y;
 		
 		for(Cercle c : moteur.getCercleList()) {
-			x = c.getY() * cellule + ecart_window / 2 - ParametrePartie.ERREUR_NON_CONTROLEE;
-			y = c.getX() * cellule + ecart_window / 2 - ParametrePartie.ERREUR_NON_CONTROLEE;
+			x = c.getY() * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
+			y = c.getX() * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
 			
 			setColor(g, c.getCouleur());
 			
-			g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
+			if(!c.getIsMegaPierre()) {
+				g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
+			}
+			else {
+				g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE, ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE);
+			}
 		}
 		
 		Cercle survole = moteur.getSurvoleCercle();
 		
 		if(survole != null) {
-			x = survole.getY() * cellule + ecart_window / 2 - ParametrePartie.ERREUR_NON_CONTROLEE;
-			y = survole.getX() * cellule + ecart_window / 2 - ParametrePartie.ERREUR_NON_CONTROLEE;
+			x = survole.getY() * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
+			y = survole.getX() * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
 			
 			setColor(g, survole.getCouleur());
 			
-			g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
+			if(!moteur.getIsMegaPierre()) {
+				g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
+			}
+			else {
+				if(survole.getY() == taille_goban - 1) {
+					x = (survole.getY() - 1) * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
+				}
+				if(survole.getX() == taille_goban - 1) {
+					y = (survole.getX() - 1) * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
+				}
+				
+				g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE, ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE);
+			}
 		}
 	}
 	
@@ -114,6 +131,15 @@ public class GoPanel extends JPanel{
 		
 		else if(couleur.equals(Couleur.ROUGE)) {
 			g.setColor(Color.RED);
+		}
+	}
+	
+	public void poseMegaPierre() {
+		if(moteur.getIsMegaPierre()) {
+			moteur.setIsMegaPierre(false);
+		}
+		else {
+			moteur.setIsMegaPierre(true);
 		}
 	}
 	

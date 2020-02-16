@@ -2,31 +2,35 @@ package donnees;
 
 public class MegaPierre extends AbstractPierre{
 
-	private Coordonnee[] coord;
+	private Coordonnee[] coordListe;
+	private int x, y;
 	
-	public MegaPierre(Couleur couleur, String nomChaine, Coordonnee[] coord, int numero) {
-		super(couleur, numero);
-		this.coord = coord;
+	public MegaPierre(Couleur couleur, Coordonnee coord) {
+		super(couleur);
+
+		coordListe = new Coordonnee[4];
+		
+		x = coord.getX();
+		y = coord.getY();
+		
+		initCoord();
+	}
+	
+	private void initCoord(){
+		coordListe[0] = new Coordonnee(x, y);
+		coordListe[1] = new Coordonnee(x, y+1);
+		coordListe[2] = new Coordonnee(x+1, y);
+		coordListe[3] = new Coordonnee(x+1, y+1);
 	}
 	
 	@Override
 	public int getX() {
-		return coord[0].getX();
+		return coordListe[0].getX();
 	}
 	
 	@Override
 	public int getY() {
-		return coord[0].getX();
-	}
-
-	@Override
-	public boolean voisin(AbstractPierre[][] plateau) {
-		return false;
-	}
-
-	@Override
-	public boolean vivante() {
-		return true;
+		return coordListe[0].getY();
 	}
 
 	@Override

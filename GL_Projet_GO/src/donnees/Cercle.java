@@ -3,10 +3,12 @@ package donnees;
 public class Cercle {
 	Coordonnee coord;
 	Couleur couleur;
+	boolean isMegaPierre;
 	
-	public Cercle(Coordonnee coord, Couleur couleur) {
+	public Cercle(Coordonnee coord, Couleur couleur, boolean isMegaPierre) {
 		this.coord = coord;
 		this.couleur = couleur;
+		this.isMegaPierre = isMegaPierre;
 	}
 	
 	public int getX() {
@@ -19,5 +21,9 @@ public class Cercle {
 	
 	public Couleur getCouleur() {
 		return couleur;
+	}
+	
+	public boolean getIsMegaPierre() {
+		return isMegaPierre;
 	}
 }

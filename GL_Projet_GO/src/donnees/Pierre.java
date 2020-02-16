@@ -3,8 +3,8 @@ package donnees;
 public class Pierre extends AbstractPierre{
 	private Coordonnee coord;
 	
-	public Pierre(Couleur couleur, String nomChaine, Coordonnee coord, int numero) {
-		super(couleur, numero);
+	public Pierre(Couleur couleur, Coordonnee coord) {
+		super(couleur);
 		this.coord = coord;
 	}
 	
@@ -16,16 +16,6 @@ public class Pierre extends AbstractPierre{
 	@Override
 	public int getY() {
 		return coord.getY();
-	}
-	
-	@Override
-	public boolean voisin(AbstractPierre[][] plateau) {
-		return false;
-	}
-
-	@Override
-	public boolean vivante() {
-		return true;
 	}
 	
 	@Override

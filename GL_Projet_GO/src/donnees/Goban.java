@@ -50,6 +50,10 @@ public class Goban {
 		nb_Rouge = 0;
 	}
 	
+	public AbstractPierre[][] getPlateau(){
+		return plateau;
+	}
+	
 	public boolean existPierre(int x, int y) {
 		if (plateau[x][y] != null) {
 			return true;
@@ -60,6 +64,11 @@ public class Goban {
 	
 	public AbstractPierre getPierre(int x, int y) {
 		AbstractPierre pierre = plateau[x][y];
+		
+		if(pierre == null) {
+			System.out.println("Merde");
+		}
+		
 		pierre.updateLiberte(plateau, choix);
 		
 		return pierre;
@@ -71,6 +80,12 @@ public class Goban {
 		
 		if(plateau[x][y] == null) {
 			plateau[x][y] = pierre;
+			
+			if(pierre.isMegaPierre()) {
+				plateau[x][y+1] = pierre;
+				plateau[x+1][y] = pierre;
+				plateau[x+1][y+1] = pierre;
+			}
 			
 			this.addToChaine(pierre);
 			
@@ -92,6 +107,12 @@ public class Goban {
 		
 		if(plateau[x][y] != null) {
 			plateau[x][y] = null;
+			
+			if(pierre.isMegaPierre()) {
+				plateau[x+1][y] = null;
+				plateau[x][y+1] = null;
+				plateau[x+1][y+1] = null;
+			}
 		}
 		
 		if(pierre.getCouleur().equals(Couleur.NOIR)) {
@@ -138,11 +159,12 @@ public class Goban {
 		Couleur couleurVoisin;
 		
 		ArrayList<AbstractPierre> liste_voisin = gopierre.voisins(pierre, plateau, choix);
-		System.out.println("Liste pierres voisines de [" + pierre.getX() + "," + pierre.getY() + "]:");
-		for(AbstractPierre p : liste_voisin) {
-			System.out.println("[" + p.getX() + "," + p.getY() + "]");
-		}
-		System.out.println("Fin Liste\n");
+		
+//		System.out.println("Liste pierres voisines de [" + pierre.getX() + "," + pierre.getY() + "]:");
+//		for(AbstractPierre p : liste_voisin) {
+//			System.out.println("[" + p.getX() + "," + p.getY() + "]");
+//		}
+//		System.out.println("Fin Liste\n");
 		
 		if(liste_voisin.size() != 0) {
 			for(AbstractPierre pierreVoisine : liste_voisin) {

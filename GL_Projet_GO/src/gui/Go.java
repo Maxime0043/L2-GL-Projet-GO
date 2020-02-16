@@ -91,8 +91,9 @@ public class Go extends JFrame implements Runnable {
 	private class Cocher implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(megaPierre != null)
-				System.out.println("Cocher");
+			if(megaPierre != null) {
+				panel.poseMegaPierre();
+			}
 		}
 		
 	}
