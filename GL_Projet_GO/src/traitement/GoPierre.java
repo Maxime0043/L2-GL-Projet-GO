@@ -3,7 +3,6 @@ package traitement;
 import java.util.ArrayList;
 
 import donnees.AbstractPierre;
-import donnees.ParametrePartie;
 
 
 /**
@@ -65,15 +64,16 @@ public class GoPierre {
 	 * @param pierre
 	 * @return
 	 */
-	public boolean bordDroit(AbstractPierre pierre, int choix) {
+	public boolean bordDroit(AbstractPierre pierre, int taille_goban) {
 		int y = pierre.getY();
 		
 		if(pierre.isMegaPierre()) {
 			y++;
 		}
 		
-		if(y == ParametrePartie.TAILLE_GOBAN[choix] - 1)
+		if(y == taille_goban - 1) {
 			return true;
+		}
 		
 		return false;
 	}
@@ -84,14 +84,14 @@ public class GoPierre {
 	 * @param choix
 	 * @return
 	 */
-	public boolean bordBas(AbstractPierre pierre, int choix) {
+	public boolean bordBas(AbstractPierre pierre, int taille_goban) {
 		int x = pierre.getX();
 		
 		if(pierre.isMegaPierre()) {
 			x++;
 		}
 		
-		if(x == ParametrePartie.TAILLE_GOBAN[choix] - 1) {
+		if(x == taille_goban - 1) {
 				return true;
 		}
 		
@@ -105,7 +105,7 @@ public class GoPierre {
 	 * @param choix
 	 * @return
 	 */
-	public ArrayList<AbstractPierre> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int choix) {
+	public ArrayList<AbstractPierre> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
 		ArrayList<AbstractPierre> liste_voisin = new ArrayList<AbstractPierre>();
 		
 		int x = pierre.getX();
@@ -123,13 +123,13 @@ public class GoPierre {
 		if(x > 0) {
 			haut = plateau[x-1][y];
 		}
-		if(x < ParametrePartie.TAILLE_GOBAN[choix] - 1) {
+		if(x < taille_goban - 1) {
 			bas = plateau[x+1][y];
 		}
 		if(y > 0) {
 			gauche = plateau[x][y-1];
 		}
-		if(y < ParametrePartie.TAILLE_GOBAN[choix] - 1) {
+		if(y < taille_goban - 1) {
 			droite = plateau[x][y+1];
 		}
 		
@@ -139,7 +139,7 @@ public class GoPierre {
 					addListe(gauche, liste_voisin);
 				}
 				
-				if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite)) {
+				if(!bordDroit(pierre, taille_goban) && pierreEnemieExiste(droite)) {
 					addListe(droite, liste_voisin);
 				}
 				
@@ -148,12 +148,12 @@ public class GoPierre {
 				}
 			}
 			
-			else if(bordBas(pierre, choix)) {
+			else if(bordBas(pierre, taille_goban)) {
 				if(!bordGauche(pierre) && pierreEnemieExiste(gauche)) {
 					addListe(gauche, liste_voisin);
 				}
 				
-				if(!bordDroit(pierre, choix) && pierreEnemieExiste(droite)) {
+				if(!bordDroit(pierre, taille_goban) && pierreEnemieExiste(droite)) {
 					addListe(droite, liste_voisin);
 				}
 				
@@ -176,7 +176,7 @@ public class GoPierre {
 				}
 			}
 			
-			else if(bordDroit(pierre, choix)) {
+			else if(bordDroit(pierre, taille_goban)) {
 				if(pierreEnemieExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}
@@ -213,14 +213,16 @@ public class GoPierre {
 			if(x > 0) {
 				haut2 = plateau[x-1][y+1];
 			}
-			if(x < ParametrePartie.TAILLE_GOBAN[choix] - 1) {
-				bas2 = plateau[x+1][y+1];
+			if(x < taille_goban - 1) {
+				bas = plateau[x+2][y];
+				bas2 = plateau[x+2][y+1];
 			}
 			if(y > 0) {
 				gauche2 = plateau[x+1][y-1];
 			}
-			if(y < ParametrePartie.TAILLE_GOBAN[choix] - 1) {
-				droite2 = plateau[x+1][y+1];
+			if(y < taille_goban - 1) {
+				droite = plateau[x][y+2];
+				droite2 = plateau[x+1][y+2];
 			}
 			
 			if(bordHaut(pierre)) {
@@ -233,7 +235,7 @@ public class GoPierre {
 					}
 				}
 				
-				if(!bordDroit(pierre, choix)) {
+				if(!bordDroit(pierre, taille_goban)) {
 					if(pierreEnemieExiste(droite)) {
 						addListe(droite, liste_voisin);
 					}
@@ -250,7 +252,7 @@ public class GoPierre {
 				}
 			}
 			
-			else if(bordBas(pierre, choix)) {
+			else if(bordBas(pierre, taille_goban)) {
 				if(!bordGauche(pierre)) {
 					if(pierreEnemieExiste(gauche)) {
 						addListe(gauche, liste_voisin);
@@ -260,7 +262,7 @@ public class GoPierre {
 					}
 				}
 				
-				if(!bordDroit(pierre, choix)) {
+				if(!bordDroit(pierre, taille_goban)) {
 					if(pierreEnemieExiste(droite)) {
 						addListe(droite, liste_voisin);
 					}
@@ -300,7 +302,7 @@ public class GoPierre {
 				}
 			}
 			
-			else if(bordDroit(pierre, choix)) {
+			else if(bordDroit(pierre, taille_goban)) {
 				if(pierreEnemieExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}

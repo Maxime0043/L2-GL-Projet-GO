@@ -39,7 +39,7 @@ public class GoPanel extends JPanel{
 		ecart_window = ParametrePartie.ECART;
 		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
 		
-		moteur = new Moteur(choix, cellule, ecart_window, taille_goban);
+		moteur = new Moteur(cellule, ecart_window, taille_goban);
 		
 		this.addMouseListener(new Souris());
 		this.addMouseMotionListener(new DeplacementSouris());
@@ -69,40 +69,50 @@ public class GoPanel extends JPanel{
 	private void drawCercle(Graphics g) {
 		int x, y;
 		
+		int taille_cerle = ParametrePartie.TAILLE_CERCLE;
+		int taille_mega_cercle = ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE;
+		int petit_decalage = ParametrePartie.PETITE_ERREUR;
+		
+		if(taille_goban == ParametrePartie.TAILLE_GOBAN[1]) {
+			taille_cerle /= 2;
+			taille_mega_cercle /= 2;
+			petit_decalage *= -2;
+		}
+		
 		for(Cercle c : moteur.getCercleList()) {
-			x = c.getY() * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
-			y = c.getX() * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
+			x = c.getY() * cellule + ecart_window / 2 - petit_decalage;
+			y = c.getX() * cellule + ecart_window / 2 - petit_decalage;
 			
 			setColor(g, c.getCouleur());
 			
 			if(!c.getIsMegaPierre()) {
-				g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
+				g.fillOval(x, y, taille_cerle, taille_cerle);
 			}
 			else {
-				g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE, ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE);
+				g.fillOval(x, y, taille_mega_cercle, taille_mega_cercle);
 			}
 		}
 		
 		Cercle survole = moteur.getSurvoleCercle();
 		
 		if(survole != null) {
-			x = survole.getY() * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
-			y = survole.getX() * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
+			x = survole.getY() * cellule + ecart_window / 2 - petit_decalage;
+			y = survole.getX() * cellule + ecart_window / 2 - petit_decalage;
 			
 			setColor(g, survole.getCouleur());
 			
 			if(!moteur.getIsMegaPierre()) {
-				g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE, ParametrePartie.TAILLE_CERCLE);
+				g.fillOval(x, y, taille_cerle, taille_cerle);
 			}
 			else {
 				if(survole.getY() == taille_goban - 1) {
-					x = (survole.getY() - 1) * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
+					x = (survole.getY() - 1) * cellule + ecart_window / 2 - petit_decalage;
 				}
 				if(survole.getX() == taille_goban - 1) {
-					y = (survole.getX() - 1) * cellule + ecart_window / 2 - ParametrePartie.PETITE_ERREUR;
+					y = (survole.getX() - 1) * cellule + ecart_window / 2 - petit_decalage;
 				}
 				
-				g.fillOval(x, y, ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE, ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE);
+				g.fillOval(x, y, taille_mega_cercle, taille_mega_cercle);
 			}
 		}
 	}

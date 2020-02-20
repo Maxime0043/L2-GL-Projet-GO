@@ -13,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -26,6 +27,8 @@ public class Go extends JFrame implements Runnable {
 	
 	private int choix = 0;
 	private JRadioButton taille9, taille19;
+	private JRadioButton joueur1, joueur2, joueur3;
+	private JRadioButton ordi0, ordi1, ordi2;
 	
 	private int window_width, window_height;
 	
@@ -62,8 +65,8 @@ public class Go extends JFrame implements Runnable {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
+		gbc.gridx = 1;
+		gbc.gridy = 1;
 		
 		JButton start = new JButton("Lancer");
 		start.addActionListener(new Lancer());
@@ -82,8 +85,60 @@ public class Go extends JFrame implements Runnable {
 		taille19.addActionListener(new ChoixTaille());
 		tailleGroupe.add(taille19);
 		menuPanel.add(taille19, gbc);
+		
+		gbc.gridy++;
+		JLabel joueurs = new JLabel("Nombre de joueurs :");
+		menuPanel.add(joueurs, gbc);
+		
+		ButtonGroup joueurGroup = new ButtonGroup();
+		
+		gbc.gridy++;
+		gbc.gridx--;
+		joueur1 = new JRadioButton("1", true);
+		joueur1.addActionListener(new SelectionJoueur());
+		joueurGroup.add(joueur1);
+		menuPanel.add(joueur1, gbc);
+		
+		gbc.gridx++;
+		joueur2 = new JRadioButton("2");
+		joueur2.addActionListener(new SelectionJoueur());
+		joueurGroup.add(joueur2);
+		menuPanel.add(joueur2, gbc);
+		
+		gbc.gridx++;
+		joueur3 = new JRadioButton("3");
+		joueur3.addActionListener(new SelectionJoueur());
+		joueurGroup.add(joueur3);
+		menuPanel.add(joueur3, gbc);
+		
+		gbc.gridy++;
+		gbc.gridx--;
+		JLabel ordis = new JLabel("Nombre d'ordinateurs :");
+		menuPanel.add(ordis, gbc);
+		
+		ButtonGroup ordiGroup = new ButtonGroup();
+		
+		gbc.gridy++;
+		gbc.gridx--;
+		ordi0 = new JRadioButton("0", false);
+		ordi0.addActionListener(new SelectionJoueur());
+		ordiGroup.add(ordi0);
+		menuPanel.add(ordi0, gbc);
+		
+		gbc.gridx++;
+		ordi1 = new JRadioButton("1", true);
+		ordi1.addActionListener(new SelectionJoueur());
+		ordiGroup.add(ordi1);
+		menuPanel.add(ordi1, gbc);
+		
+		gbc.gridx++;
+		ordi2 = new JRadioButton("2", false);
+		ordi2.addActionListener(new SelectionJoueur());
+		ordiGroup.add(ordi2);
+		menuPanel.add(ordi2, gbc);
 
 		gbc.gridy++;
+		gbc.gridx--;
 		JButton quitter = new JButton("Quitter");
 		quitter.addActionListener(new Quitter());
 		menuPanel.add(quitter, gbc);
@@ -162,6 +217,41 @@ public class Go extends JFrame implements Runnable {
 			}
 			else if(source == taille19) {
 				choix = 1;
+			}
+		}
+		
+	}
+	
+	private class SelectionJoueur implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Object source = e.getSource();
+			
+			if(source == joueur3) {
+				ordi0.setSelected(true);
+			}
+			else if(source == joueur1) {
+				if(ordi0.isSelected()) {
+					ordi1.setSelected(true);
+				}
+			}
+			else if(source == joueur2) {
+				if(ordi2.isSelected()) {
+					ordi0.setSelected(true);
+				}
+			}
+			else if(source == ordi0) {
+				if(joueur1.isSelected()) {
+					joueur2.setSelected(true);
+				}
+			}
+			else if(source == ordi1) {
+				if(joueur3.isSelected()) {
+					joueur1.setSelected(true);
+				}
+			}
+			else if(source == ordi2) {
+				joueur1.setSelected(true);
 			}
 		}
 		

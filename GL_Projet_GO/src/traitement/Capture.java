@@ -19,15 +19,15 @@ public class Capture {
 	 * @param choix
 	 * @return
 	 */
-	public boolean isCapture(AbstractPierre pierre, AbstractPierre[][] plateau, int choix) {
-		pierre.updateLiberte(plateau, choix);
+	public boolean isCapture(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
+		pierre.updateLiberte(plateau, taille_goban);
 		
 		if(pierre.getLiberte() > 0) {
 			return false;
 		}
 		
 		else {
-			ArrayList<AbstractPierre> listVoisin = gopierre.voisins(pierre, plateau, choix);
+			ArrayList<AbstractPierre> listVoisin = gopierre.voisins(pierre, plateau, taille_goban);
 			Couleur couleurPierre = pierre.getCouleur();
 			Couleur couleurP = null;
 			boolean debut = true;
@@ -64,13 +64,13 @@ public class Capture {
 	 * @param choix
 	 * @return
 	 */
-	public boolean isCapture(ArrayList<AbstractPierre> chaine, AbstractPierre[][] plateau, int choix) {
+	public boolean isCapture(ArrayList<AbstractPierre> chaine, AbstractPierre[][] plateau, int taille_goban) {
 		ArrayList<AbstractPierre> voisin;
 		Couleur couleurPierre, couleurVoisin = null;
 		boolean debut = true;
 		
 		for(AbstractPierre pierre : chaine) {
-			pierre.updateLiberte(plateau, choix);
+			pierre.updateLiberte(plateau, taille_goban);
 			
 			if(pierre.getLiberte() > 0) {
 				return false;
@@ -78,7 +78,7 @@ public class Capture {
 			
 			couleurPierre = pierre.getCouleur();
 			
-			voisin = gopierre.voisins(pierre, plateau, choix);
+			voisin = gopierre.voisins(pierre, plateau, taille_goban);
 			
 			for(AbstractPierre pierreVoisine : voisin) {
 				if(debut) {

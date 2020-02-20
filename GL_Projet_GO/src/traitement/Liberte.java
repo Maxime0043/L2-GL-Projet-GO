@@ -3,6 +3,8 @@ package traitement;
 import java.util.HashMap;
 
 import donnees.AbstractPierre;
+import donnees.Coordonnee;
+import donnees.MegaPierre;
 
 /**
  * 
@@ -68,27 +70,31 @@ public class Liberte {
 	/**
 	 * 
 	 * @param plateau
-	 * @param choix
+	 * @param taille_goban
 	 */
-	public void updateLiberte(AbstractPierre[][] plateau, int choix) {
+	public void updateLiberte(AbstractPierre[][] plateau, int taille_goban) {
 		nb_liberte = 0;
 		
 		if(pierre.isMegaPierre()) {
-			if(!gopierre.bordHaut(pierre)) {
+			MegaPierre pierreOrigine = new MegaPierre(pierre.getCouleur(), new Coordonnee(pierre.getX(), pierre.getY()));
+			
+			if(!gopierre.bordHaut(pierreOrigine)) {
 				nb_liberte += 2;
 			}
 			
-			if(!gopierre.bordBas(pierre, choix)) {
+			if(!gopierre.bordBas(pierreOrigine, taille_goban)) {
 				nb_liberte += 2;
 			}
 			
-			if(!gopierre.bordGauche(pierre)) {
+			if(!gopierre.bordGauche(pierreOrigine)) {
 				nb_liberte += 2;
 			}
 			
-			if(!gopierre.bordDroit(pierre, choix)) {
+			if(!gopierre.bordDroit(pierreOrigine, taille_goban)) {
 				nb_liberte += 2;
 			}
+			
+			nb_liberte -= gopierre.voisins(pierreOrigine, plateau, taille_goban).size();
 		}
 		
 		else {
@@ -96,7 +102,7 @@ public class Liberte {
 				nb_liberte++;
 			}
 			
-			if(!gopierre.bordBas(pierre, choix)) {
+			if(!gopierre.bordBas(pierre, taille_goban)) {
 				nb_liberte++;
 			}
 			
@@ -104,11 +110,11 @@ public class Liberte {
 				nb_liberte++;
 			}
 			
-			if(!gopierre.bordDroit(pierre, choix)) {
+			if(!gopierre.bordDroit(pierre, taille_goban)) {
 				nb_liberte++;
 			}
+			
+			nb_liberte -= gopierre.voisins(pierre, plateau, taille_goban).size();
 		}
-		
-		nb_liberte -= gopierre.voisins(pierre, plateau, choix).size();
 	}
 }

@@ -16,16 +16,14 @@ public class Goban {
 	private GoPierre gopierre;
 	
 	private int taille_goban;
-	private int choix;
 
 	private int nb_chaine;
 	private int nb_Noir;
 	private int nb_Blanc;
 	private int nb_Rouge;
 	
-	public Goban(int choix) {
-		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
-		this.choix = choix;
+	public Goban(int taille_goban) {
+		this.taille_goban = taille_goban;
 		nb_chaine = 0;
 		
 		plateau = new AbstractPierre[taille_goban][taille_goban];
@@ -35,7 +33,7 @@ public class Goban {
 		gopierre = new GoPierre();
 	}
 	
-	public void initGoban(int choix) {
+	public void initGoban() {
 		for(int i = 0 ; i < taille_goban ; i++) {
 			for(int j = 0 ; j < taille_goban ; j++) {
 				plateau[i][j] = null;
@@ -65,11 +63,7 @@ public class Goban {
 	public AbstractPierre getPierre(int x, int y) {
 		AbstractPierre pierre = plateau[x][y];
 		
-		if(pierre == null) {
-			System.out.println("Merde");
-		}
-		
-		pierre.updateLiberte(plateau, choix);
+		pierre.updateLiberte(plateau, taille_goban);
 		
 		return pierre;
 	}
@@ -78,26 +72,24 @@ public class Goban {
 		int x = pierre.getX();
 		int y = pierre.getY();
 		
-		if(plateau[x][y] == null) {
-			plateau[x][y] = pierre;
+		plateau[x][y] = pierre;
 			
-			if(pierre.isMegaPierre()) {
-				plateau[x][y+1] = pierre;
-				plateau[x+1][y] = pierre;
-				plateau[x+1][y+1] = pierre;
-			}
+		this.addToChaine(pierre);
 			
-			this.addToChaine(pierre);
-			
-			if(pierre.getCouleur().equals(Couleur.NOIR)) {
-				nb_Noir++;
-			}
-			else if(pierre.getCouleur().equals(Couleur.BLANC)) {
-				nb_Blanc++;
-			}
-			else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
-				nb_Rouge++;
-			}
+		if(pierre.isMegaPierre()) {
+			plateau[x][y+1] = pierre;
+			plateau[x+1][y] = pierre;
+			plateau[x+1][y+1] = pierre;
+		}
+		
+		if(pierre.getCouleur().equals(Couleur.NOIR)) {
+			nb_Noir++;
+		}
+		else if(pierre.getCouleur().equals(Couleur.BLANC)) {
+			nb_Blanc++;
+		}
+		else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
+			nb_Rouge++;
 		}
 	}
 	
@@ -126,12 +118,12 @@ public class Goban {
 		}
 	}
 	
-	public boolean isPierreCapture(AbstractPierre pierre, int choix) {
-		return capture.isCapture(pierre, plateau, choix);
+	public boolean isPierreCapture(AbstractPierre pierre, int taille_goban) {
+		return capture.isCapture(pierre, plateau, taille_goban);
 	}
 	
-	public boolean isPierreCapture(ArrayList<AbstractPierre> chaine, int choix) {
-		return capture.isCapture(chaine, plateau, choix);
+	public boolean isPierreCapture(ArrayList<AbstractPierre> chaine, int taille_goban) {
+		return capture.isCapture(chaine, plateau, taille_goban);
 	}
 	
 	public ArrayList<AbstractPierre> getChaine(int nom){
@@ -155,12 +147,15 @@ public class Goban {
 	 * @param pierre
 	 */
 	public void addToChaine(AbstractPierre pierre) {
+		int x = pierre.getX();
+		int y = pierre.getY();
+		
 		Couleur couleurPierre = pierre.getCouleur();
 		Couleur couleurVoisin;
 		
-		ArrayList<AbstractPierre> liste_voisin = gopierre.voisins(pierre, plateau, choix);
+		ArrayList<AbstractPierre> liste_voisin = gopierre.voisins(pierre, plateau, taille_goban);
 		
-//		System.out.println("Liste pierres voisines de [" + pierre.getX() + "," + pierre.getY() + "]:");
+//		System.out.println("Liste pierres voisines de [" + x + "," + y + "]:");
 //		for(AbstractPierre p : liste_voisin) {
 //			System.out.println("[" + p.getX() + "," + p.getY() + "]");
 //		}
@@ -177,12 +172,19 @@ public class Goban {
 							if (pierre.getNomChaine() < pierreVoisine.getNomChaine() ) {
 								this.chaineFusion(pierre, pierreVoisine);
 							}
-							else
+							else {
 								this.chaineFusion(pierreVoisine, pierre);
+							}
 						}
 						else {
 							hmChaine.get(pierreVoisine.getNomChaine()).addPierre(pierre);
 							pierre.setNomChaine(pierreVoisine.getNomChaine());
+							
+							if(pierre.isMegaPierre()) {
+								getPierre(x+1, y).setNomChaine(pierreVoisine.getNomChaine());
+								getPierre(x, y+1).setNomChaine(pierreVoisine.getNomChaine());
+								getPierre(x+1, y+1).setNomChaine(pierreVoisine.getNomChaine());
+							}
 						}
 					}
 					
@@ -195,6 +197,13 @@ public class Goban {
 							Chaine c = new Chaine();
 							c.addPierre(pierre);
 							pierre.setNomChaine(nb_chaine);
+							
+							if(pierre.isMegaPierre()) {
+								getPierre(x+1, y).setNomChaine(nb_chaine);
+								getPierre(x, y+1).setNomChaine(nb_chaine);
+								getPierre(x+1, y+1).setNomChaine(nb_chaine);
+							}
+							
 							c.addPierre(pierreVoisine);
 							pierreVoisine.setNomChaine(nb_chaine);
 							hmChaine.put(nb_chaine, c);
@@ -205,18 +214,46 @@ public class Goban {
 			}
 		}
 	}
+	
 	/**
 	 * Permet la fusion de deux chaines.
 	 * @param p1, pierre dont on garde la chaine et où on ajoute celle de p2
 	 * @param p2, pierre dont on supprime la chaine
 	 */
 	public void chaineFusion(AbstractPierre p1, AbstractPierre p2) {
+		int x, y;
+		boolean verif = false;
+		
 		int name = p2.getNomChaine();
 		
 		for (AbstractPierre p : hmChaine.get(name).getChaine()) {
-			p.setNomChaine(p1.getNomChaine());
-			hmChaine.get(p1.getNomChaine()).addPierre(p);
+			x = p.getX();
+			y = p.getY();
+			
+			if(!p.isMegaPierre()) {
+				p.setNomChaine(p1.getNomChaine());
+				
+				hmChaine.get(p1.getNomChaine()).addPierre(p);
+			}
+			else {
+				if(!verif) {
+					p.setNomChaine(p1.getNomChaine());
+					hmChaine.get(p1.getNomChaine()).addPierre(p);
+					
+					getPierre(x+1, y).setNomChaine(p.getNomChaine());
+					hmChaine.get(p1.getNomChaine()).addPierre(getPierre(x+1, y));
+					
+					getPierre(x, y+1).setNomChaine(p.getNomChaine());
+					hmChaine.get(p1.getNomChaine()).addPierre(getPierre(x, y+1));
+					
+					getPierre(x+1, y+1).setNomChaine(p.getNomChaine());
+					hmChaine.get(p1.getNomChaine()).addPierre(getPierre(x+1, y+1));
+					
+					verif = true;
+				}
+			}
 		}
+		
 		hmChaine.remove(name);
 	}
 	
@@ -228,37 +265,7 @@ public class Goban {
 		for (AbstractPierre p : hmChaine.get(nomChaine).getChaine()) {
 			this.removePierre(p);
 		}
+		
 		hmChaine.remove(nomChaine);
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

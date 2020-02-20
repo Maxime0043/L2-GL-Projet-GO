@@ -9,6 +9,7 @@ import donnees.Coordonnee;
 import donnees.Couleur;
 import donnees.Goban;
 import donnees.MegaPierre;
+import donnees.ParametrePartie;
 import donnees.Pierre;
 
 /**
@@ -18,14 +19,12 @@ import donnees.Pierre;
  */
 public class Moteur {
 
-	int choix;
+	private int cellule;
+	private int ecart_window;
+	private int taille_goban;
 	
-	int cellule;
-	int ecart_window;
-	int taille_goban;
-	
-	Goban goban;
-	GoPierre gopierre;
+	private Goban goban;
+	private GoPierre gopierre;
 	
 	private ArrayList<Cercle> cercle;
 	private Cercle survole;
@@ -35,23 +34,14 @@ public class Moteur {
 	private boolean rouge = false;
 	private boolean isMegaPierre = false;
 	
-	public Moteur(int choix, int cellule, int ecart_window, int taille_goban) {
-		this.choix = choix;
+	public Moteur(int cellule, int ecart_window, int taille_goban) {
 		this.cellule = cellule;
 		this.ecart_window = ecart_window;
 		this.taille_goban = taille_goban;
 		
-		goban = new Goban(choix);
+		goban = new Goban(taille_goban);
 		gopierre = new GoPierre();
 		cercle = new ArrayList<Cercle>();
-	}
-	
-	public int getChoix() {
-		return choix;
-	}
-	
-	public void setChoix(int valeur) {
-		choix = valeur;
 	}
 	
 	public boolean getNoir() {
@@ -102,6 +92,12 @@ public class Moteur {
 	public void survoleZone(MouseEvent e) {
 		int x = (e.getY() - ecart_window / 2) / cellule;
 		int y = (e.getX() - ecart_window / 2) / cellule;
+		
+		if(taille_goban == ParametrePartie.TAILLE_GOBAN[1]) {
+			x = (e.getY() - (int)(ecart_window / 1.5)) / cellule;
+			y = (e.getX() - (int)(ecart_window / 1.5)) / cellule;
+		}
+		
 		Couleur couleur;
 		
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban) && (!goban.existPierre(x, y))) {
@@ -126,6 +122,11 @@ public class Moteur {
 	public void clicEvent(MouseEvent e) {
 		int x = (e.getY() - ecart_window / 2) / cellule;
 		int y = (e.getX() - ecart_window / 2) / cellule;
+		
+		if(taille_goban == ParametrePartie.TAILLE_GOBAN[1]) {
+			x = (e.getY() - (int)(ecart_window / 1.5)) / cellule;
+			y = (e.getX() - (int)(ecart_window / 1.5)) / cellule;
+		}
 		
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
 			if(!goban.existPierre(x, y)){
@@ -181,19 +182,21 @@ public class Moteur {
 		
 		cercle.add(new Cercle(coordPierre, pierre.getCouleur(), isMegaPierre));
 		
-		ArrayList<AbstractPierre> voisin = gopierre.voisins(goban.getPierre(pierre.getX(), pierre.getY()), goban.getPlateau(), choix);
+		ArrayList<AbstractPierre> voisin = gopierre.voisins(goban.getPierre(pierre.getX(), pierre.getY()), goban.getPlateau(), taille_goban);
 		
+		System.out.println("/*-------------------------------*/");
 		for(AbstractPierre pierreVoisin : voisin) {
 			if(pierreVoisin.hasChaine()) {
-				if(goban.isPierreCapture(goban.getChaine(pierreVoisin.getNomChaine()), choix)) {
+				if(goban.isPierreCapture(goban.getChaine(pierreVoisin.getNomChaine()), taille_goban)) {
 					removePierre(goban.getChaine(pierreVoisin.getNomChaine()));
 				}
 			}
 			
-			else if(goban.isPierreCapture(pierreVoisin, choix)) {
+			else if(goban.isPierreCapture(pierreVoisin, taille_goban)) {
 				removePierre(pierreVoisin);
 			}
 		}
+		System.out.println("/*-------------------------------*/\n");
 	}
 	
 	public void removePierre(AbstractPierre pierre) {
