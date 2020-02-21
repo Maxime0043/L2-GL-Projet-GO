@@ -22,10 +22,12 @@ public class Moteur {
 	private int cellule;
 	private int ecart_window;
 	private int taille_goban;
+	private int nb_joueurs;
 	
 	private Goban goban;
 	private GoPierre gopierre;
 	
+	private Joueur[] joueurs;
 	private ArrayList<Cercle> cercle;
 	private Cercle survole;
 	
@@ -34,14 +36,28 @@ public class Moteur {
 	private boolean rouge = false;
 	private boolean isMegaPierre = false;
 	
-	public Moteur(int cellule, int ecart_window, int taille_goban) {
+	public Moteur(int cellule, int ecart_window, int taille_goban, int nb_joueur, int nb_ordi) {
 		this.cellule = cellule;
 		this.ecart_window = ecart_window;
 		this.taille_goban = taille_goban;
 		
+		nb_joueurs = nb_joueur + nb_ordi;
+		
 		goban = new Goban(taille_goban);
 		gopierre = new GoPierre();
+		joueurs = new Joueur[nb_joueurs];
 		cercle = new ArrayList<Cercle>();
+		
+		initJoueur();
+	}
+	
+	public void initJoueur() {
+		joueurs[0] = new Joueur(Couleur.NOIR, false);
+		joueurs[1] = new Joueur(Couleur.BLANC, false);
+		
+		if(nb_joueurs == 3) {
+			joueurs[2] = new Joueur(Couleur.ROUGE, false);
+		}
 	}
 	
 	public boolean getNoir() {
@@ -72,20 +88,48 @@ public class Moteur {
 		return survole;
 	}
 	
-	public Cercle getCercle(int x, int y) {
-		Cercle result = null;
+	public Couleur currentCouleur() {
+		if(noir) {
+			return Couleur.NOIR;
+		}
+		else if(blanc) {
+			return Couleur.BLANC;
+		}
+		else {
+			return Couleur.ROUGE;
+		}
+	}
+	
+	public Joueur currentJoueur() {
+		Joueur j = null;
 		
-		for(Cercle c : cercle) {
-			if((c.getX() == x) && (c.getY() == y)) {
-				result = c;
+		for(int i = 0 ; i < nb_joueurs ; i++) {
+			if(joueurs[i].getCouleur().equals(currentCouleur())) {
+				j = joueurs[i];
 			}
 		}
 		
-		if(result != null) {
-			return result;
+		return j;
+	}
+	
+	public void changeJoueur() {
+		if(noir) {
+			noir = false;
+			blanc = true;
 		}
-		else {
-			return null;
+		else if(blanc) {
+			blanc = false;
+			
+			if(nb_joueurs > 2) {
+				rouge = true;
+			}
+			else {
+				noir = true;
+			}
+		}
+		else if(rouge) {
+			rouge = false;
+			noir = true;
 		}
 	}
 	
@@ -101,15 +145,7 @@ public class Moteur {
 		Couleur couleur;
 		
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban) && (!goban.existPierre(x, y))) {
-			if(noir) {
-				couleur = Couleur.NOIR;
-			}
-			else if(blanc) {
-				couleur = Couleur.BLANC;
-			}
-			else {
-				couleur = Couleur.ROUGE;
-			}
+			couleur = currentCouleur();
 			
 			survole = new Cercle(new Coordonnee(x, y), couleur, false);
 		}
@@ -141,36 +177,16 @@ public class Moteur {
 				
 				Coordonnee c = new Coordonnee(x, y);
 				
-				if(noir) {
-					if(!isMegaPierre) {
-						addPierre(new Pierre(Couleur.NOIR, c));
-					}
-					else {
-						addPierre(new MegaPierre(Couleur.NOIR, c));
-					}
-					noir = false;
-					blanc = true;
+				if(!isMegaPierre) {
+					addPierre(new Pierre(currentCouleur(), c));
+					currentJoueur().addPierre(new Pierre(currentCouleur(), c));
 				}
-				else if(blanc) {
-					if(!isMegaPierre) {
-						addPierre(new Pierre(Couleur.BLANC, c));
-					}
-					else {
-						addPierre(new MegaPierre(Couleur.BLANC, c));
-					}
-					blanc = false;
-					rouge = true;
+				else {
+					addPierre(new MegaPierre(currentCouleur(), c));
+					currentJoueur().addPierre(new MegaPierre(currentCouleur(), c));
 				}
-				else if(rouge) {
-					if(!isMegaPierre) {
-						addPierre(new Pierre(Couleur.ROUGE, c));
-					}
-					else {
-						addPierre(new MegaPierre(Couleur.ROUGE, c));
-					}
-					noir = true;
-					rouge = false;
-				}
+				
+				changeJoueur();
 			}
 		}
 	}
@@ -200,6 +216,7 @@ public class Moteur {
 	public void removePierre(AbstractPierre pierre) {
 		if(goban.existPierre(pierre.getX(), pierre.getY())) {
 			goban.removePierre(pierre);
+			currentJoueur().removePierre(pierre);
 			
 			Cercle c = null;
 			

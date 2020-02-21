@@ -30,7 +30,7 @@ public class GoPanel extends JPanel{
 	int ecart_window;
 	int taille_goban;
 	
-	public GoPanel(int choix) {
+	public GoPanel(int choix, int nb_joueur, int nb_ordi) {
 		cellule = ParametrePartie.LARGEUR_CASE;
 		if(choix == 1) {
 			cellule /= 2;
@@ -39,7 +39,7 @@ public class GoPanel extends JPanel{
 		ecart_window = ParametrePartie.ECART;
 		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
 		
-		moteur = new Moteur(cellule, ecart_window, taille_goban);
+		moteur = new Moteur(cellule, ecart_window, taille_goban, nb_joueur, nb_ordi);
 		
 		this.addMouseListener(new Souris());
 		this.addMouseMotionListener(new DeplacementSouris());

@@ -21,8 +21,9 @@ public class GoPierre {
 	 * @param numero
 	 */
 	public void addListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
-		if(!liste_voisin.contains(pierre))
+		if(!liste_voisin.contains(pierre)) {
 			liste_voisin.add(pierre);
+		}
 	}
 	
 	/**
@@ -30,8 +31,9 @@ public class GoPierre {
 	 * @param numero
 	 */
 	public void removeListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
-		if(liste_voisin.contains(pierre) && (liste_voisin.size() > 0))
+		if(liste_voisin.contains(pierre) && (liste_voisin.size() > 0)) {
 			liste_voisin.remove(pierre);
+		}
 	}
 	
 	/**

@@ -19,8 +19,9 @@ public class Chaine {
 	}
 	
 	public void addPierre (AbstractPierre pierre) {
-		if(!chaine.contains(pierre))
+		if(!chaine.contains(pierre)) {
 			chaine.add(pierre);
+		}
 	}
 	
 //	public boolean vivante(AbstractPierre[][] plateau, int choix) {

@@ -26,6 +26,7 @@ public class Go extends JFrame implements Runnable {
 	private GoPanel gobanPanel;
 	
 	private int choix = 0;
+	private int nb_joueur, nb_ordi;
 	private JRadioButton taille9, taille19;
 	private JRadioButton joueur1, joueur2, joueur3;
 	private JRadioButton ordi0, ordi1, ordi2;
@@ -33,10 +34,10 @@ public class Go extends JFrame implements Runnable {
 	private int window_width, window_height;
 	
 	private Go instance = this;
-	private Thread goThread = new Thread(instance);
+//	private Thread goThread;
 
 	
-	private boolean stop = false;
+	private boolean stop = true;
 	JCheckBox megaPierre;
 
 	public Go() {
@@ -94,16 +95,17 @@ public class Go extends JFrame implements Runnable {
 		
 		gbc.gridy++;
 		gbc.gridx--;
-		joueur1 = new JRadioButton("1", true);
+		joueur1 = new JRadioButton("1");
 		joueur1.addActionListener(new SelectionJoueur());
 		joueurGroup.add(joueur1);
 		menuPanel.add(joueur1, gbc);
 		
 		gbc.gridx++;
-		joueur2 = new JRadioButton("2");
+		joueur2 = new JRadioButton("2", true);
 		joueur2.addActionListener(new SelectionJoueur());
 		joueurGroup.add(joueur2);
 		menuPanel.add(joueur2, gbc);
+		nb_joueur = 2;
 		
 		gbc.gridx++;
 		joueur3 = new JRadioButton("3");
@@ -120,28 +122,34 @@ public class Go extends JFrame implements Runnable {
 		
 		gbc.gridy++;
 		gbc.gridx--;
-		ordi0 = new JRadioButton("0", false);
+		ordi0 = new JRadioButton("0", true);
 		ordi0.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi0);
 		menuPanel.add(ordi0, gbc);
+		nb_ordi = 0;
 		
 		gbc.gridx++;
-		ordi1 = new JRadioButton("1", true);
+		ordi1 = new JRadioButton("1");
 		ordi1.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi1);
 		menuPanel.add(ordi1, gbc);
 		
 		gbc.gridx++;
-		ordi2 = new JRadioButton("2", false);
+		ordi2 = new JRadioButton("2");
 		ordi2.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi2);
 		menuPanel.add(ordi2, gbc);
 
 		gbc.gridy++;
 		gbc.gridx--;
-		JButton quitter = new JButton("Quitter");
-		quitter.addActionListener(new Quitter());
-		menuPanel.add(quitter, gbc);
+		JButton quitterMenu = new JButton("Quitter");
+		quitterMenu.addActionListener(new QuitterMenu());
+		menuPanel.add(quitterMenu, gbc);
+		
+		joueur1.setEnabled(false);
+		ordi0.setEnabled(false);
+		ordi1.setEnabled(false);
+		ordi2.setEnabled(false);
 		
 		this.setContentPane(menuPanel);
 		
@@ -153,7 +161,10 @@ public class Go extends JFrame implements Runnable {
 		megaPierre.addActionListener(new Cocher());
 		actionPanel.add(megaPierre);
 		
-		
+		JButton revenirMenu = new JButton("Revenir Menu");
+		revenirMenu.addActionListener(new RevenirMenu());
+		actionPanel.add(revenirMenu);
+		revenirMenu.setEnabled(false);
 		
 		/*----------------Parametres------------------*/
 		
@@ -195,14 +206,18 @@ public class Go extends JFrame implements Runnable {
 	private class Lancer implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			gobanPanel = new GoPanel(choix);
+			gobanPanel = new GoPanel(choix, nb_joueur, nb_ordi);
 			
 			goPanel.add(gobanPanel, BorderLayout.CENTER);
 			goPanel.add(actionPanel, BorderLayout.SOUTH);
 			
 			changeFenetre(goPanel);
 			
-			goThread.start();
+			if(stop) {
+				stop = false;
+				Thread goThread = new Thread(instance);
+				goThread.start();
+			}
 		}
 		
 	}
@@ -227,31 +242,44 @@ public class Go extends JFrame implements Runnable {
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
 			
-			if(source == joueur3) {
-				ordi0.setSelected(true);
-			}
-			else if(source == joueur1) {
+			if(source == joueur1) {
 				if(ordi0.isSelected()) {
 					ordi1.setSelected(true);
+					nb_ordi = 1;
 				}
+				nb_joueur = 1;
 			}
 			else if(source == joueur2) {
 				if(ordi2.isSelected()) {
 					ordi0.setSelected(true);
+					nb_ordi = 0;
 				}
+				nb_joueur = 2;
 			}
-			else if(source == ordi0) {
+			else if(source == joueur3) {
+				ordi0.setSelected(true);
+				nb_joueur = 3;
+				nb_ordi = 0;
+			}
+			
+			if(source == ordi0) {
 				if(joueur1.isSelected()) {
 					joueur2.setSelected(true);
+					nb_joueur = 2;
 				}
+				nb_ordi = 0;
 			}
 			else if(source == ordi1) {
 				if(joueur3.isSelected()) {
 					joueur1.setSelected(true);
+					nb_joueur = 1;
 				}
+				nb_ordi = 1;
 			}
 			else if(source == ordi2) {
 				joueur1.setSelected(true);
+				nb_ordi = 2;
+				nb_joueur = 1;
 			}
 		}
 		
@@ -267,7 +295,17 @@ public class Go extends JFrame implements Runnable {
 		
 	}
 	
-	private class Quitter implements ActionListener{
+	private class RevenirMenu implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {			
+			stop = true;
+			
+			changeFenetre(menuPanel);
+		}
+		
+	}
+	
+	private class QuitterMenu implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			fermer();

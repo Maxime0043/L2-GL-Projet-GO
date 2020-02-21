@@ -51,7 +51,7 @@ public class Capture {
 				}
 			}
 			
-			System.out.println("Couleur du preneur d'otage : " + listVoisin.get(0).getCouleur());
+//			System.out.println("Couleur du preneur d'otage : " + listVoisin.get(0).getCouleur());
 		}
 		
 		return true;
