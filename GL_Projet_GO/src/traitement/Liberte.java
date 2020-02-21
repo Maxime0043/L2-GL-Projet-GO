@@ -1,5 +1,6 @@
 package traitement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import donnees.AbstractPierre;
@@ -77,6 +78,7 @@ public class Liberte {
 		
 		if(pierre.isMegaPierre()) {
 			MegaPierre pierreOrigine = new MegaPierre(pierre.getCouleur(), new Coordonnee(pierre.getX(), pierre.getY()));
+			ArrayList<AbstractPierre> voisins = gopierre.voisins(pierreOrigine, plateau, taille_goban);
 			
 			if(!gopierre.bordHaut(pierreOrigine)) {
 				nb_liberte += 2;
@@ -94,7 +96,15 @@ public class Liberte {
 				nb_liberte += 2;
 			}
 			
-			nb_liberte -= gopierre.voisins(pierreOrigine, plateau, taille_goban).size();
+			for(AbstractPierre pierreVoisin : voisins) {
+				if(pierreVoisin.isMegaPierre() && !pierre.getCouleur().equals(pierreVoisin.getCouleur())) {
+					if((pierre.getX() == pierreVoisin.getX()) || (pierre.getY() == pierreVoisin.getY())) {
+						nb_liberte--;
+					}
+				}
+			}
+			
+			nb_liberte -= voisins.size();
 		}
 		
 		else {

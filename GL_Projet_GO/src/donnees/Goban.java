@@ -155,11 +155,11 @@ public class Goban {
 		
 		ArrayList<AbstractPierre> liste_voisin = gopierre.voisins(pierre, plateau, taille_goban);
 		
-//		System.out.println("Liste pierres voisines de [" + x + "," + y + "]:");
-//		for(AbstractPierre p : liste_voisin) {
-//			System.out.println("[" + p.getX() + "," + p.getY() + "]");
-//		}
-//		System.out.println("Fin Liste\n");
+		System.out.println("Liste pierres voisines de [" + x + "," + y + "]:");
+		for(AbstractPierre p : liste_voisin) {
+			System.out.println("[" + p.getX() + "," + p.getY() + "]");
+		}
+		System.out.println("Fin Liste\n");
 		
 		if(liste_voisin.size() != 0) {
 			for(AbstractPierre pierreVoisine : liste_voisin) {

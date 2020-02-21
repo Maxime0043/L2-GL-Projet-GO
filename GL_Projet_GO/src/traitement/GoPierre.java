@@ -213,14 +213,14 @@ public class GoPierre {
 			if(x > 0) {
 				haut2 = plateau[x-1][y+1];
 			}
-			if(x < taille_goban - 1) {
+			if(x < taille_goban - 2) {
 				bas = plateau[x+2][y];
 				bas2 = plateau[x+2][y+1];
 			}
 			if(y > 0) {
 				gauche2 = plateau[x+1][y-1];
 			}
-			if(y < taille_goban - 1) {
+			if(y < taille_goban - 2) {
 				droite = plateau[x][y+2];
 				droite2 = plateau[x+1][y+2];
 			}

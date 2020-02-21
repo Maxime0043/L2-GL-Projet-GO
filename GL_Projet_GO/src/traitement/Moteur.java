@@ -184,7 +184,6 @@ public class Moteur {
 		
 		ArrayList<AbstractPierre> voisin = gopierre.voisins(goban.getPierre(pierre.getX(), pierre.getY()), goban.getPlateau(), taille_goban);
 		
-		System.out.println("/*-------------------------------*/");
 		for(AbstractPierre pierreVoisin : voisin) {
 			if(pierreVoisin.hasChaine()) {
 				if(goban.isPierreCapture(goban.getChaine(pierreVoisin.getNomChaine()), taille_goban)) {
@@ -196,7 +195,6 @@ public class Moteur {
 				removePierre(pierreVoisin);
 			}
 		}
-		System.out.println("/*-------------------------------*/\n");
 	}
 	
 	public void removePierre(AbstractPierre pierre) {
