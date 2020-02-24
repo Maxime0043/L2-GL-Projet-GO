@@ -71,9 +71,9 @@ public abstract class AbstractPierre {
 	/**
 	 * 
 	 * @param plateau
-	 * @param choix
+	 * @param taille_goban
 	 */
-	public void updateLiberte(AbstractPierre[][] plateau, int choix) {
-		liberte.updateLiberte(plateau, choix);
+	public void updateLiberte(AbstractPierre[][] plateau, int taille_goban) {
+		liberte.updateLiberte(plateau, taille_goban);
 	}
 }

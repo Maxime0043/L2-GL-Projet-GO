@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import donnees.Cercle;
 import donnees.Couleur;
 import donnees.ParametrePartie;
+import traitement.Joueur;
 import traitement.Moteur;
 
 /**
@@ -24,13 +25,24 @@ public class GoPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
-	Moteur moteur;
+	private Moteur moteur;
 	
-	int cellule;
-	int ecart_window;
-	int taille_goban;
+	private int cellule;
+	private int ecart_window;
+	private int taille_goban;
+	private int nb_joueurs;
 	
 	public GoPanel(int choix, int nb_joueur, int nb_ordi) {
+		initGoPanel(choix, nb_joueur, nb_ordi);
+		
+		this.addMouseListener(new Souris());
+		this.addMouseMotionListener(new DeplacementSouris());
+		this.addKeyListener(new Touche());
+		
+		this.setBackground(Color.decode("#F2B352"));
+	}
+	
+	public void initGoPanel(int choix, int nb_joueur, int nb_ordi) {
 		cellule = ParametrePartie.LARGEUR_CASE;
 		if(choix == 1) {
 			cellule /= 2;
@@ -38,14 +50,9 @@ public class GoPanel extends JPanel{
 		
 		ecart_window = ParametrePartie.ECART;
 		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
+		nb_joueurs = nb_joueur + nb_ordi;
 		
-		moteur = new Moteur(cellule, ecart_window, taille_goban, nb_joueur, nb_ordi);
-		
-		this.addMouseListener(new Souris());
-		this.addMouseMotionListener(new DeplacementSouris());
-		this.addKeyListener(new Touche());
-		
-		this.setBackground(Color.decode("#F2B352"));
+		moteur = new Moteur(cellule, ecart_window, taille_goban, nb_joueur, nb_ordi);		
 	}
 
 	@Override
@@ -155,6 +162,17 @@ public class GoPanel extends JPanel{
 		else {
 			moteur.setIsMegaPierre(true);
 		}
+	}
+	
+	public int[] getScores() {
+		int[] scores = new int[nb_joueurs];
+		Joueur[] joueurs = moteur.getJoueurs();
+		
+		for(int i = 0 ; i < nb_joueurs ; i++) {
+			scores[i] = joueurs[i].getScore();
+		}
+		
+		return scores;
 	}
 	
 	

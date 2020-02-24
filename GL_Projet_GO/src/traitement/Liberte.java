@@ -1,7 +1,6 @@
 package traitement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import donnees.AbstractPierre;
 import donnees.Coordonnee;
@@ -14,15 +13,10 @@ import donnees.MegaPierre;
  */
 
 public class Liberte {
+
 	private int nb_liberte;
 	private AbstractPierre pierre;
 	private GoPierre gopierre;
-//	private ArrayList<AbstractPierre> pierresAutour;
-//	
-//	private boolean isBordHaut = false;
-//	private boolean isBordBas = false;
-//	private boolean isBordGauche = false;
-//	private boolean isBordDroit = false;
 	
 	/**
 	 * 
@@ -37,7 +31,6 @@ public class Liberte {
 			nb_liberte = 4;
 		
 		gopierre = new GoPierre();
-//		pierresAutour = new ArrayList<AbstractPierre>();
 	}
 
 	/**
@@ -48,25 +41,28 @@ public class Liberte {
 		return nb_liberte;
 	}
 	
-	/**
-	 * 
-	 * @param nomChaine
-	 * @param hmChaine
-	 * @param plateau
-	 * @param choix
-	 * @return
-	 */
-	public boolean liberteChaine(int nomChaine, HashMap<Integer, Chaine> hmChaine, AbstractPierre[][] plateau, int choix) {
-		int liberte = 0;
-		for (AbstractPierre p : hmChaine.get(nomChaine).getChaine()) {
-			liberte += p.getLiberte();
-		}
-		if(liberte > 0) {
-			return true;
-		}
-		else 
-			return false;
-	}
+//	/**
+//	 * 
+//	 * @param nomChaine
+//	 * @param hmChaine
+//	 * @param plateau
+//	 * @return
+//	 */
+//	public boolean liberteChaine(int nomChaine, HashMap<Integer, Chaine> hmChaine, AbstractPierre[][] plateau) {
+//		int liberte = 0;
+//		
+//		for (AbstractPierre p : hmChaine.get(nomChaine).getChaine()) {
+//			liberte += p.getLiberte();
+//		}
+//		
+//		if(liberte > 0) {
+//			return true;
+//		}
+//		
+//		else {
+//			return false;
+//		}
+//	}
 	
 	/**
 	 * 

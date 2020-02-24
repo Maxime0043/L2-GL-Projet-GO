@@ -6,20 +6,37 @@ import donnees.AbstractPierre;
 import donnees.Couleur;
 
 public class Capture {
-	private GoPierre gopierre;
 	
-	public Capture() {
+	private GoPierre gopierre;
+	private int taille_goban;
+	private int compteur;
+	
+	public Capture(int taille_goban) {
 		gopierre = new GoPierre();
+		this.taille_goban = taille_goban;
+	}
+	
+	public void initCompteur() {
+		compteur = 0;
+	}
+	
+	public int getCompteur() {
+		return compteur;
+	}
+	
+	private void addCompteur(int n) {
+		compteur += n;
 	}
 	
 	/**
 	 * 
 	 * @param pierre
 	 * @param plateau
-	 * @param choix
+	 * @param taille_goban
 	 * @return
 	 */
-	public boolean isCapture(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
+	public boolean isCapture(AbstractPierre pierre, AbstractPierre[][] plateau) {
+		initCompteur();
 		pierre.updateLiberte(plateau, taille_goban);
 		
 		if(pierre.getLiberte() > 0) {
@@ -40,16 +57,20 @@ public class Capture {
 				
 				else {
 					if(couleurP.equals(couleurPierre)) {
+						initCompteur();
 						return false;
 					}
 					
 					else {
 						if(!couleurP.equals(p.getCouleur())) {
+							initCompteur();
 							return false;
 						}
 					}
 				}
 			}
+			
+			addCompteur(1);
 			
 //			System.out.println("Couleur du preneur d'otage : " + listVoisin.get(0).getCouleur());
 		}
@@ -58,13 +79,15 @@ public class Capture {
 	}
 	
 	/**
-	 * .
+	 * 
 	 * @param chaine
 	 * @param plateau
-	 * @param choix
+	 * @param taille_goban
 	 * @return
 	 */
-	public boolean isCapture(ArrayList<AbstractPierre> chaine, AbstractPierre[][] plateau, int taille_goban) {
+	public boolean isCapture(ArrayList<AbstractPierre> chaine, AbstractPierre[][] plateau) {
+		initCompteur();
+		
 		ArrayList<AbstractPierre> voisin;
 		Couleur couleurPierre, couleurVoisin = null;
 		boolean debut = true;
@@ -89,9 +112,19 @@ public class Capture {
 				}
 				else {
 					if(!couleurVoisin.equals(pierreVoisine.getCouleur()) && !couleurPierre.equals(pierreVoisine.getCouleur())) {
+						initCompteur();
 						return false;
 					}
 				}
+			}
+		}
+		
+		for(AbstractPierre pierre : chaine) {
+			if(!pierre.isMegaPierre()) {
+				addCompteur(1);
+			}
+			else {
+				addCompteur(4);
 			}
 		}
 		

@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,11 +16,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import donnees.Couleur;
+
 public class Go extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Container container;
 	private JPanel menuPanel, goPanel, actionPanel;
 	private GoPanel gobanPanel;
 	
@@ -31,12 +31,14 @@ public class Go extends JFrame implements Runnable {
 	private JRadioButton joueur1, joueur2, joueur3;
 	private JRadioButton ordi0, ordi1, ordi2;
 	
+	private JLabel[] scores;
+	
 	private int window_width, window_height;
 	
 	private Go instance = this;
 //	private Thread goThread;
 
-	
+	private boolean dejaLance = false;
 	private boolean stop = true;
 	JCheckBox megaPierre;
 
@@ -46,6 +48,7 @@ public class Go extends JFrame implements Runnable {
 		menuPanel = new JPanel();
 		goPanel = new JPanel();
 		actionPanel = new JPanel();
+		scores = new JLabel[3];
 		
 //		window_width = ParametrePartie.ECART + ParametrePartie.TAILLE_GOBAN[panel.getChoix()] * ParametrePartie.LARGEUR_CASE;
 //		window_height = 3* ParametrePartie.ECART + ParametrePartie.TAILLE_GOBAN[panel.getChoix()] * ParametrePartie.LARGEUR_CASE;
@@ -57,9 +60,6 @@ public class Go extends JFrame implements Runnable {
 	}
 
 	private void initLayout() {
-		container = this.getContentPane();
-		container.setLayout(new FlowLayout());
-		
 		/*----------------Menu------------------*/
 		
 		menuPanel.setLayout(new GridBagLayout());
@@ -156,6 +156,7 @@ public class Go extends JFrame implements Runnable {
 		/*----------------Go------------------*/
 		
 		goPanel.setLayout(new BorderLayout());
+		actionPanel.setLayout(new FlowLayout());
 		
 		megaPierre = new JCheckBox("MegaPierre");
 		megaPierre.addActionListener(new Cocher());
@@ -185,13 +186,36 @@ public class Go extends JFrame implements Runnable {
 			}
 
 			if (!stop) {
-				updateFrame();
+				update();
 			}
 		}
+	}
+	
+	private void update() {
+		updateFrame();
+		updateScore();
 	}
 
 	private void updateFrame() {
 		gobanPanel.repaint();
+	}
+	
+	private void initLabels() {
+		for(int i = 0 ; i < nb_joueur ; i++) {
+			scores[i] = new JLabel();
+		}
+	}
+	
+	private void updateScore() {
+		int scoreJoueur[] = gobanPanel.getScores();
+		Couleur[] couleurs = Couleur.getCouleurs();
+		String texte;
+		
+		for(int i = 0 ; i < nb_joueur ; i++) {
+			texte = couleurs[i].name() + " : " + String.valueOf(scoreJoueur[i]);
+			
+			scores[i].setText(texte + "  ");
+		}
 	}
 	
 	public void changeFenetre(JPanel panel) {
@@ -206,10 +230,25 @@ public class Go extends JFrame implements Runnable {
 	private class Lancer implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			gobanPanel = new GoPanel(choix, nb_joueur, nb_ordi);
-			
-			goPanel.add(gobanPanel, BorderLayout.CENTER);
-			goPanel.add(actionPanel, BorderLayout.SOUTH);
+			if(!dejaLance) {
+				gobanPanel = new GoPanel(choix, nb_joueur, nb_ordi);
+
+				gobanPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+				
+				initLabels();
+				
+				for(int i = 0 ; i < nb_joueur ; i++) {
+					gobanPanel.add(scores[i]);
+				}
+				
+				goPanel.add(gobanPanel, BorderLayout.CENTER);
+				goPanel.add(actionPanel, BorderLayout.SOUTH);
+			}
+			else {
+				gobanPanel.initGoPanel(choix, nb_joueur, nb_ordi);
+				
+				initLabels();
+			}
 			
 			changeFenetre(goPanel);
 			
@@ -219,7 +258,6 @@ public class Go extends JFrame implements Runnable {
 				goThread.start();
 			}
 		}
-		
 	}
 	
 	private class ChoixTaille implements ActionListener{

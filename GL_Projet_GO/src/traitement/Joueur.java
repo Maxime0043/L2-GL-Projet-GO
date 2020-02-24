@@ -27,8 +27,8 @@ public class Joueur {
 		return score.getScore();
 	}
 	
-	public void addScore() {
-		score.addScore();
+	public void addScore(int nombre) {
+		score.addScore(nombre);
 	}
 	
 	public Couleur getCouleur() {

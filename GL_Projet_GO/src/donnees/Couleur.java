@@ -6,24 +6,13 @@ public enum Couleur {
 	ROUGE;
 	
 	
-	public static Couleur[] couleurEnnemis(Couleur couleur) {
-		Couleur[] ennemis = new Couleur[2];
+	public static Couleur[] getCouleurs() {
+		Couleur[] couleurs = new Couleur[3];
 		
-		if(couleur.equals(NOIR)) {
-			ennemis[0] = BLANC;
-			ennemis[1] = ROUGE;
-		}
+		couleurs[0] = NOIR;
+		couleurs[1] = BLANC;
+		couleurs[2] = ROUGE;
 		
-		else if(couleur.equals(BLANC)) {
-			ennemis[0] = NOIR;
-			ennemis[1] = ROUGE;
-		}
-		
-		else {
-			ennemis[0] = NOIR;
-			ennemis[1] = BLANC;
-		}
-		
-		return ennemis;
+		return couleurs;
 	}
 }

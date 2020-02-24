@@ -17,8 +17,8 @@ public class Score {
 		return score;
 	}
 	
-	public void addScore() {
-		score++;
+	public void addScore(int nombre) {
+		score += nombre;
 	}
 
 	public int total() {

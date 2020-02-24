@@ -11,53 +11,56 @@ public class Goban {
 	
 	private AbstractPierre[][] plateau;
 	private HashMap<Integer, Chaine> hmChaine;
-	private HashMap<Couleur, Score> scores;
 	private Capture capture;
 	private GoPierre gopierre;
 	
 	private int taille_goban;
 
 	private int nb_chaine;
-	private int nb_Noir;
-	private int nb_Blanc;
-	private int nb_Rouge;
+//	private int nb_Noir;
+//	private int nb_Blanc;
+//	private int nb_Rouge;
 	
 	public Goban(int taille_goban) {
-		this.taille_goban = taille_goban;
-		nb_chaine = 0;
-		
 		plateau = new AbstractPierre[taille_goban][taille_goban];
 		hmChaine = new HashMap <Integer, Chaine>();
-		scores = new HashMap <Couleur, Score>();
-		capture = new Capture();
+		capture = new Capture(taille_goban);
 		gopierre = new GoPierre();
+		
+		initGoban(taille_goban);
 	}
 	
-	public void initGoban() {
+	public void initGoban(int taille_goban) {
+		this.taille_goban = taille_goban;
+		nb_chaine = 0;
+
+		plateau = new AbstractPierre[taille_goban][taille_goban];
+		capture = new Capture(taille_goban);
+		
+		hmChaine.clear();
+		
 		for(int i = 0 ; i < taille_goban ; i++) {
 			for(int j = 0 ; j < taille_goban ; j++) {
 				plateau[i][j] = null;
 			}
 		}
-		
-		hmChaine.clear();
-		scores.clear();
-		
-		nb_Noir = 0;
-		nb_Blanc = 0;
-		nb_Rouge = 0;
 	}
 	
 	public AbstractPierre[][] getPlateau(){
 		return plateau;
 	}
 	
+	public int getScoreCapture() {
+		return capture.getCompteur();
+	}
+	
 	public boolean existPierre(int x, int y) {
 		if (plateau[x][y] != null) {
 			return true;
 		}
-		else 
+		else {
 			return false;
+		}
 	}
 	
 	public AbstractPierre getPierre(int x, int y) {
@@ -74,23 +77,23 @@ public class Goban {
 		
 		plateau[x][y] = pierre;
 			
-		this.addToChaine(pierre);
-			
 		if(pierre.isMegaPierre()) {
 			plateau[x][y+1] = pierre;
 			plateau[x+1][y] = pierre;
 			plateau[x+1][y+1] = pierre;
 		}
 		
-		if(pierre.getCouleur().equals(Couleur.NOIR)) {
-			nb_Noir++;
-		}
-		else if(pierre.getCouleur().equals(Couleur.BLANC)) {
-			nb_Blanc++;
-		}
-		else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
-			nb_Rouge++;
-		}
+		this.addToChaine(pierre);
+		
+//		if(pierre.getCouleur().equals(Couleur.NOIR)) {
+//			nb_Noir++;
+//		}
+//		else if(pierre.getCouleur().equals(Couleur.BLANC)) {
+//			nb_Blanc++;
+//		}
+//		else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
+//			nb_Rouge++;
+//		}
 	}
 	
 	public void removePierre(AbstractPierre pierre) {
@@ -105,40 +108,40 @@ public class Goban {
 			plateau[x+1][y+1] = null;
 		}
 		
-		if(pierre.getCouleur().equals(Couleur.NOIR)) {
-			nb_Noir--;
-		}
-		else if(pierre.getCouleur().equals(Couleur.BLANC)) {
-			nb_Blanc--;
-		}
-		else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
-			nb_Rouge--;
-		}
+//		if(pierre.getCouleur().equals(Couleur.NOIR)) {
+//			nb_Noir--;
+//		}
+//		else if(pierre.getCouleur().equals(Couleur.BLANC)) {
+//			nb_Blanc--;
+//		}
+//		else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
+//			nb_Rouge--;
+//		}
 	}
 	
 	public boolean isPierreCapture(AbstractPierre pierre, int taille_goban) {
-		return capture.isCapture(pierre, plateau, taille_goban);
+		return capture.isCapture(pierre, plateau);
 	}
 	
 	public boolean isPierreCapture(ArrayList<AbstractPierre> chaine, int taille_goban) {
-		return capture.isCapture(chaine, plateau, taille_goban);
+		return capture.isCapture(chaine, plateau);
 	}
 	
 	public ArrayList<AbstractPierre> getChaine(int nom){
 		return hmChaine.get(nom).getChaine();
 	}
 	
-	public int getNbNoir() {
-		return nb_Noir;
-	}
-	
-	public int getNbBlanc() {
-		return nb_Blanc;
-	}
-	
-	public int getNbRouge() {
-		return nb_Rouge;
-	}
+//	public int getNbNoir() {
+//		return nb_Noir;
+//	}
+//	
+//	public int getNbBlanc() {
+//		return nb_Blanc;
+//	}
+//	
+//	public int getNbRouge() {
+//		return nb_Rouge;
+//	}
 	
 	/**
 	 * apres avoir poser une pierre, permet de creer une chaine avec ses voisines ou de fusionner les chaines deja existante 
