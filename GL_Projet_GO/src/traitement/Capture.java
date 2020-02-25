@@ -70,9 +70,12 @@ public class Capture {
 				}
 			}
 			
-			addCompteur(1);
-			
-//			System.out.println("Couleur du preneur d'otage : " + listVoisin.get(0).getCouleur());
+			if(!pierre.isMegaPierre()) {
+				addCompteur(1);
+			}
+			else {
+				addCompteur(4);
+			}
 		}
 		
 		return true;
