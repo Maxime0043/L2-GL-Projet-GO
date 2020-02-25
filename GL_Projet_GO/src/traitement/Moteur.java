@@ -83,6 +83,10 @@ public class Moteur {
 		isMegaPierre = bool;
 	}
 	
+	public boolean canPlayMegaPierre() {
+		return currentJoueur().hasMegaPierre();
+	}
+	
 	public ArrayList<Cercle> getCercleList(){
 		return cercle;
 	}
@@ -150,7 +154,14 @@ public class Moteur {
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban) && (!goban.existPierre(x, y))) {
 			couleur = currentCouleur();
 			
-			survole = new Cercle(new Coordonnee(x, y), couleur, false);
+			if(isMegaPierre && currentJoueur().hasMegaPierre() && (x < taille_goban - 1) && (y < taille_goban - 1)) {
+				if(!goban.existPierre(x+1, y) && !goban.existPierre(x, y+1) && !goban.existPierre(x+1, y+1)) {
+					survole = new Cercle(new Coordonnee(x, y), couleur, true);
+				}
+			}
+			else {
+				survole = new Cercle(new Coordonnee(x, y), couleur, false);
+			}
 		}
 		
 		else {
@@ -183,14 +194,23 @@ public class Moteur {
 				if(!isMegaPierre) {
 					addPierre(new Pierre(currentCouleur(), c));
 					currentJoueur().addPierre(new Pierre(currentCouleur(), c));
+					
+					changeJoueur();
 				}
 				else {
-					addPierre(new MegaPierre(currentCouleur(), c));
-					currentJoueur().addPierre(new MegaPierre(currentCouleur(), c));
+					if((x < taille_goban - 1) && (y < taille_goban - 1)) {
+						if(!goban.existPierre(x+1, y) && !goban.existPierre(x, y+1) && !goban.existPierre(x+1, y+1)) {
+							addPierre(new MegaPierre(currentCouleur(), c));
+							currentJoueur().addPierre(new MegaPierre(currentCouleur(), c));
+
+							currentJoueur().playMegaPierre();
+							changeJoueur();
+						}
+					}
 				}
-				
-				changeJoueur();
 			}
+			
+			setIsMegaPierre(false);
 		}
 	}
 	

@@ -39,6 +39,7 @@ public class Go extends JFrame implements Runnable {
 //	private Thread goThread;
 
 	private boolean stop = true;
+	private boolean checked = false;
 	JCheckBox megaPierre;
 
 	public Go() {
@@ -190,6 +191,7 @@ public class Go extends JFrame implements Runnable {
 	private void update() {
 		updateFrame();
 		updateScore();
+		updatePlayMegaPierre();
 	}
 
 	private void updateFrame() {
@@ -211,6 +213,24 @@ public class Go extends JFrame implements Runnable {
 			texte = couleurs[i].name() + " : " + String.valueOf(scoreJoueur[i]);
 			
 			scores[i].setText(texte + "  ");
+		}
+	}
+	
+	private void updatePlayMegaPierre() {
+		if(checked && !gobanPanel.getIsMegaPierre()) {
+			megaPierre.setSelected(false);
+			checked = false;
+		}
+		
+		if(gobanPanel.canPlayMegaPierre()) {
+			if(!megaPierre.isEnabled()) {
+				megaPierre.setEnabled(true);
+			}
+		}
+		else {
+			if(megaPierre.isEnabled()) {
+				megaPierre.setEnabled(false);
+			}
 		}
 	}
 	
@@ -317,6 +337,13 @@ public class Go extends JFrame implements Runnable {
 		public void actionPerformed(ActionEvent e) {
 			if(megaPierre != null) {
 				gobanPanel.poseMegaPierre();
+				
+				if(!checked) {
+					checked = true;
+				}
+				else {					
+					checked = false;
+				}
 			}
 		}
 		
@@ -329,6 +356,8 @@ public class Go extends JFrame implements Runnable {
 			
 			goPanel.remove(gobanPanel);
 			goPanel.remove(actionPanel);
+			
+			megaPierre.setSelected(false);
 			
 			changeFenetre(menuPanel);
 		}

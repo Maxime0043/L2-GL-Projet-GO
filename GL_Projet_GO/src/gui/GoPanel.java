@@ -108,10 +108,10 @@ public class GoPanel extends JPanel{
 			
 			setColor(g, survole.getCouleur());
 			
-			if(!moteur.getIsMegaPierre()) {
+			if(!moteur.getIsMegaPierre() || !moteur.currentJoueur().hasMegaPierre()) {
 				g.fillOval(x, y, taille_cerle, taille_cerle);
 			}
-			else {
+			else if(moteur.currentJoueur().hasMegaPierre()){
 				if(survole.getY() == taille_goban - 1) {
 					x = (survole.getY() - 1) * cellule + ecart_window / 2 - petit_decalage;
 				}
@@ -155,6 +155,10 @@ public class GoPanel extends JPanel{
 		}
 	}
 	
+	public boolean getIsMegaPierre() {
+		return moteur.getIsMegaPierre();
+	}
+	
 	public void poseMegaPierre() {
 		if(moteur.getIsMegaPierre()) {
 			moteur.setIsMegaPierre(false);
@@ -162,6 +166,10 @@ public class GoPanel extends JPanel{
 		else {
 			moteur.setIsMegaPierre(true);
 		}
+	}
+	
+	public boolean canPlayMegaPierre() {
+		return moteur.canPlayMegaPierre();
 	}
 	
 	public int[] getScores() {
