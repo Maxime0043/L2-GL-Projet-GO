@@ -22,23 +22,18 @@ public class Goban {
 //	private int nb_Rouge;
 	
 	public Goban(int taille_goban) {
+		this.taille_goban = taille_goban;
+		nb_chaine = 0;
+		
 		plateau = new AbstractPierre[taille_goban][taille_goban];
 		hmChaine = new HashMap <Integer, Chaine>();
 		capture = new Capture(taille_goban);
 		gopierre = new GoPierre();
 		
-		initGoban(taille_goban);
+		initPlateau(taille_goban);
 	}
 	
-	public void initGoban(int taille_goban) {
-		this.taille_goban = taille_goban;
-		nb_chaine = 0;
-
-		plateau = new AbstractPierre[taille_goban][taille_goban];
-		capture = new Capture(taille_goban);
-		
-		hmChaine.clear();
-		
+	public void initPlateau(int taille_goban) {
 		for(int i = 0 ; i < taille_goban ; i++) {
 			for(int j = 0 ; j < taille_goban ; j++) {
 				plateau[i][j] = null;

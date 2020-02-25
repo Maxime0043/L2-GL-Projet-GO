@@ -38,7 +38,6 @@ public class Go extends JFrame implements Runnable {
 	private Go instance = this;
 //	private Thread goThread;
 
-	private boolean dejaLance = false;
 	private boolean stop = true;
 	JCheckBox megaPierre;
 
@@ -49,9 +48,6 @@ public class Go extends JFrame implements Runnable {
 		goPanel = new JPanel();
 		actionPanel = new JPanel();
 		scores = new JLabel[3];
-		
-//		window_width = ParametrePartie.ECART + ParametrePartie.TAILLE_GOBAN[panel.getChoix()] * ParametrePartie.LARGEUR_CASE;
-//		window_height = 3* ParametrePartie.ECART + ParametrePartie.TAILLE_GOBAN[panel.getChoix()] * ParametrePartie.LARGEUR_CASE;
 		
 		window_width = 700;
 		window_height = 500;
@@ -165,7 +161,7 @@ public class Go extends JFrame implements Runnable {
 		JButton revenirMenu = new JButton("Revenir Menu");
 		revenirMenu.addActionListener(new RevenirMenu());
 		actionPanel.add(revenirMenu);
-		revenirMenu.setEnabled(false);
+//		revenirMenu.setEnabled(false);
 		
 		/*----------------Parametres------------------*/
 		
@@ -230,25 +226,18 @@ public class Go extends JFrame implements Runnable {
 	private class Lancer implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!dejaLance) {
-				gobanPanel = new GoPanel(choix, nb_joueur, nb_ordi);
+			gobanPanel = new GoPanel(choix, nb_joueur, nb_ordi);
 
-				gobanPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-				
-				initLabels();
-				
-				for(int i = 0 ; i < nb_joueur ; i++) {
-					gobanPanel.add(scores[i]);
-				}
-				
-				goPanel.add(gobanPanel, BorderLayout.CENTER);
-				goPanel.add(actionPanel, BorderLayout.SOUTH);
+			gobanPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			
+			initLabels();
+			
+			for(int i = 0 ; i < nb_joueur ; i++) {
+				gobanPanel.add(scores[i]);
 			}
-			else {
-				gobanPanel.initGoPanel(choix, nb_joueur, nb_ordi);
-				
-				initLabels();
-			}
+			
+			goPanel.add(gobanPanel, BorderLayout.CENTER);
+			goPanel.add(actionPanel, BorderLayout.SOUTH);
 			
 			changeFenetre(goPanel);
 			
@@ -337,6 +326,9 @@ public class Go extends JFrame implements Runnable {
 		@Override
 		public void actionPerformed(ActionEvent e) {			
 			stop = true;
+			
+			goPanel.remove(gobanPanel);
+			goPanel.remove(actionPanel);
 			
 			changeFenetre(menuPanel);
 		}

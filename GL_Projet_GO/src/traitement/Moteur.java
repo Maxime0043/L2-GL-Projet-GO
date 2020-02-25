@@ -39,23 +39,13 @@ public class Moteur {
 	public Moteur(int cellule, int ecart_window, int taille_goban, int nb_joueur, int nb_ordi) {
 		this.cellule = cellule;
 		this.ecart_window = ecart_window;
+		this.taille_goban = taille_goban;
+		nb_joueurs = nb_joueur + nb_ordi;
 		
 		goban = new Goban(taille_goban);
 		gopierre = new GoPierre();
 		joueurs = new Joueur[nb_joueurs];
 		cercle = new ArrayList<Cercle>();
-		
-		initMoteur(taille_goban, nb_joueur, nb_ordi);
-	}
-	
-	public void initMoteur(int taille_goban, int nb_joueur, int nb_ordi) {
-		this.taille_goban = taille_goban;
-		nb_joueurs = nb_joueur + nb_ordi;
-
-		goban.initGoban(taille_goban);
-		
-		joueurs = new Joueur[nb_joueurs];
-		cercle.clear();
 		
 		initJoueur();
 	}
