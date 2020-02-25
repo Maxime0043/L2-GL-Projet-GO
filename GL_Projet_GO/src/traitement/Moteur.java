@@ -154,6 +154,15 @@ public class Moteur {
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban) && (!goban.existPierre(x, y))) {
 			couleur = currentCouleur();
 			
+			if(isMegaPierre) {
+				if(x == taille_goban - 1) {
+					x--;
+				}
+				if(y == taille_goban - 1) {
+					y--;
+				}
+			}
+			
 			if(isMegaPierre && currentJoueur().hasMegaPierre() && (x < taille_goban - 1) && (y < taille_goban - 1)) {
 				if(!goban.existPierre(x+1, y) && !goban.existPierre(x, y+1) && !goban.existPierre(x+1, y+1)) {
 					survole = new Cercle(new Coordonnee(x, y), couleur, true);
