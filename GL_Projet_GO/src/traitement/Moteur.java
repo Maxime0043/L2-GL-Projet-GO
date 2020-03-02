@@ -244,13 +244,13 @@ public class Moteur {
 		ArrayList<AbstractPierre> voisin = gopierre.voisins(goban.getPierre(pierre.getX(), pierre.getY()), goban.getPlateau(), taille_goban);
 		
 		for(AbstractPierre pierreVoisin : voisin) {
-			if(pierreVoisin.hasChaine()) {
+			if(pierreVoisin.hasChaine() && !pierreVoisin.getCouleur().equals(pierre.getCouleur())) {
 				if(goban.isPierreCapture(goban.getChaine(pierreVoisin.getNomChaine()), taille_goban)) {
 					removePierre(goban.getChaine(pierreVoisin.getNomChaine()));
 				}
 			}
 			
-			else if(goban.isPierreCapture(pierreVoisin, taille_goban)) {
+			else if(goban.isPierreCapture(pierreVoisin, taille_goban) && !pierreVoisin.getCouleur().equals(pierre.getCouleur()) ) {
 				removePierre(pierreVoisin);
 			}
 			
@@ -260,7 +260,8 @@ public class Moteur {
 		
 		if(pierre.hasChaine()) {
 			if(goban.isPierreCapture(goban.getChaine(pierre.getNomChaine()), taille_goban)) {
-				removePierre(goban.getChaine(pierre.getNomChaine()));
+				removePierre(pierre);
+				setSuicide(true);
 			}
 		}
 		else {
