@@ -257,9 +257,17 @@ public class Moteur {
 			currentJoueur().addScore(goban.getScoreCapture());
 				
 		}
-		if(goban.isPierreCapture(pierre, taille_goban)) {
-			removePierre(pierre);
-			setSuicide(true);
+		
+		if(pierre.hasChaine()) {
+			if(goban.isPierreCapture(goban.getChaine(pierre.getNomChaine()), taille_goban)) {
+				removePierre(goban.getChaine(pierre.getNomChaine()));
+			}
+		}
+		else {
+			if(goban.isPierreCapture(pierre, taille_goban)) {
+				removePierre(pierre);
+				setSuicide(true);
+			}
 		}
 	}
 	
