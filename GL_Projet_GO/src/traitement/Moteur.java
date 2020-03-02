@@ -255,43 +255,11 @@ public class Moteur {
 			}
 			
 			currentJoueur().addScore(goban.getScoreCapture());
-			
-			
+				
 		}
-		this.suicide(pierre, voisin);
-	}
-	
-	public void suicide(AbstractPierre pierre, ArrayList<AbstractPierre> voisin) {
-		
-		Couleur couleurP = null;
-		boolean debut = true;
-		boolean supp = true;
-		int nVoisin;
-		
-		if(isMegaPierre) {
-			nVoisin = 8;
-		}
-		else {
-			nVoisin = 4;
-		}
-		
-		if(goban.getScoreCapture() == 0 && gopierre.voisins(pierre, goban.getPlateau(), taille_goban).size() == nVoisin) {
-			for(AbstractPierre p : voisin) {
-				if(debut) {
-					couleurP = p.getCouleur();
-					debut = false;
-				}
-				else {
-					if(!couleurP.equals(p.getCouleur())) {
-						supp = false;
-					}
-				}
-			}
-			
-			if(supp && !couleurP.equals(pierre.getCouleur())) {
-				removePierre(pierre);
-				setSuicide(true);
-			}
+		if(goban.isPierreCapture(pierre, taille_goban)) {
+			removePierre(pierre);
+			setSuicide(true);
 		}
 	}
 	
