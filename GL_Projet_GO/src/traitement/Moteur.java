@@ -35,6 +35,7 @@ public class Moteur {
 	private boolean blanc = false;
 	private boolean rouge = false;
 	private boolean isMegaPierre = false;
+	private boolean suicide = false;
 	
 	public Moteur(int cellule, int ecart_window, int taille_goban, int nb_joueur, int nb_ordi) {
 		this.cellule = cellule;
@@ -81,6 +82,10 @@ public class Moteur {
 	
 	public void setIsMegaPierre(boolean bool) {
 		isMegaPierre = bool;
+	}
+	
+	public void setSuicide(boolean bool) {
+		suicide = bool;
 	}
 	
 	public boolean canPlayMegaPierre() {
@@ -179,6 +184,7 @@ public class Moteur {
 	}
 	
 	public void clicEvent(MouseEvent e) {
+		
 		int x = (e.getY() - ecart_window / 2) / cellule;
 		int y = (e.getX() - ecart_window / 2) / cellule;
 		
@@ -204,7 +210,9 @@ public class Moteur {
 					addPierre(new Pierre(currentCouleur(), c));
 					currentJoueur().addPierre(new Pierre(currentCouleur(), c));
 					
-					changeJoueur();
+					if(!suicide) {
+						changeJoueur();
+					}
 				}
 				else {
 					if((x < taille_goban - 1) && (y < taille_goban - 1)) {
@@ -212,18 +220,21 @@ public class Moteur {
 							addPierre(new MegaPierre(currentCouleur(), c));
 							currentJoueur().addPierre(new MegaPierre(currentCouleur(), c));
 
-							currentJoueur().playMegaPierre();
-							changeJoueur();
+							if(!suicide) {
+								currentJoueur().playMegaPierre();
+								changeJoueur();
+								setIsMegaPierre(false);
+							}
 						}
 					}
 				}
 			}
-			
-			setIsMegaPierre(false);
+			setSuicide(false);
 		}
 	}
 	
 	public void addPierre(AbstractPierre pierre) {
+		
 		goban.addPierre(pierre);
 		
 		Coordonnee coordPierre = new Coordonnee(pierre.getX(), pierre.getY());
@@ -244,6 +255,43 @@ public class Moteur {
 			}
 			
 			currentJoueur().addScore(goban.getScoreCapture());
+			
+			
+		}
+		this.suicide(pierre, voisin);
+	}
+	
+	public void suicide(AbstractPierre pierre, ArrayList<AbstractPierre> voisin) {
+		
+		Couleur couleurP = null;
+		boolean debut = true;
+		boolean supp = true;
+		int nVoisin;
+		
+		if(isMegaPierre) {
+			nVoisin = 8;
+		}
+		else {
+			nVoisin = 4;
+		}
+		
+		if(goban.getScoreCapture() == 0 && gopierre.voisins(pierre, goban.getPlateau(), taille_goban).size() == nVoisin) {
+			for(AbstractPierre p : voisin) {
+				if(debut) {
+					couleurP = p.getCouleur();
+					debut = false;
+				}
+				else {
+					if(!couleurP.equals(p.getCouleur())) {
+						supp = false;
+					}
+				}
+			}
+			
+			if(supp && !couleurP.equals(pierre.getCouleur())) {
+				removePierre(pierre);
+				setSuicide(true);
+			}
 		}
 	}
 	
@@ -259,7 +307,7 @@ public class Moteur {
 					c = coordCercle;
 				}
 			}
-			
+		    
 			cercle.remove(c);
 		}
 	}
