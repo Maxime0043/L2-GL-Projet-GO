@@ -17,6 +17,10 @@ public class Score {
 		return score;
 	}
 	
+	public void initScore() {
+		score = 0;
+	}
+	
 	public void addScore(int nombre) {
 		score += nombre;
 	}

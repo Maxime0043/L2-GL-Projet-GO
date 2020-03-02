@@ -36,10 +36,10 @@ public class Go extends JFrame implements Runnable {
 	private int window_width, window_height;
 	
 	private Go instance = this;
-//	private Thread goThread;
 
 	private boolean stop = true;
 	private boolean checked = false;
+	private boolean isDidacticiel = false;
 	JCheckBox megaPierre;
 
 	public Go() {
@@ -69,6 +69,11 @@ public class Go extends JFrame implements Runnable {
 		JButton start = new JButton("Lancer");
 		start.addActionListener(new Lancer());
 		menuPanel.add(start, gbc);
+		
+		gbc.gridy++;
+		JButton didacticiel = new JButton("Didacticiel");
+		didacticiel.addActionListener(new Didacticiel());
+		menuPanel.add(didacticiel, gbc);
 		
 		ButtonGroup tailleGroupe = new ButtonGroup();
 
@@ -192,6 +197,12 @@ public class Go extends JFrame implements Runnable {
 		updateFrame();
 		updateScore();
 		updatePlayMegaPierre();
+		
+		if(isDidacticiel) {
+			if(gobanPanel.isDidacticielFini()) {
+				revenirMenu();
+			}
+		}
 	}
 
 	private void updateFrame() {
@@ -239,6 +250,41 @@ public class Go extends JFrame implements Runnable {
 		this.revalidate();
 	}
 	
+	public void lancer() {
+		gobanPanel = new GoPanel(choix, nb_joueur, nb_ordi, isDidacticiel);
+
+		gobanPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
+		initLabels();
+		
+		for(int i = 0 ; i < nb_joueur ; i++) {
+			gobanPanel.add(scores[i]);
+		}
+		
+		goPanel.add(gobanPanel, BorderLayout.CENTER);
+		goPanel.add(actionPanel, BorderLayout.SOUTH);
+		
+		changeFenetre(goPanel);
+		
+		if(stop) {
+			stop = false;
+			Thread goThread = new Thread(instance);
+			goThread.start();
+		}
+	}
+	
+	public void revenirMenu() {
+		stop = true;
+		isDidacticiel = false;
+		
+		goPanel.remove(gobanPanel);
+		goPanel.remove(actionPanel);
+		
+		megaPierre.setSelected(false);
+		
+		changeFenetre(menuPanel);
+	}
+	
 	public void fermer() {
 		this.dispose();
 	}
@@ -246,26 +292,18 @@ public class Go extends JFrame implements Runnable {
 	private class Lancer implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			gobanPanel = new GoPanel(choix, nb_joueur, nb_ordi);
-
-			gobanPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			lancer();
+		}
+	}
+	
+	private class Didacticiel implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			isDidacticiel = true;
+			nb_joueur = 2;
+			nb_ordi = 0;
 			
-			initLabels();
-			
-			for(int i = 0 ; i < nb_joueur ; i++) {
-				gobanPanel.add(scores[i]);
-			}
-			
-			goPanel.add(gobanPanel, BorderLayout.CENTER);
-			goPanel.add(actionPanel, BorderLayout.SOUTH);
-			
-			changeFenetre(goPanel);
-			
-			if(stop) {
-				stop = false;
-				Thread goThread = new Thread(instance);
-				goThread.start();
-			}
+			lancer();
 		}
 	}
 	
@@ -352,14 +390,7 @@ public class Go extends JFrame implements Runnable {
 	private class RevenirMenu implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {			
-			stop = true;
-			
-			goPanel.remove(gobanPanel);
-			goPanel.remove(actionPanel);
-			
-			megaPierre.setSelected(false);
-			
-			changeFenetre(menuPanel);
+			revenirMenu();
 		}
 		
 	}

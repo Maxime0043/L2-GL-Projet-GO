@@ -26,6 +26,7 @@ public class Moteur {
 	
 	private Goban goban;
 	private GoPierre gopierre;
+	private Didacticiel didacticiel;
 	
 	private Joueur[] joueurs;
 	private ArrayList<Cercle> cercle;
@@ -35,9 +36,10 @@ public class Moteur {
 	private boolean blanc = false;
 	private boolean rouge = false;
 	private boolean isMegaPierre = false;
+	private boolean didacticiel_fini = false;
 	private boolean suicide = false;
 	
-	public Moteur(int cellule, int ecart_window, int taille_goban, int nb_joueur, int nb_ordi) {
+	public Moteur(int cellule, int ecart_window, int taille_goban, int nb_joueur, int nb_ordi, boolean didacticiel) {
 		this.cellule = cellule;
 		this.ecart_window = ecart_window;
 		this.taille_goban = taille_goban;
@@ -47,8 +49,21 @@ public class Moteur {
 		gopierre = new GoPierre();
 		joueurs = new Joueur[nb_joueurs];
 		cercle = new ArrayList<Cercle>();
-		
+
 		initJoueur();
+		
+		this.didacticiel = null;
+		
+		if(didacticiel) {
+			this.didacticiel = new Didacticiel(taille_goban, this);
+			this.didacticiel.chargeLevel();
+		}
+	}
+	
+	public void reinitGoban(int taille_goban) {
+		goban.initPlateau(taille_goban);
+		cercle.clear();
+		changeJoueur();
 	}
 	
 	public void initJoueur() {
@@ -58,6 +73,10 @@ public class Moteur {
 		if(nb_joueurs == 3) {
 			joueurs[2] = new Joueur(Couleur.ROUGE, false);
 		}
+	}
+	
+	public boolean isDidacticielFini() {
+		return didacticiel_fini;
 	}
 	
 	public Joueur[] getJoueurs(){
@@ -84,12 +103,12 @@ public class Moteur {
 		isMegaPierre = bool;
 	}
 	
-	public void setSuicide(boolean bool) {
-		suicide = bool;
-	}
-	
 	public boolean canPlayMegaPierre() {
 		return currentJoueur().hasMegaPierre();
+	}
+	
+	public void setSuicide(boolean bool) {
+		suicide = bool;
 	}
 	
 	public ArrayList<Cercle> getCercleList(){
@@ -145,6 +164,19 @@ public class Moteur {
 		}
 	}
 	
+	private void changeLevel() {
+		if(didacticiel != null) {
+			if(currentJoueur().getScore() > 0) {
+				if(didacticiel.getLevel() < didacticiel.getNbLevels()) {
+					didacticiel.changeLevel();
+				}
+				else {
+					didacticiel_fini = true;
+				}
+			}
+		}
+	}
+	
 	public void survoleZone(MouseEvent e) {
 		int x = (e.getY() - ecart_window / 2) / cellule;
 		int y = (e.getX() - ecart_window / 2) / cellule;
@@ -184,7 +216,6 @@ public class Moteur {
 	}
 	
 	public void clicEvent(MouseEvent e) {
-		
 		int x = (e.getY() - ecart_window / 2) / cellule;
 		int y = (e.getX() - ecart_window / 2) / cellule;
 		
@@ -209,7 +240,7 @@ public class Moteur {
 				if(!isMegaPierre) {
 					addPierre(new Pierre(currentCouleur(), c));
 					currentJoueur().addPierre(new Pierre(currentCouleur(), c));
-					
+
 					if(!suicide) {
 						changeJoueur();
 					}
@@ -229,12 +260,12 @@ public class Moteur {
 					}
 				}
 			}
-			setSuicide(false);
+			
+			setIsMegaPierre(false);
 		}
 	}
 	
 	public void addPierre(AbstractPierre pierre) {
-		
 		goban.addPierre(pierre);
 		
 		Coordonnee coordPierre = new Coordonnee(pierre.getX(), pierre.getY());
@@ -270,6 +301,8 @@ public class Moteur {
 				setSuicide(true);
 			}
 		}
+		
+		changeLevel();
 	}
 	
 	public void removePierre(AbstractPierre pierre) {
@@ -284,7 +317,7 @@ public class Moteur {
 					c = coordCercle;
 				}
 			}
-		    
+			
 			cercle.remove(c);
 		}
 	}

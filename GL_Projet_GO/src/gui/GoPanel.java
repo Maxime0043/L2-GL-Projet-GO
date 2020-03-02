@@ -32,8 +32,8 @@ public class GoPanel extends JPanel{
 	private int taille_goban;
 	private int nb_joueurs;
 	
-	public GoPanel(int choix, int nb_joueur, int nb_ordi) {
-		initGoPanel(choix, nb_joueur, nb_ordi);
+	public GoPanel(int choix, int nb_joueur, int nb_ordi, boolean didacticiel) {
+		initGoPanel(choix, nb_joueur, nb_ordi, didacticiel);
 		
 		this.addMouseListener(new Souris());
 		this.addMouseMotionListener(new DeplacementSouris());
@@ -42,7 +42,7 @@ public class GoPanel extends JPanel{
 		this.setBackground(Color.decode("#F2B352"));
 	}
 	
-	public void initGoPanel(int choix, int nb_joueur, int nb_ordi) {
+	public void initGoPanel(int choix, int nb_joueur, int nb_ordi, boolean didacticiel) {
 		cellule = ParametrePartie.LARGEUR_CASE;
 		if(choix == 1) {
 			cellule /= 2;
@@ -52,7 +52,7 @@ public class GoPanel extends JPanel{
 		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
 		nb_joueurs = nb_joueur + nb_ordi;
 		
-		moteur = new Moteur(cellule, ecart_window, taille_goban, nb_joueur, nb_ordi);		
+		moteur = new Moteur(cellule, ecart_window, taille_goban, nb_joueur, nb_ordi, didacticiel);
 	}
 
 	@Override
@@ -153,6 +153,10 @@ public class GoPanel extends JPanel{
 		else if(couleur.equals(Couleur.ROUGE)) {
 			g.setColor(Color.RED);
 		}
+	}
+	
+	public boolean isDidacticielFini() {
+		return moteur.isDidacticielFini();
 	}
 	
 	public boolean getIsMegaPierre() {

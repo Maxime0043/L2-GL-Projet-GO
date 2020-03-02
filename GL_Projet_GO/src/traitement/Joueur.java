@@ -27,6 +27,10 @@ public class Joueur {
 		return score.getScore();
 	}
 	
+	public void initScore() {
+		score.initScore();
+	}
+	
 	public void addScore(int nombre) {
 		score.addScore(nombre);
 	}
