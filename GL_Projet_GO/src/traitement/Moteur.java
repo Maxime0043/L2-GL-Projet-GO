@@ -306,6 +306,8 @@ public class Moteur {
 			if(pierreVoisin.hasChaine() && !pierreVoisin.getCouleur().equals(pierre.getCouleur())) {
 				if(goban.isPierreCapture(goban.getChaine(pierreVoisin.getNomChaine()))) {
 					removePierre(goban.getChaine(pierreVoisin.getNomChaine()));
+					
+					currentJoueur().addScore(goban.getScoreCapture());
 				}
 			}
 			
@@ -313,9 +315,9 @@ public class Moteur {
 				removePierre(pierreVoisin);
 				setKo(pierre);
 				compteur = true;
+				
+				currentJoueur().addScore(goban.getScoreCapture());
 			}
-			
-			currentJoueur().addScore(goban.getScoreCapture());
 				
 		}
 		

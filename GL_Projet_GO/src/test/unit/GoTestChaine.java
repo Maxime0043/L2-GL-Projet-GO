@@ -62,19 +62,17 @@ public class GoTestChaine {
 		int x = 4;
 		int y = 4;
 
-		AbstractPierre pierre1 = new Pierre(Couleur.NOIR, new Coordonnee(x, y-1));
+		AbstractPierre pierre1 = new Pierre(Couleur.NOIR, new Coordonnee(x, y));
 		goban.addPierre(pierre1);
 		
-		AbstractPierre pierre2 = new MegaPierre(Couleur.NOIR, new Coordonnee(x, y));
+		AbstractPierre pierre2 = new MegaPierre(Couleur.BLANC, new Coordonnee(x, y+1));
 		goban.addPierre(pierre2);
 		
 		boolean hasChaine1 = pierre1.hasChaine();
 		boolean hasChaine2 = pierre2.hasChaine();
 		
-		assertTrue(hasChaine1);
-		assertTrue(hasChaine2);
-		
-		assertEquals(pierre2.getNomChaine(), pierre1.getNomChaine());
+		assertTrue(!hasChaine1);
+		assertTrue(!hasChaine2);
 	}
 
 	@Test
@@ -97,6 +95,27 @@ public class GoTestChaine {
 
 	@Test
 	public void testGoChaine4(){
+		int x = 4;
+		int y = 4;
+
+		AbstractPierre pierre1 = new Pierre(Couleur.NOIR, new Coordonnee(x, y));
+		goban.addPierre(pierre1);
+		goban.addPierre(new Pierre(Couleur.NOIR, new Coordonnee(x, y+1)));
+		
+		AbstractPierre pierre2 = new Pierre(Couleur.NOIR, new Coordonnee(x+1, y));
+		goban.addPierre(pierre2);
+		
+		boolean hasChaine1 = pierre1.hasChaine();
+		boolean hasChaine2 = pierre2.hasChaine();
+		
+		assertTrue(hasChaine1);
+		assertTrue(hasChaine2);
+		
+		assertEquals(pierre2.getNomChaine(), pierre1.getNomChaine());
+	}
+
+	@Test
+	public void testGoChaine5(){
 		int x = 4;
 		int y = 4;
 
