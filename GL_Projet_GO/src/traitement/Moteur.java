@@ -28,6 +28,10 @@ public class Moteur {
 	private GoPierre gopierre;
 	private Didacticiel didacticiel;
 	
+	private AbstractPierre Ko = null;
+	private int Ko_compteur = 0;
+	private boolean compteur = false;
+	
 	private Joueur[] joueurs;
 	private ArrayList<Cercle> cercle;
 	private Cercle survole;
@@ -57,6 +61,18 @@ public class Moteur {
 		if(didacticiel) {
 			this.didacticiel = new Didacticiel(taille_goban, this);
 			this.didacticiel.chargeLevel();
+		}
+	}
+	
+	public void incrementeKoCompteur() {
+		if(compteur) {
+			Ko_compteur++;
+			System.out.println(Ko_compteur + "/" + nb_joueurs + "\n");
+			if(Ko_compteur == nb_joueurs) {
+				setKo(null);
+				compteur = false;
+				Ko_compteur = 0;
+			}
 		}
 	}
 	
@@ -110,6 +126,14 @@ public class Moteur {
 	
 	public void setSuicide(boolean bool) {
 		suicide = bool;
+	}
+	
+	public void setKo (AbstractPierre pierre) {
+		Ko = pierre;
+	}
+	
+	public AbstractPierre getKo () {
+		return Ko;
 	}
 	
 	public ArrayList<Cercle> getCercleList(){
@@ -246,10 +270,6 @@ public class Moteur {
 				if(!isMegaPierre) {
 					addPierre(new Pierre(currentCouleur(), c));
 					currentJoueur().addPierre(new Pierre(currentCouleur(), c));
-
-					if(!suicide) {
-						changeJoueur();
-					}
 				}
 				else {
 					if((x < taille_goban - 1) && (y < taille_goban - 1)) {
@@ -259,17 +279,18 @@ public class Moteur {
 
 							if(!suicide) {
 								currentJoueur().playMegaPierre();
-								changeJoueur();
 							}
 						}
 					}
 				}
+				if(!suicide) {
+					changeJoueur();
+					incrementeKoCompteur();
+				}
 			}
 		}
-
 		setIsMegaPierre(false);
 		setSuicide(false);
-
 		changeLevel();
 	}
 	
@@ -289,8 +310,10 @@ public class Moteur {
 				}
 			}
 			
-			else if(goban.isPierreCapture(pierreVoisin, taille_goban) && !pierreVoisin.getCouleur().equals(pierre.getCouleur()) ) {
+			else if(goban.isPierreCapture(pierreVoisin, taille_goban) && !pierreVoisin.getCouleur().equals(pierre.getCouleur()) && !pierreVoisin.equals(getKo()) ) {
 				removePierre(pierreVoisin);
+				setKo(pierre);
+				compteur = true;
 			}
 			
 			currentJoueur().addScore(goban.getScoreCapture());
