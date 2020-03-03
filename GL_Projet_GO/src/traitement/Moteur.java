@@ -260,9 +260,8 @@ public class Moteur {
 					}
 				}
 			}
-			
-			setIsMegaPierre(false);
 		}
+		setSuicide(false);
 	}
 	
 	public void addPierre(AbstractPierre pierre) {
