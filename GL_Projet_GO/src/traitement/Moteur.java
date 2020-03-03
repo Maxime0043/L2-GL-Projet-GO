@@ -62,6 +62,7 @@ public class Moteur {
 	
 	public void reinitGoban(int taille_goban) {
 		goban.initPlateau(taille_goban);
+		setIsMegaPierre(false);
 		cercle.clear();
 		changeJoueur();
 	}
@@ -162,6 +163,11 @@ public class Moteur {
 			rouge = false;
 			noir = true;
 		}
+		
+		if(didacticiel != null) {
+			noir = true;
+			blanc = false;
+		}
 	}
 	
 	private void changeLevel() {
@@ -254,15 +260,17 @@ public class Moteur {
 							if(!suicide) {
 								currentJoueur().playMegaPierre();
 								changeJoueur();
-								setIsMegaPierre(false);
 							}
 						}
 					}
 				}
 			}
 		}
-		
+
+		setIsMegaPierre(false);
 		setSuicide(false);
+
+		changeLevel();
 	}
 	
 	public void addPierre(AbstractPierre pierre) {
@@ -301,8 +309,6 @@ public class Moteur {
 				setSuicide(true);
 			}
 		}
-		
-		changeLevel();
 	}
 	
 	public void removePierre(AbstractPierre pierre) {

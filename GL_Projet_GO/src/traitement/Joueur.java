@@ -43,6 +43,10 @@ public class Joueur {
 		return isOrdi;
 	}
 	
+	public void initNbMegaPierre() {
+		nb_megaPierre = 1;
+	}
+	
 	public boolean hasMegaPierre() {
 		return nb_megaPierre > 0;
 	}

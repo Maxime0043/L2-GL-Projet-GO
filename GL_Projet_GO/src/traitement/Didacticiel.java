@@ -24,6 +24,7 @@ public class Didacticiel {
 
 		for(Joueur joueur : moteur.getJoueurs()) {
 			joueur.initScore();
+			joueur.initNbMegaPierre();
 		}
 	}
 	
