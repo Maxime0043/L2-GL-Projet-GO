@@ -17,9 +17,6 @@ public class Goban {
 	private int taille_goban;
 
 	private int nb_chaine;
-//	private int nb_Noir;
-//	private int nb_Blanc;
-//	private int nb_Rouge;
 	
 	public Goban(int taille_goban) {
 		this.taille_goban = taille_goban;
@@ -80,15 +77,6 @@ public class Goban {
 		
 		this.addToChaine(pierre);
 		
-//		if(pierre.getCouleur().equals(Couleur.NOIR)) {
-//			nb_Noir++;
-//		}
-//		else if(pierre.getCouleur().equals(Couleur.BLANC)) {
-//			nb_Blanc++;
-//		}
-//		else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
-//			nb_Rouge++;
-//		}
 	}
 	
 	public void removePierre(AbstractPierre pierre) {
@@ -103,40 +91,27 @@ public class Goban {
 			plateau[x+1][y+1] = null;
 		}
 		
-//		if(pierre.getCouleur().equals(Couleur.NOIR)) {
-//			nb_Noir--;
-//		}
-//		else if(pierre.getCouleur().equals(Couleur.BLANC)) {
-//			nb_Blanc--;
-//		}
-//		else if(pierre.getCouleur().equals(Couleur.ROUGE)) {
-//			nb_Rouge--;
-//		}
 	}
 	
-	public boolean isPierreCapture(AbstractPierre pierre, int taille_goban) {
+	public boolean isPierreCapture(AbstractPierre pierre) {
 		return capture.isCapture(pierre, plateau);
 	}
 	
-	public boolean isPierreCapture(ArrayList<AbstractPierre> chaine, int taille_goban) {
+	public boolean isPierreCapture(ArrayList<AbstractPierre> chaine) {
 		return capture.isCapture(chaine, plateau);
+	}
+	
+	public boolean isSuicide(AbstractPierre pierre) {
+		return isPierreCapture(pierre);
+	}
+	
+	public boolean isSuicide(ArrayList<AbstractPierre> chaine) {
+		return isPierreCapture(chaine);
 	}
 	
 	public ArrayList<AbstractPierre> getChaine(int nom){
 		return hmChaine.get(nom).getChaine();
 	}
-	
-//	public int getNbNoir() {
-//		return nb_Noir;
-//	}
-//	
-//	public int getNbBlanc() {
-//		return nb_Blanc;
-//	}
-//	
-//	public int getNbRouge() {
-//		return nb_Rouge;
-//	}
 	
 	/**
 	 * apres avoir poser une pierre, permet de creer une chaine avec ses voisines ou de fusionner les chaines deja existante 
@@ -150,12 +125,6 @@ public class Goban {
 		Couleur couleurVoisin;
 		
 		ArrayList<AbstractPierre> liste_voisin = gopierre.voisins(pierre, plateau, taille_goban);
-		
-//		System.out.println("Liste pierres voisines de [" + x + "," + y + "]:");
-//		for(AbstractPierre p : liste_voisin) {
-//			System.out.println("[" + p.getX() + "," + p.getY() + "]");
-//		}
-//		System.out.println("Fin Liste\n");
 		
 		if(liste_voisin.size() != 0) {
 			for(AbstractPierre pierreVoisine : liste_voisin) {

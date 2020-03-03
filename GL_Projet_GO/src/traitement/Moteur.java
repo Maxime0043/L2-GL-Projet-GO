@@ -64,18 +64,6 @@ public class Moteur {
 		}
 	}
 	
-	public void incrementeKoCompteur() {
-		if(compteur) {
-			Ko_compteur++;
-			System.out.println(Ko_compteur + "/" + nb_joueurs + "\n");
-			if(Ko_compteur == nb_joueurs) {
-				setKo(null);
-				compteur = false;
-				Ko_compteur = 0;
-			}
-		}
-	}
-	
 	public void reinitGoban(int taille_goban) {
 		goban.initPlateau(taille_goban);
 		setIsMegaPierre(false);
@@ -94,6 +82,17 @@ public class Moteur {
 	
 	public boolean isDidacticielFini() {
 		return didacticiel_fini;
+	}
+	
+	public void incrementeKoCompteur() {
+		if(compteur) {
+			Ko_compteur++;
+			if(Ko_compteur == nb_joueurs) {
+				setKo(null);
+				compteur = false;
+				Ko_compteur = 0;
+			}
+		}
 	}
 	
 	public Joueur[] getJoueurs(){
@@ -305,12 +304,12 @@ public class Moteur {
 		
 		for(AbstractPierre pierreVoisin : voisin) {
 			if(pierreVoisin.hasChaine() && !pierreVoisin.getCouleur().equals(pierre.getCouleur())) {
-				if(goban.isPierreCapture(goban.getChaine(pierreVoisin.getNomChaine()), taille_goban)) {
+				if(goban.isPierreCapture(goban.getChaine(pierreVoisin.getNomChaine()))) {
 					removePierre(goban.getChaine(pierreVoisin.getNomChaine()));
 				}
 			}
 			
-			else if(goban.isPierreCapture(pierreVoisin, taille_goban) && !pierreVoisin.getCouleur().equals(pierre.getCouleur()) && !pierreVoisin.equals(getKo()) ) {
+			else if(goban.isPierreCapture(pierreVoisin) && !pierreVoisin.getCouleur().equals(pierre.getCouleur()) && !pierreVoisin.equals(getKo())) {
 				removePierre(pierreVoisin);
 				setKo(pierre);
 				compteur = true;
@@ -321,13 +320,13 @@ public class Moteur {
 		}
 		
 		if(pierre.hasChaine()) {
-			if(goban.isPierreCapture(goban.getChaine(pierre.getNomChaine()), taille_goban)) {
+			if(goban.isSuicide(goban.getChaine(pierre.getNomChaine()))) {
 				removePierre(pierre);
 				setSuicide(true);
 			}
 		}
 		else {
-			if(goban.isPierreCapture(pierre, taille_goban)) {
+			if(goban.isSuicide(pierre)) {
 				removePierre(pierre);
 				setSuicide(true);
 			}
