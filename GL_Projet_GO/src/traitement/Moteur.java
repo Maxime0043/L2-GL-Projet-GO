@@ -261,6 +261,7 @@ public class Moteur {
 				}
 			}
 		}
+		
 		setSuicide(false);
 	}
 	
