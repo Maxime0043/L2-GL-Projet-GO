@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -91,7 +92,7 @@ public class Go extends JFrame implements Runnable {
 		
 		GridBagConstraints gbcGauche = new GridBagConstraints();
 		gbcGauche.insets = new Insets(5, window_width / 10, 5, 5);
-		gbcGauche.gridx = 1;
+		gbcGauche.gridx = 0;
 		gbcGauche.gridy = 1;
 		
 		JLabel taille = new JLabel("Taille du goban :");
@@ -110,13 +111,13 @@ public class Go extends JFrame implements Runnable {
 		taille19.addActionListener(new ChoixTaille());
 		tailleGroupe.add(taille19);
 		menuGauchePanel.add(taille19, gbcGauche);
-		
+
 		gbcGauche.gridy++;
 		JLabel joueurs = new JLabel("Nombre de joueurs :");
 		menuGauchePanel.add(joueurs, gbcGauche);
 		
 		ButtonGroup joueurGroup = new ButtonGroup();
-		
+
 		gbcGauche.gridy++;
 		joueur1 = new JRadioButton("1");
 		joueur1.addActionListener(new SelectionJoueur());
@@ -168,6 +169,18 @@ public class Go extends JFrame implements Runnable {
 
 		menuPanel.add(menuDroitPanel, BorderLayout.EAST);
 		menuPanel.add(menuGauchePanel, BorderLayout.WEST);
+		
+		taille9.setBackground(Color.decode("#F2B352"));
+		taille19.setBackground(Color.decode("#F2B352"));
+		joueur1.setBackground(Color.decode("#F2B352"));
+		joueur2.setBackground(Color.decode("#F2B352"));
+		joueur3.setBackground(Color.decode("#F2B352"));
+		ordi0.setBackground(Color.decode("#F2B352"));
+		ordi1.setBackground(Color.decode("#F2B352"));
+		ordi2.setBackground(Color.decode("#F2B352"));
+		menuPanel.setBackground(Color.decode("#F2B352"));
+		menuDroitPanel.setBackground(Color.decode("#F2B352"));
+		menuGauchePanel.setBackground(Color.decode("#F2B352"));
 		
 		this.setContentPane(menuPanel);
 		
