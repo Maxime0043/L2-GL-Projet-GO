@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({GoTestPosePierre.class, GoTestChaine.class, GoTestCapture.class})
+@Suite.SuiteClasses({GoTestPosePierre.class, GoTestRetirePierre.class, GoTestChaine.class, GoTestCapture.class})
 public class GoTestSuite {
 
 }

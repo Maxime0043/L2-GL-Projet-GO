@@ -245,6 +245,8 @@ public class Moteur {
 	}
 	
 	public void clicEvent(MouseEvent e) {
+		long startTime = System.currentTimeMillis();
+		
 		int x = (e.getY() - ecart_window / 2) / cellule;
 		int y = (e.getX() - ecart_window / 2) / cellule;
 		
@@ -291,6 +293,8 @@ public class Moteur {
 		setIsMegaPierre(false);
 		setSuicide(false);
 		changeLevel();
+		
+		System.out.println("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
 	}
 	
 	public void addPierre(AbstractPierre pierre) {
@@ -357,96 +361,4 @@ public class Moteur {
 			removePierre(pierre);
 		}
 	}
-
-//	public void addCercle(Cercle c) {
-//		boolean result = true;
-//		
-//		for(Cercle coordCercle : cercle) {
-//			if((c.getX() == coordCercle.getX()) && (c.getY() == coordCercle.getY())) {
-//				result = false;
-//			}
-//		}
-//		
-//		if(result) {
-//			cercle.add(c);
-//			
-//			Coordonnee coordCercle = new Coordonnee(c.getX(), c.getY());
-//			
-//			/*A modifier => placer d'abord les pierres puis dessiner les cercles en fonction*/
-//			if(!getIsMegaPierre()) {
-//				goban.addPierre(new Pierre(c.getCouleur(), coordCercle));
-//			}
-//			else {
-//				goban.addPierre(new MegaPierre(c.getCouleur(), coordCercle));
-//			}
-//			
-//			ArrayList<AbstractPierre> voisin = gopierre.voisins(goban.getPierre(c.getX(), c.getY()), goban.getPlateau(), choix);
-//			
-//			for(AbstractPierre pierreVoisin : voisin) {
-//				if(pierreVoisin.hasChaine()) {
-//					System.out.println("pierre " + pierreVoisin.getCouleur() + " [" + pierreVoisin.getX() + "," + pierreVoisin.getY() +"]" + "chaine n° " + pierreVoisin.getNomChaine() + "\n");
-//					
-//					if(goban.isPierreCapture(goban.getChaine(pierreVoisin.getNomChaine()), choix)) {
-//						removeCercle(goban.getChaine(pierreVoisin.getNomChaine()));
-//					}
-//				}
-//				
-//				else if(goban.isPierreCapture(pierreVoisin, choix)) {
-//					removeCercle(getCercle(pierreVoisin.getX(), pierreVoisin.getY()));
-//				}
-//			}
-//			
-////			AbstractPierre pierre;
-////			
-////			for(int i = 0 ; i < taille_goban ; i++) {
-////				for(int j = 0 ; j < taille_goban ; j++) {
-////					if(goban.existPierre(i, j)) {	
-////						pierre = goban.getPierre(i, j);
-////						
-////						if(pierre.hasChaine()) {
-////							System.out.println("pierre " + pierre.getCouleur() + " [" + i + "," + j +"]" + "chaine n° " + pierre.getNomChaine() + "\n");
-////							
-////							if(goban.isPierreCapture(goban.getChaine(pierre.getNomChaine()), choix)) {
-////								removeCercle(goban.getChaine(pierre.getNomChaine()));
-////							}
-////						}
-////						
-////						else if(goban.isPierreCapture(pierre, choix)) {
-////							removeCercle(getCercle(i, j));
-////						}
-////					}
-////				}
-////			}
-//			System.out.println("--------------------------------------------------------------------------------");
-//			/*-----------------------------------------------------------------------------*/
-//		}
-//	}
-//	
-//	public void removeCercle(Cercle c) {
-//		boolean result = false;
-//		Cercle coord = null;
-//		
-//		for(Cercle coordCercle : cercle) {
-//			if((c.getX() == coordCercle.getX()) && (c.getY() == coordCercle.getY())) {
-//				coord = coordCercle;
-//				result = true;
-//			}
-//		}
-//		
-//		if(result) {
-//			cercle.remove(coord);
-//			
-//			goban.removePierre(goban.getPierre(c.getX(), c.getY()));
-//		}
-//	}
-//	
-//	public void removeCercle(ArrayList<AbstractPierre> chaine) {
-//		Cercle cercle;
-//		
-//		for(AbstractPierre pierre : chaine) {
-//			cercle = new Cercle(new Coordonnee(pierre.getX(), pierre.getY()), pierre.getCouleur(), pierre.isMegaPierre());
-//			
-//			removeCercle(cercle);
-//		}
-//	}
 }

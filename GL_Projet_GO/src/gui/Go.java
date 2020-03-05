@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -15,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.border.Border;
 
 import donnees.Couleur;
 
@@ -22,7 +25,7 @@ public class Go extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel menuPanel, goPanel, actionPanel;
+	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel;
 	private GoPanel gobanPanel;
 	
 	private int choix = 0;
@@ -46,6 +49,8 @@ public class Go extends JFrame implements Runnable {
 		super("Jeu de GO");
 		
 		menuPanel = new JPanel();
+		menuGauchePanel = new JPanel();
+		menuDroitPanel = new JPanel();
 		goPanel = new JPanel();
 		actionPanel = new JPanel();
 		scores = new JLabel[3];
@@ -59,99 +64,110 @@ public class Go extends JFrame implements Runnable {
 	private void initLayout() {
 		/*----------------Menu------------------*/
 		
-		menuPanel.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(5, 5, 5, 5);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridx = 1;
-		gbc.gridy = 1;
+		menuPanel.setLayout(new BorderLayout(0, 0));
+		menuDroitPanel.setLayout(new GridBagLayout());
+		menuDroitPanel.setPreferredSize(new Dimension(window_width/2, window_height));
+		menuGauchePanel.setLayout(new GridBagLayout());
+		menuGauchePanel.setPreferredSize(new Dimension(window_width/2, window_height));
+		
+		GridBagConstraints gbcDoite = new GridBagConstraints();
+		gbcDoite.insets = new Insets(5, 5, 25, window_width / 10);
+		gbcDoite.gridx = 1;
+		gbcDoite.gridy = 1;
 		
 		JButton start = new JButton("Lancer");
 		start.addActionListener(new Lancer());
-		menuPanel.add(start, gbc);
+		menuDroitPanel.add(start, gbcDoite);
 		
-		gbc.gridy++;
+		gbcDoite.gridy++;
 		JButton didacticiel = new JButton("Didacticiel");
 		didacticiel.addActionListener(new Didacticiel());
-		menuPanel.add(didacticiel, gbc);
+		menuDroitPanel.add(didacticiel, gbcDoite);
+
+		gbcDoite.gridy++;
+		JButton quitterMenu = new JButton("Quitter");
+		quitterMenu.addActionListener(new QuitterMenu());
+		menuDroitPanel.add(quitterMenu, gbcDoite);
+		
+		GridBagConstraints gbcGauche = new GridBagConstraints();
+		gbcGauche.insets = new Insets(5, window_width / 10, 5, 5);
+		gbcGauche.gridx = 1;
+		gbcGauche.gridy = 1;
+		
+		JLabel taille = new JLabel("Taille du goban :");
+		menuGauchePanel.add(taille, gbcGauche);
 		
 		ButtonGroup tailleGroupe = new ButtonGroup();
-
-		gbc.gridy++;
-		taille9 = new JRadioButton("Taille 9*9", true);
+		
+		gbcGauche.gridy++;
+		taille9 = new JRadioButton("9*9", true);
 		taille9.addActionListener(new ChoixTaille());
 		tailleGroupe.add(taille9);
-		menuPanel.add(taille9, gbc);
+		menuGauchePanel.add(taille9, gbcGauche);
 		
-		gbc.gridy++;
-		taille19 = new JRadioButton("Taille 19*19");
+		gbcGauche.gridy++;
+		taille19 = new JRadioButton("19*19");
 		taille19.addActionListener(new ChoixTaille());
 		tailleGroupe.add(taille19);
-		menuPanel.add(taille19, gbc);
+		menuGauchePanel.add(taille19, gbcGauche);
 		
-		gbc.gridy++;
+		gbcGauche.gridy++;
 		JLabel joueurs = new JLabel("Nombre de joueurs :");
-		menuPanel.add(joueurs, gbc);
+		menuGauchePanel.add(joueurs, gbcGauche);
 		
 		ButtonGroup joueurGroup = new ButtonGroup();
 		
-		gbc.gridy++;
-		gbc.gridx--;
+		gbcGauche.gridy++;
 		joueur1 = new JRadioButton("1");
 		joueur1.addActionListener(new SelectionJoueur());
 		joueurGroup.add(joueur1);
-		menuPanel.add(joueur1, gbc);
+		menuGauchePanel.add(joueur1, gbcGauche);
 		
-		gbc.gridx++;
+		gbcGauche.gridy++;
 		joueur2 = new JRadioButton("2", true);
 		joueur2.addActionListener(new SelectionJoueur());
 		joueurGroup.add(joueur2);
-		menuPanel.add(joueur2, gbc);
+		menuGauchePanel.add(joueur2, gbcGauche);
 		nb_joueur = 2;
 		
-		gbc.gridx++;
+		gbcGauche.gridy++;
 		joueur3 = new JRadioButton("3");
 		joueur3.addActionListener(new SelectionJoueur());
 		joueurGroup.add(joueur3);
-		menuPanel.add(joueur3, gbc);
+		menuGauchePanel.add(joueur3, gbcGauche);
 		
-		gbc.gridy++;
-		gbc.gridx--;
+		gbcGauche.gridy++;
 		JLabel ordis = new JLabel("Nombre d'ordinateurs :");
-		menuPanel.add(ordis, gbc);
+		menuGauchePanel.add(ordis, gbcGauche);
 		
 		ButtonGroup ordiGroup = new ButtonGroup();
 		
-		gbc.gridy++;
-		gbc.gridx--;
+		gbcGauche.gridy++;
 		ordi0 = new JRadioButton("0", true);
 		ordi0.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi0);
-		menuPanel.add(ordi0, gbc);
+		menuGauchePanel.add(ordi0, gbcGauche);
 		nb_ordi = 0;
 		
-		gbc.gridx++;
+		gbcGauche.gridy++;
 		ordi1 = new JRadioButton("1");
 		ordi1.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi1);
-		menuPanel.add(ordi1, gbc);
+		menuGauchePanel.add(ordi1, gbcGauche);
 		
-		gbc.gridx++;
+		gbcGauche.gridy++;
 		ordi2 = new JRadioButton("2");
 		ordi2.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi2);
-		menuPanel.add(ordi2, gbc);
-
-		gbc.gridy++;
-		gbc.gridx--;
-		JButton quitterMenu = new JButton("Quitter");
-		quitterMenu.addActionListener(new QuitterMenu());
-		menuPanel.add(quitterMenu, gbc);
+		menuGauchePanel.add(ordi2, gbcGauche);
 		
 		joueur1.setEnabled(false);
 		ordi0.setEnabled(false);
 		ordi1.setEnabled(false);
 		ordi2.setEnabled(false);
+
+		menuPanel.add(menuDroitPanel, BorderLayout.EAST);
+		menuPanel.add(menuGauchePanel, BorderLayout.WEST);
 		
 		this.setContentPane(menuPanel);
 		
@@ -167,7 +183,6 @@ public class Go extends JFrame implements Runnable {
 		JButton revenirMenu = new JButton("Revenir Menu");
 		revenirMenu.addActionListener(new RevenirMenu());
 		actionPanel.add(revenirMenu);
-//		revenirMenu.setEnabled(false);
 		
 		/*----------------Parametres------------------*/
 		
