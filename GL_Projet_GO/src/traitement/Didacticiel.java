@@ -4,6 +4,7 @@ import donnees.Coordonnee;
 import donnees.Couleur;
 import donnees.MegaPierre;
 import donnees.Pierre;
+import gui.Go;
 
 public class Didacticiel {
 
@@ -39,11 +40,15 @@ public class Didacticiel {
 	public void changeLevel() {
 		level++;
 		
+		Go.logger.info("Passage au niveau " + level);
+		
 		reinit();
 		chargeLevel();
 	}
 	
 	public void chargeLevel() {
+		Go.logger.info("Chargement du niveau " + level);
+		
 		Coordonnee c;
 		
 		if(level == 0) {

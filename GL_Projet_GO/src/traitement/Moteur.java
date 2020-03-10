@@ -1,6 +1,5 @@
 package traitement;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import donnees.AbstractPierre;
@@ -11,6 +10,7 @@ import donnees.Goban;
 import donnees.MegaPierre;
 import donnees.ParametrePartie;
 import donnees.Pierre;
+import gui.Go;
 
 /**
  * 
@@ -18,7 +18,7 @@ import donnees.Pierre;
  *
  */
 public class Moteur {
-
+	
 	private int cellule;
 	private int ecart_window;
 	private int taille_goban;
@@ -60,6 +60,9 @@ public class Moteur {
 		
 		if(didacticiel) {
 			this.didacticiel = new Didacticiel(taille_goban, this);
+			
+			Go.logger.debug("Début du Didacticiel");
+			
 			this.didacticiel.chargeLevel();
 		}
 	}
@@ -73,10 +76,14 @@ public class Moteur {
 	
 	public void initJoueur() {
 		joueurs[0] = new Joueur(Couleur.NOIR, false);
+		Go.logger.debug("Initialisation du joueur NOIR");
+		
 		joueurs[1] = new Joueur(Couleur.BLANC, false);
+		Go.logger.debug("Initialisation du joueur BLANC");
 		
 		if(nb_joueurs == 3) {
 			joueurs[2] = new Joueur(Couleur.ROUGE, false);
+			Go.logger.debug("Initialisation du joueur ROUGE");
 		}
 	}
 	
@@ -201,18 +208,20 @@ public class Moteur {
 				}
 				else {
 					didacticiel_fini = true;
+					
+					Go.logger.debug("Fin du didacticiel");
 				}
 			}
 		}
 	}
 	
-	public void survoleZone(MouseEvent e) {
-		int x = (e.getY() - ecart_window / 2) / cellule;
-		int y = (e.getX() - ecart_window / 2) / cellule;
+	public void survoleZone(int coordX, int coordY) {
+		int x = (coordY - ecart_window / 2) / cellule;
+		int y = (coordX - ecart_window / 2) / cellule;
 		
 		if(taille_goban == ParametrePartie.TAILLE_GOBAN[1]) {
-			x = (e.getY() - (int)(ecart_window / 1.5)) / cellule;
-			y = (e.getX() - (int)(ecart_window / 1.5)) / cellule;
+			x = (coordY - (int)(ecart_window / 1.5)) / cellule;
+			y = (coordX - (int)(ecart_window / 1.5)) / cellule;
 		}
 		
 		Couleur couleur;
@@ -244,15 +253,15 @@ public class Moteur {
 		}
 	}
 	
-	public void clicEvent(MouseEvent e) {
+	public void clicEvent(int coordX, int coordY) {
 		long startTime = System.currentTimeMillis();
 		
-		int x = (e.getY() - ecart_window / 2) / cellule;
-		int y = (e.getX() - ecart_window / 2) / cellule;
+		int x = (coordY - ecart_window / 2) / cellule;
+		int y = (coordX - ecart_window / 2) / cellule;
 		
 		if(taille_goban == ParametrePartie.TAILLE_GOBAN[1]) {
-			x = (e.getY() - (int)(ecart_window / 1.5)) / cellule;
-			y = (e.getX() - (int)(ecart_window / 1.5)) / cellule;
+			x = (coordY - (int)(ecart_window / 1.5)) / cellule;
+			y = (coordX - (int)(ecart_window / 1.5)) / cellule;
 		}
 		
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
@@ -269,17 +278,25 @@ public class Moteur {
 				Coordonnee c = new Coordonnee(x, y);
 				
 				if(!isMegaPierre) {
-					addPierre(new Pierre(currentCouleur(), c));
-					currentJoueur().addPierre(new Pierre(currentCouleur(), c));
+					AbstractPierre pierre = new Pierre(currentCouleur(), c);
+					
+					addPierre(pierre);
+					currentJoueur().addPierre(pierre);
+					
+					Go.logger.info("Ajout d'une Pierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ") au joueur " + currentJoueur().getCouleur());
 				}
 				else {
 					if((x < taille_goban - 1) && (y < taille_goban - 1)) {
 						if(!goban.existPierre(x+1, y) && !goban.existPierre(x, y+1) && !goban.existPierre(x+1, y+1)) {
-							addPierre(new MegaPierre(currentCouleur(), c));
-							currentJoueur().addPierre(new MegaPierre(currentCouleur(), c));
+							AbstractPierre pierre = new MegaPierre(currentCouleur(), c);
+							
+							addPierre(pierre);
+							currentJoueur().addPierre(pierre);
 
 							if(!suicide) {
 								currentJoueur().playMegaPierre();
+
+								Go.logger.info("Ajout d'une MegaPierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ") au joueur " + currentJoueur().getCouleur());
 							}
 						}
 					}
@@ -294,15 +311,17 @@ public class Moteur {
 		setSuicide(false);
 		changeLevel();
 		
-		System.out.println("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
+		Go.logger.info("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
 	}
 	
 	public void addPierre(AbstractPierre pierre) {
 		goban.addPierre(pierre);
+		Go.logger.info("Pierre créée aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
 		
 		Coordonnee coordPierre = new Coordonnee(pierre.getX(), pierre.getY());
 		
 		cercle.add(new Cercle(coordPierre, pierre.getCouleur(), isMegaPierre));
+		Go.logger.info("Cercle créé aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
 		
 		ArrayList<AbstractPierre> voisin = gopierre.voisins(goban.getPierre(pierre.getX(), pierre.getY()), goban.getPlateau(), taille_goban);
 		
@@ -312,6 +331,7 @@ public class Moteur {
 					removePierre(goban.getChaine(pierreVoisin.getNomChaine()));
 					
 					currentJoueur().addScore(goban.getScoreCapture());
+					Go.logger.info("Ajout de " + goban.getScoreCapture() + " points au joueur de couleur " + currentJoueur().getCouleur());
 				}
 			}
 			
@@ -321,18 +341,21 @@ public class Moteur {
 				compteur = true;
 				
 				currentJoueur().addScore(goban.getScoreCapture());
+				Go.logger.info("Ajout de " + goban.getScoreCapture() + " points au joueur de couleur " + currentJoueur().getCouleur());
 			}
 				
 		}
 		
 		if(pierre.hasChaine()) {
 			if(goban.isSuicide(goban.getChaine(pierre.getNomChaine()))) {
+				Go.logger.info("Suicide Chaine : Suppression de la pierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ")");
 				removePierre(pierre);
 				setSuicide(true);
 			}
 		}
 		else {
 			if(goban.isSuicide(pierre)) {
+				Go.logger.info("Suicide : Suppression de la pierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ")");
 				removePierre(pierre);
 				setSuicide(true);
 			}
@@ -341,7 +364,10 @@ public class Moteur {
 	
 	public void removePierre(AbstractPierre pierre) {
 		if(goban.existPierre(pierre.getX(), pierre.getY())) {
+			Go.logger.info("Pierre supprimée aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
 			goban.removePierre(pierre);
+
+			Go.logger.info("Pierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ") retirée au joueur " + currentJoueur().getCouleur());
 			currentJoueur().removePierre(pierre);
 			
 			Cercle c = null;
@@ -351,7 +377,8 @@ public class Moteur {
 					c = coordCercle;
 				}
 			}
-			
+
+			Go.logger.info("Cercle supprimé aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
 			cercle.remove(c);
 		}
 	}

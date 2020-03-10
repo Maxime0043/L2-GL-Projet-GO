@@ -18,11 +18,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import org.apache.log4j.Logger;
+
 import donnees.Couleur;
+import donnees.ParametrePartie;
+import log.LoggerUtility;
+import traitement.Moteur;
 
 public class Go extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
+
+	public static Logger logger = LoggerUtility.getLogger(Moteur.class, "html");
 	
 	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel;
 	private GoPanel gobanPanel;
@@ -42,7 +49,7 @@ public class Go extends JFrame implements Runnable {
 	private boolean stop = true;
 	private boolean checked = false;
 	private boolean isDidacticiel = false;
-	JCheckBox megaPierre;
+	private JCheckBox megaPierre;
 
 	public Go() {
 		super("Jeu de GO");
@@ -206,9 +213,21 @@ public class Go extends JFrame implements Runnable {
 
 	@Override
 	public void run() {	
+		int fps = 0, compteur = 0;;
+		
 		while (!stop) {
 			try {
-				Thread.sleep(15); // Environ 64fps
+				Thread.sleep(ParametrePartie.FPS); // Environ 64fps
+				fps += ParametrePartie.FPS;
+				compteur++;
+				
+				if(fps >= 1000) {
+					logger.debug("Il y a actuellement " + compteur + " FPS (frames par seconde)");
+					
+					fps = 0;
+					compteur = 0;
+				}
+				
 			} catch (InterruptedException e) {
 				System.out.println(e.getMessage());
 			}

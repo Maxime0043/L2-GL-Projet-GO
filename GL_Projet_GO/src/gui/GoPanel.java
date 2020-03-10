@@ -98,6 +98,8 @@ public class GoPanel extends JPanel{
 			else {
 				g.fillOval(x, y, taille_mega_cercle, taille_mega_cercle);
 			}
+			
+			Go.logger.trace("Le cercle de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
 		}
 		
 		Cercle survole = moteur.getSurvoleCercle();
@@ -121,6 +123,8 @@ public class GoPanel extends JPanel{
 				
 				g.fillOval(x, y, taille_mega_cercle, taille_mega_cercle);
 			}
+			
+			Go.logger.trace("Le cercle de coordonnées (" + x + ", " + y + ") vient d'être dessinée au survole");
 		}
 	}
 	
@@ -207,7 +211,7 @@ public class GoPanel extends JPanel{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			moteur.clicEvent(e);
+			moteur.clicEvent(e.getX(), e.getY());
 		}
 
 		@Override
@@ -226,7 +230,7 @@ public class GoPanel extends JPanel{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			moteur.survoleZone(e);
+			moteur.survoleZone(e.getX(), e.getY());
 		}
 		
 	}
