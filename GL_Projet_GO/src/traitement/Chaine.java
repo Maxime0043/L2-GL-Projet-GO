@@ -6,6 +6,8 @@ import donnees.AbstractPierre;
 
 public class Chaine {
 	
+	private boolean twoEye;
+	
 	private ArrayList<AbstractPierre> chaine;
 //	private Capture capture;
 	
