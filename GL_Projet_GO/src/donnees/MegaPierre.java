@@ -16,6 +16,10 @@ public class MegaPierre extends AbstractPierre{
 		initCoord();
 	}
 	
+	public MegaPierre(Couleur couleur, int x, int y) {
+		this(couleur, new Coordonnee(x, y));
+	}
+	
 	private void initCoord(){
 		coordListe[0] = new Coordonnee(x, y);
 		coordListe[1] = new Coordonnee(x, y+1);

@@ -5,6 +5,7 @@ public class Decision {
 	public Decision() {
 		
 	}
+	
 	public boolean endgame=false;
 	
 	public void action() {

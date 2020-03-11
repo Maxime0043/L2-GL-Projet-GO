@@ -8,6 +8,10 @@ public class Pierre extends AbstractPierre{
 		this.coord = coord;
 	}
 	
+	public Pierre(Couleur couleur, int x, int y) {
+		this(couleur, new Coordonnee(x, y));
+	}
+	
 	@Override
 	public int getX() {
 		return coord.getX();

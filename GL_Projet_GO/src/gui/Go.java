@@ -217,7 +217,7 @@ public class Go extends JFrame implements Runnable {
 		
 		while (!stop) {
 			try {
-				Thread.sleep(ParametrePartie.FPS); // Environ 64fps
+				Thread.sleep(ParametrePartie.FPS); // Environ 60fps
 				fps += ParametrePartie.FPS;
 				compteur++;
 				
@@ -347,6 +347,7 @@ public class Go extends JFrame implements Runnable {
 			isDidacticiel = true;
 			nb_joueur = 2;
 			nb_ordi = 0;
+			choix = 0;
 			
 			lancer();
 		}

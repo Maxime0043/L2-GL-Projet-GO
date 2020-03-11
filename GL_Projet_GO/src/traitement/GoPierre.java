@@ -384,6 +384,19 @@ public class GoPierre {
 	
 	/**
 	 * 
+	 * @param pierreEnnemi
+	 * @return
+	 */
+	public boolean pierreEnnemieExiste(AbstractPierre pierreEnnemi) {
+		if(pierreEnnemi != null) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * 
 	 * @param pierre
 	 * @param plateau
 	 * @param choix
@@ -641,18 +654,5 @@ public class GoPierre {
 		}
 		
 		return liste_voisin;
-	}
-	
-	/**
-	 * 
-	 * @param pierreEnnemi
-	 * @return
-	 */
-	public boolean pierreEnnemieExiste(AbstractPierre pierreEnnemi) {
-		if(pierreEnnemi != null) {
-			return true;
-		}
-		
-		return false;
 	}
 }

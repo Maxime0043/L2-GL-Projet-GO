@@ -8,10 +8,10 @@ import org.junit.Test;
 import donnees.AbstractPierre;
 import donnees.Coordonnee;
 import donnees.Couleur;
-import donnees.Goban;
 import donnees.MegaPierre;
 import donnees.ParametrePartie;
 import donnees.Pierre;
+import traitement.Goban;
 
 public class GoTestCapture {
 	
@@ -47,7 +47,7 @@ public class GoTestCapture {
 		int x = 3;
 		int y = 3;
 		
-		goban.initPlateau(taille_goban);
+		goban.initPlateau();
 		
 		goban.addPierre(new Pierre(Couleur.NOIR, new Coordonnee(x-1, y)));
 		goban.addPierre(new Pierre(Couleur.NOIR, new Coordonnee(x-1, y+1)));
@@ -72,7 +72,7 @@ public class GoTestCapture {
 		int x = 3;
 		int y = 3;
 		
-		goban.initPlateau(taille_goban);
+		goban.initPlateau();
 		
 		goban.addPierre(new Pierre(Couleur.NOIR, new Coordonnee(x-1, y)));
 		goban.addPierre(new Pierre(Couleur.NOIR, new Coordonnee(x-1, y+1)));
@@ -98,7 +98,7 @@ public class GoTestCapture {
 		int x = 3;
 		int y = 3;
 		
-		goban.initPlateau(taille_goban);
+		goban.initPlateau();
 		
 		goban.addPierre(new Pierre(Couleur.NOIR, new Coordonnee(x-1, y)));
 		goban.addPierre(new Pierre(Couleur.NOIR, new Coordonnee(x-1, y+1)));

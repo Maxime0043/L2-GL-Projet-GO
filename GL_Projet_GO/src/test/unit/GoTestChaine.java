@@ -9,10 +9,10 @@ import org.junit.Test;
 import donnees.AbstractPierre;
 import donnees.Coordonnee;
 import donnees.Couleur;
-import donnees.Goban;
 import donnees.MegaPierre;
 import donnees.ParametrePartie;
 import donnees.Pierre;
+import traitement.Goban;
 
 public class GoTestChaine {
 	private Goban goban;

@@ -32,6 +32,10 @@ public class GoPanel extends JPanel{
 	private int taille_goban;
 	private int nb_joueurs;
 	
+	private int taille_cerle;
+	private int taille_mega_cercle;
+	private int petit_decalage;
+	
 	public GoPanel(int choix, int nb_joueur, int nb_ordi, boolean didacticiel) {
 		initGoPanel(choix, nb_joueur, nb_ordi, didacticiel);
 		
@@ -43,9 +47,18 @@ public class GoPanel extends JPanel{
 	}
 	
 	public void initGoPanel(int choix, int nb_joueur, int nb_ordi, boolean didacticiel) {
-		cellule = ParametrePartie.LARGEUR_CASE;
-		if(choix == 1) {
-			cellule /= 2;
+		if(choix == 0) {
+			cellule = ParametrePartie.LARGEUR_CASE_9;
+			taille_cerle = ParametrePartie.TAILLE_CERCLE_9;
+			taille_mega_cercle = ParametrePartie.TAILLE_MEGA_CERCLE_9;
+			petit_decalage = ParametrePartie.PETITE_DECALAGE_9;
+		}
+		
+		else {
+			cellule = ParametrePartie.LARGEUR_CASE_19;
+			taille_cerle = ParametrePartie.TAILLE_CERCLE_19;
+			taille_mega_cercle = ParametrePartie.TAILLE_MEGA_CERCLE_19;
+			petit_decalage = ParametrePartie.PETITE_DECALAGE_19;
 		}
 		
 		ecart_window = ParametrePartie.ECART;
@@ -76,25 +89,16 @@ public class GoPanel extends JPanel{
 	private void drawCercle(Graphics g) {
 		int x, y;
 		
-		int taille_cerle = ParametrePartie.TAILLE_CERCLE;
-		int taille_mega_cercle = ParametrePartie.TAILLE_CERCLE_MEGA_PIERRE;
-		int petit_decalage = ParametrePartie.PETITE_ERREUR;
-		
-		if(taille_goban == ParametrePartie.TAILLE_GOBAN[1]) {
-			taille_cerle /= 2;
-			taille_mega_cercle /= 2;
-			petit_decalage *= -2;
-		}
-		
 		for(Cercle c : moteur.getCercleList()) {
-			x = c.getY() * cellule + ecart_window / 2 - petit_decalage;
-			y = c.getX() * cellule + ecart_window / 2 - petit_decalage;
+			x = c.getY() * cellule + ecart_window + petit_decalage - (cellule / 2);
+			y = c.getX() * cellule + ecart_window + petit_decalage - (cellule / 2);
 			
 			setColor(g, c.getCouleur());
 			
 			if(!c.getIsMegaPierre()) {
 				g.fillOval(x, y, taille_cerle, taille_cerle);
 			}
+			
 			else {
 				g.fillOval(x, y, taille_mega_cercle, taille_mega_cercle);
 			}
@@ -105,20 +109,21 @@ public class GoPanel extends JPanel{
 		Cercle survole = moteur.getSurvoleCercle();
 		
 		if(survole != null) {
-			x = survole.getY() * cellule + ecart_window / 2 - petit_decalage;
-			y = survole.getX() * cellule + ecart_window / 2 - petit_decalage;
+			x = survole.getY() * cellule + ecart_window + petit_decalage - (cellule / 2);
+			y = survole.getX() * cellule + ecart_window + petit_decalage - (cellule / 2);
 			
 			setColor(g, survole.getCouleur());
 			
 			if(!moteur.getIsMegaPierre() || !moteur.currentJoueur().hasMegaPierre()) {
 				g.fillOval(x, y, taille_cerle, taille_cerle);
 			}
+			
 			else if(moteur.currentJoueur().hasMegaPierre()){
 				if(survole.getY() == taille_goban - 1) {
-					x = (survole.getY() - 1) * cellule + ecart_window / 2 - petit_decalage;
+					x = (survole.getY() - 1) * cellule + ecart_window + petit_decalage - (cellule / 2);
 				}
 				if(survole.getX() == taille_goban - 1) {
-					y = (survole.getX() - 1) * cellule + ecart_window / 2 - petit_decalage;
+					y = (survole.getX() - 1) * cellule + ecart_window + petit_decalage - (cellule / 2);
 				}
 				
 				g.fillOval(x, y, taille_mega_cercle, taille_mega_cercle);

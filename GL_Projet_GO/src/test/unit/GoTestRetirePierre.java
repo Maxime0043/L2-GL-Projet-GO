@@ -9,10 +9,10 @@ import org.junit.Test;
 import donnees.AbstractPierre;
 import donnees.Coordonnee;
 import donnees.Couleur;
-import donnees.Goban;
 import donnees.MegaPierre;
 import donnees.ParametrePartie;
 import donnees.Pierre;
+import traitement.Goban;
 
 public class GoTestRetirePierre {
 	private Goban goban;
@@ -44,7 +44,7 @@ public class GoTestRetirePierre {
 		int x = 4;
 		int y = 4;
 		
-		goban.initPlateau(taille_goban);
+		goban.initPlateau();
 		
 		AbstractPierre pierre = new MegaPierre(Couleur.NOIR, new Coordonnee(x, y));
 		goban.addPierre(pierre);
@@ -67,7 +67,7 @@ public class GoTestRetirePierre {
 		int x = 4;
 		int y = 4;
 		
-		goban.initPlateau(taille_goban);
+		goban.initPlateau();
 		
 		AbstractPierre pierre = new Pierre(Couleur.NOIR, new Coordonnee(x, y));
 		goban.addPierre(pierre);

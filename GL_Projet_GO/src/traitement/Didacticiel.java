@@ -10,18 +10,16 @@ public class Didacticiel {
 
 	private Moteur moteur;
 	
-	private int taille_goban;
 	private int nb_levels = 7;
 	private int level;
 	
-	public Didacticiel(int taille_goban, Moteur moteur) {
+	public Didacticiel(Moteur moteur) {
 		this.moteur = moteur;
-		this.taille_goban = taille_goban;
 		level = 0;
 	}
 
 	private void reinit() {
-		moteur.reinitGoban(taille_goban);
+		moteur.reinitGoban();
 
 		for(Joueur joueur : moteur.getJoueurs()) {
 			joueur.initScore();
