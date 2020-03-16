@@ -23,7 +23,6 @@ public class Moteur {
 	private int nb_joueurs;
 	
 	private Goban goban;
-	private GoPierre gopierre;
 	private Didacticiel didacticiel;
 	
 	private Joueur[] joueurs;
@@ -37,9 +36,11 @@ public class Moteur {
 	private boolean didacticiel_fini = false;
 	private boolean suicide = false;
 	
+	private int pass_compteur = 0;
+	
 	private AbstractPierre Ko = null;
 	private int Ko_compteur = 0;
-	private boolean compteur = false;
+	private boolean isKo = false;
 	
 	public Moteur(int cellule, int ecart_window, int taille_goban, int nb_joueur, int nb_ordi, boolean didacticiel) {
 		this.cellule = cellule;
@@ -48,7 +49,6 @@ public class Moteur {
 		nb_joueurs = nb_joueur + nb_ordi;
 		
 		goban = new Goban(taille_goban);
-		gopierre = new GoPierre();
 		joueurs = new Joueur[nb_joueurs];
 		cercle = new ArrayList<Cercle>();
 
@@ -89,14 +89,29 @@ public class Moteur {
 		return didacticiel_fini;
 	}
 	
+	public void passer() {
+		changeJoueur();
+		pass_compteur++;
+		
+		if(pass_compteur == nb_joueurs) {
+			initPassCompteur();
+			
+			System.out.println("Fini");
+		}
+	}
+	
+	private void initPassCompteur() {
+		pass_compteur = 0;
+	}
+	
 	private void incrementeKoCompteur() {
-		if(compteur) {
+		if(isKo) {
 			Ko_compteur++;
 			
 			if(Ko_compteur == nb_joueurs) {
 				setKo(null);
 				
-				compteur = false;
+				isKo = false;
 				Ko_compteur = 0;
 			}
 		}
@@ -174,7 +189,7 @@ public class Moteur {
 		return j;
 	}
 	
-	private void changeJoueur() {
+	public void changeJoueur() {
 		if(noir) {
 			noir = false;
 			blanc = true;
@@ -304,6 +319,7 @@ public class Moteur {
 			}
 		}
 		
+		initPassCompteur();
 		setIsMegaPierre(false);
 		setSuicide(false);
 		changeLevel();
@@ -313,6 +329,7 @@ public class Moteur {
 	
 	public void addPierre(AbstractPierre pierre) {
 		goban.addPierre(pierre);
+		System.out.println("x:" + pierre.getX() + " / y:" + pierre.getY());
 		Go.logger.info("Pierre créée aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
 		Go.logger.info("Ajout d'une Pierre / MegaPierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ") au joueur " + currentJoueur().getCouleur());
 		
@@ -321,7 +338,7 @@ public class Moteur {
 		cercle.add(new Cercle(coordPierre, pierre.getCouleur(), isMegaPierre));
 		Go.logger.info("Cercle créé aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
 		
-		ArrayList<AbstractPierre> voisin = gopierre.voisins(goban.getPierre(pierre.getX(), pierre.getY()), goban.getPlateau(), taille_goban);
+		ArrayList<AbstractPierre> voisin = GoPierre.voisins(goban.getPierre(pierre.getX(), pierre.getY()), goban.getPlateau(), taille_goban);
 		
 		for(AbstractPierre pierreVoisin : voisin) {
 			if(pierreVoisin.hasChaine() && !pierreVoisin.getCouleur().equals(pierre.getCouleur())) {
@@ -336,7 +353,7 @@ public class Moteur {
 			else if(goban.isPierreCapture(pierreVoisin) && !pierreVoisin.getCouleur().equals(pierre.getCouleur()) && !pierreVoisin.equals(getKo())) {
 				removePierre(pierreVoisin);
 				setKo(pierre);
-				compteur = true;
+				isKo = true;
 				
 				currentJoueur().addScore(goban.getScoreCapture());
 				Go.logger.info("Ajout de " + goban.getScoreCapture() + " points au joueur de couleur " + currentJoueur().getCouleur());
@@ -354,10 +371,6 @@ public class Moteur {
 			Go.logger.info("Suicide : Suppression de la pierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ")");
 			removePierre(pierre);
 			setSuicide(true);
-		}
-		
-		else {
-			
 		}
 	}
 	

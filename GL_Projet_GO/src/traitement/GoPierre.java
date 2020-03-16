@@ -21,7 +21,7 @@ public class GoPierre {
 	 * 
 	 * @param numero
 	 */
-	public void addListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
+	public static void addListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
 		if(!liste_voisin.contains(pierre)) {
 			liste_voisin.add(pierre);
 		}
@@ -31,7 +31,7 @@ public class GoPierre {
 	 * 
 	 * @param numero
 	 */
-	public void addListe(Coordonnee coord, ArrayList<Coordonnee> liste_voisin) {
+	public static void addListe(Coordonnee coord, ArrayList<Coordonnee> liste_voisin) {
 		if(!liste_voisin.contains(coord)) {
 			liste_voisin.add(coord);
 		}
@@ -41,7 +41,7 @@ public class GoPierre {
 	 * 
 	 * @param numero
 	 */
-	public void removeListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
+	public static void removeListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
 		if(liste_voisin.contains(pierre) && (liste_voisin.size() > 0)) {
 			liste_voisin.remove(pierre);
 		}
@@ -51,7 +51,7 @@ public class GoPierre {
 	 * 
 	 * @param numero
 	 */
-	public void removeListe(Coordonnee coord, ArrayList<Coordonnee> liste_voisin) {
+	public static void removeListe(Coordonnee coord, ArrayList<Coordonnee> liste_voisin) {
 		if(liste_voisin.contains(coord) && (liste_voisin.size() > 0)) {
 			liste_voisin.remove(coord);
 		}
@@ -62,7 +62,7 @@ public class GoPierre {
 	 * @param pierre
 	 * @return bool
 	 */
-	public boolean bordHaut(AbstractPierre pierre) {
+	public static boolean bordHaut(AbstractPierre pierre) {
 		if(pierre.getX() == 0) {
 				return true;
 		}
@@ -75,7 +75,7 @@ public class GoPierre {
 	 * @param pierre
 	 * @return
 	 */
-	public boolean bordGauche(AbstractPierre pierre) {
+	public static boolean bordGauche(AbstractPierre pierre) {
 		if(pierre.getY() == 0)
 			return true;
 		
@@ -85,9 +85,10 @@ public class GoPierre {
 	/**
 	 * 
 	 * @param pierre
+	 * @param taille_goban
 	 * @return
 	 */
-	public boolean bordDroit(AbstractPierre pierre, int taille_goban) {
+	public static boolean bordDroit(AbstractPierre pierre, int taille_goban) {
 		int y = pierre.getY();
 		
 		if(pierre.isMegaPierre()) {
@@ -107,7 +108,7 @@ public class GoPierre {
 	 * @param choix
 	 * @return
 	 */
-	public boolean bordBas(AbstractPierre pierre, int taille_goban) {
+	public static boolean bordBas(AbstractPierre pierre, int taille_goban) {
 		int x = pierre.getX();
 		
 		if(pierre.isMegaPierre()) {
@@ -128,7 +129,7 @@ public class GoPierre {
 	 * @param choix
 	 * @return
 	 */
-	public ArrayList<AbstractPierre> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
+	public static ArrayList<AbstractPierre> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
 		ArrayList<AbstractPierre> liste_voisin = new ArrayList<AbstractPierre>();
 		
 		int x = pierre.getX();
@@ -387,7 +388,7 @@ public class GoPierre {
 	 * @param pierreEnnemi
 	 * @return
 	 */
-	public boolean pierreEnnemieExiste(AbstractPierre pierreEnnemi) {
+	public static boolean pierreEnnemieExiste(AbstractPierre pierreEnnemi) {
 		if(pierreEnnemi != null) {
 			return true;
 		}
@@ -402,7 +403,7 @@ public class GoPierre {
 	 * @param choix
 	 * @return
 	 */
-	public ArrayList<Coordonnee> intersectionVide(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
+	public static ArrayList<Coordonnee> intersectionVide(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
 		ArrayList<Coordonnee> liste_voisin = new ArrayList<Coordonnee>();
 		
 		int x = pierre.getX();

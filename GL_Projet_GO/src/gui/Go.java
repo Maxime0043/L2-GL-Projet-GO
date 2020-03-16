@@ -198,6 +198,10 @@ public class Go extends JFrame implements Runnable {
 		megaPierre.addActionListener(new Cocher());
 		actionPanel.add(megaPierre);
 		
+		JButton passer = new JButton("Passer");
+		passer.addActionListener(new Passer());
+		actionPanel.add(passer);
+		
 		JButton revenirMenu = new JButton("Revenir Menu");
 		revenirMenu.addActionListener(new RevenirMenu());
 		actionPanel.add(revenirMenu);
@@ -429,6 +433,15 @@ public class Go extends JFrame implements Runnable {
 					checked = false;
 				}
 			}
+		}
+		
+	}
+	
+	private class Passer implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			gobanPanel.passer();
 		}
 		
 	}

@@ -15,7 +15,7 @@ public class FinDePartie {
 		this.taille_goban = taille_goban;
 	}
 	
-	public void setChaineTwoEye(HashMap<Integer, Chaine> hmChaine, GoPierre gopierre, AbstractPierre[][] plateau) {
+	public void setChaineTwoEye(HashMap<Integer, Chaine> hmChaine, AbstractPierre[][] plateau) {
 		
 		ArrayList<Coordonnee> listeInterVide = new ArrayList<Coordonnee>();
 		
@@ -23,7 +23,7 @@ public class FinDePartie {
 		for(Chaine chaine : hmChaine.values()) {
 			if(chaine.getChaine().size() >= 6) {
 				for(AbstractPierre pierre : chaine.getChaine()) {
-					listeInterVide = gopierre.intersectionVide(pierre, plateau, taille_goban);
+					listeInterVide = GoPierre.intersectionVide(pierre, plateau, taille_goban);
 				}
 				
 			}

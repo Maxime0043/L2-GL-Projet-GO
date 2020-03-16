@@ -7,12 +7,10 @@ import donnees.Couleur;
 
 public class Capture {
 	
-	private GoPierre gopierre;
 	private int taille_goban;
 	private int compteur;
 	
 	public Capture(int taille_goban) {
-		gopierre = new GoPierre();
 		this.taille_goban = taille_goban;
 	}
 	
@@ -44,7 +42,7 @@ public class Capture {
 		}
 		
 		else {
-			ArrayList<AbstractPierre> listVoisin = gopierre.voisins(pierre, plateau, taille_goban);
+			ArrayList<AbstractPierre> listVoisin = GoPierre.voisins(pierre, plateau, taille_goban);
 			Couleur couleurPierre = pierre.getCouleur();
 			Couleur couleurP = null;
 			boolean debut = true;
@@ -104,7 +102,7 @@ public class Capture {
 			
 			couleurPierre = pierre.getCouleur();
 			
-			voisin = gopierre.voisins(pierre, plateau, taille_goban);
+			voisin = GoPierre.voisins(pierre, plateau, taille_goban);
 			
 			for(AbstractPierre pierreVoisine : voisin) {
 				if(debut) {

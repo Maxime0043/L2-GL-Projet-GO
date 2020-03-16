@@ -168,6 +168,10 @@ public class GoPanel extends JPanel{
 		return moteur.isDidacticielFini();
 	}
 	
+	public void passer() {
+		moteur.passer();
+	}
+	
 	public boolean getIsMegaPierre() {
 		return moteur.getIsMegaPierre();
 	}

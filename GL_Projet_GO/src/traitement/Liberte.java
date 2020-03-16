@@ -16,7 +16,6 @@ public class Liberte {
 
 	private int nb_liberte;
 	private AbstractPierre pierre;
-	private GoPierre gopierre;
 	
 	/**
 	 * 
@@ -29,8 +28,6 @@ public class Liberte {
 			nb_liberte = 8;
 		else
 			nb_liberte = 4;
-		
-		gopierre = new GoPierre();
 	}
 
 	/**
@@ -74,21 +71,21 @@ public class Liberte {
 		
 		if(pierre.isMegaPierre()) {
 			MegaPierre pierreOrigine = new MegaPierre(pierre.getCouleur(), new Coordonnee(pierre.getX(), pierre.getY()));
-			ArrayList<AbstractPierre> voisins = gopierre.voisins(pierreOrigine, plateau, taille_goban);
+			ArrayList<AbstractPierre> voisins = GoPierre.voisins(pierreOrigine, plateau, taille_goban);
 			
-			if(!gopierre.bordHaut(pierreOrigine)) {
+			if(!GoPierre.bordHaut(pierreOrigine)) {
 				nb_liberte += 2;
 			}
 			
-			if(!gopierre.bordBas(pierreOrigine, taille_goban)) {
+			if(!GoPierre.bordBas(pierreOrigine, taille_goban)) {
 				nb_liberte += 2;
 			}
 			
-			if(!gopierre.bordGauche(pierreOrigine)) {
+			if(!GoPierre.bordGauche(pierreOrigine)) {
 				nb_liberte += 2;
 			}
 			
-			if(!gopierre.bordDroit(pierreOrigine, taille_goban)) {
+			if(!GoPierre.bordDroit(pierreOrigine, taille_goban)) {
 				nb_liberte += 2;
 			}
 			
@@ -104,23 +101,23 @@ public class Liberte {
 		}
 		
 		else {
-			if(!gopierre.bordHaut(pierre)) {
+			if(!GoPierre.bordHaut(pierre)) {
 				nb_liberte++;
 			}
 			
-			if(!gopierre.bordBas(pierre, taille_goban)) {
+			if(!GoPierre.bordBas(pierre, taille_goban)) {
 				nb_liberte++;
 			}
 			
-			if(!gopierre.bordGauche(pierre)) {
+			if(!GoPierre.bordGauche(pierre)) {
 				nb_liberte++;
 			}
 			
-			if(!gopierre.bordDroit(pierre, taille_goban)) {
+			if(!GoPierre.bordDroit(pierre, taille_goban)) {
 				nb_liberte++;
 			}
 			
-			nb_liberte -= gopierre.voisins(pierre, plateau, taille_goban).size();
+			nb_liberte -= GoPierre.voisins(pierre, plateau, taille_goban).size();
 		}
 	}
 }

@@ -14,7 +14,6 @@ public class Goban {
 	private Plateau plateau;
 	private HashMap<Integer, Chaine> hmChaine;
 	private Capture capture;
-	private GoPierre gopierre;
 	
 	private int taille_goban;
 	private int nb_chaine;
@@ -26,7 +25,6 @@ public class Goban {
 		plateau = new Plateau(taille_goban);
 		hmChaine = new HashMap <Integer, Chaine>();
 		capture = new Capture(taille_goban);
-		gopierre = new GoPierre();
 	}
 	
 	public void initPlateau() {
@@ -47,7 +45,7 @@ public class Goban {
 	public void removePierre(AbstractPierre pierre) {
 		int x = pierre.getX();
 		int y = pierre.getY();
-	
+
 		plateau.removePierre(x, y);
 		
 		if(pierre.isMegaPierre()) {
@@ -116,7 +114,7 @@ public class Goban {
 		Couleur couleurPierre = pierre.getCouleur();
 		Couleur couleurVoisin;
 		
-		ArrayList<AbstractPierre> liste_voisin = gopierre.voisins(pierre, plateau.getPlateau(), taille_goban);
+		ArrayList<AbstractPierre> liste_voisin = GoPierre.voisins(pierre, plateau.getPlateau(), taille_goban);
 		
 		if(liste_voisin.size() != 0) {
 			for(AbstractPierre pierreVoisine : liste_voisin) {
