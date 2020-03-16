@@ -17,15 +17,20 @@ public class FinDePartie {
 	
 	public void setChaineTwoEye(HashMap<Integer, Chaine> hmChaine, AbstractPierre[][] plateau) {
 		
+		ArrayList<Coordonnee> interVide = new ArrayList<Coordonnee>();
 		ArrayList<Coordonnee> listeInterVide = new ArrayList<Coordonnee>();
 		
 		
 		for(Chaine chaine : hmChaine.values()) {
 			if(chaine.getChaine().size() >= 6) {
 				for(AbstractPierre pierre : chaine.getChaine()) {
-					listeInterVide = GoPierre.intersectionVide(pierre, plateau, taille_goban);
+					interVide = GoPierre.intersectionVide(pierre, plateau, taille_goban);
+					if (!interVide.isEmpty()) {
+						for(Coordonnee coord : interVide) {
+							listeInterVide.add(coord);
+						}
+					}
 				}
-				
 			}
 		}	
 	}

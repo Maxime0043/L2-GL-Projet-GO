@@ -9,6 +9,7 @@ import donnees.Couleur;
 import donnees.MegaPierre;
 import donnees.Pierre;
 import gui.Go;
+import traitement.FinDePartie;
 
 /**
  * 
@@ -24,6 +25,7 @@ public class Moteur {
 	
 	private Goban goban;
 	private Didacticiel didacticiel;
+	private FinDePartie fin;
 	
 	private Joueur[] joueurs;
 	private ArrayList<Cercle> cercle;
@@ -49,6 +51,7 @@ public class Moteur {
 		nb_joueurs = nb_joueur + nb_ordi;
 		
 		goban = new Goban(taille_goban);
+		fin = new FinDePartie(taille_goban);
 		joueurs = new Joueur[nb_joueurs];
 		cercle = new ArrayList<Cercle>();
 
@@ -319,6 +322,7 @@ public class Moteur {
 			}
 		}
 		
+		fin.setChaineTwoEye(goban.getHmChaine(), goban.getPlateau());
 		initPassCompteur();
 		setIsMegaPierre(false);
 		setSuicide(false);

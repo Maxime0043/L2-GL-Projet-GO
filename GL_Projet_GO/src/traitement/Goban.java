@@ -35,6 +35,10 @@ public class Goban {
 		return plateau.getPlateau();
 	}
 	
+	public HashMap<Integer, Chaine> getHmChaine (){
+		return hmChaine;
+	}
+	
 	public void addPierre(AbstractPierre pierre) {
 		plateau.addPierre(pierre);
 		
