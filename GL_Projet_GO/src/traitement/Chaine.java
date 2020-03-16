@@ -6,12 +6,20 @@ import donnees.AbstractPierre;
 
 public class Chaine {
 	
-	private boolean twoEye;
+	private boolean twoEyes;
 	
 	private ArrayList<AbstractPierre> chaine;
 	
 	public Chaine() {
 		chaine = new ArrayList<AbstractPierre>();
+	}
+	
+	public void setTwoEyes(boolean b) {
+		twoEyes = b;
+	}
+	
+	public boolean getTwoEyes() {
+		return twoEyes;
 	}
 	
 	public ArrayList<AbstractPierre> getChaine() {

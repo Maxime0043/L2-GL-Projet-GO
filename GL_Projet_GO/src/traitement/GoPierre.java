@@ -32,9 +32,7 @@ public class GoPierre {
 	 * @param numero
 	 */
 	public static void addListe(Coordonnee coord, ArrayList<Coordonnee> liste_voisin) {
-		if(!liste_voisin.contains(coord)) {
 			liste_voisin.add(coord);
-		}
 	}
 	
 	/**
@@ -434,75 +432,75 @@ public class GoPierre {
 		if(!pierre.isMegaPierre()) {
 			if(bordHaut(pierre)) {
 				if(!bordGauche(pierre) && !pierreEnnemieExiste(gauche)) {
-					addListe(new Coordonnee(gauche.getX(), gauche.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 				
 				if(!bordDroit(pierre, taille_goban) && !pierreEnnemieExiste(droite)) {
-					addListe(new Coordonnee(droite.getX(), droite.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y+1), liste_voisin);
 				}
 				
 				if(!pierreEnnemieExiste(bas)) {
-					addListe(new Coordonnee(bas.getX(), bas.getY()), liste_voisin);
+					addListe(new Coordonnee(x+1, y), liste_voisin);
 				}
 			}
 			
 			else if(bordBas(pierre, taille_goban)) {
 				if(!bordGauche(pierre) && !pierreEnnemieExiste(gauche)) {
-					addListe(new Coordonnee(gauche.getX(), gauche.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 				
 				if(!bordDroit(pierre, taille_goban) && !pierreEnnemieExiste(droite)) {
-					addListe(new Coordonnee(droite.getX(), droite.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y+1), liste_voisin);
 				}
 				
 				if(!pierreEnnemieExiste(haut)) {
-					addListe(new Coordonnee(haut.getX(), haut.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 			}
 			
 			else if(bordGauche(pierre)) {
 				if(!pierreEnnemieExiste(haut)) {
-					addListe(new Coordonnee(haut.getX(), haut.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				
 				if(!pierreEnnemieExiste(bas)) {
-					addListe(new Coordonnee(bas.getX(), bas.getY()), liste_voisin);
+					addListe(new Coordonnee(x+1, y), liste_voisin);
 				}
 				
 				if(!pierreEnnemieExiste(droite)) {
-					addListe(new Coordonnee(droite.getX(), droite.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y+1), liste_voisin);
 				}
 			}
 			
 			else if(bordDroit(pierre, taille_goban)) {
 				if(!pierreEnnemieExiste(haut)) {
-					addListe(new Coordonnee(haut.getX(), haut.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				
 				if(!pierreEnnemieExiste(bas)) {
-					addListe(new Coordonnee(bas.getX(), bas.getY()), liste_voisin);
+					addListe(new Coordonnee(x+1, y), liste_voisin);
 				}
 				
 				if(!pierreEnnemieExiste(gauche)) {
-					addListe(new Coordonnee(gauche.getX(), gauche.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 			}
 			
 			else {
 				if(!pierreEnnemieExiste(haut)) {
-					addListe(new Coordonnee(haut.getX(), haut.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				
 				if(!pierreEnnemieExiste(bas)) {
-					addListe(new Coordonnee(bas.getX(), bas.getY()), liste_voisin);
+					addListe(new Coordonnee(x+1, y), liste_voisin);
 				}
 				
 				if(!pierreEnnemieExiste(gauche)) {
-					addListe(new Coordonnee(gauche.getX(), gauche.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 				
 				if(!pierreEnnemieExiste(droite)) {
-					addListe(new Coordonnee(droite.getX(), droite.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y+1), liste_voisin);
 				}
 			}
 		}
@@ -526,130 +524,130 @@ public class GoPierre {
 			if(bordHaut(pierre)) {
 				if(!bordGauche(pierre)) {
 					if(!pierreEnnemieExiste(gauche)) {
-						addListe(new Coordonnee(gauche.getX(), gauche.getY()), liste_voisin);
+						addListe(new Coordonnee(x, y-1), liste_voisin);
 					}
 					if(!pierreEnnemieExiste(gauche2)) {
-						addListe(new Coordonnee(gauche2.getX(), gauche2.getY()), liste_voisin);
+						addListe(new Coordonnee(x+1, y-1), liste_voisin);
 					}
 				}
 				
 				if(!bordDroit(pierre, taille_goban)) {
 					if(!pierreEnnemieExiste(droite)) {
-						addListe(new Coordonnee(droite.getX(), droite.getY()), liste_voisin);
+						addListe(new Coordonnee(x, y+2), liste_voisin);
 					}
 					if(!pierreEnnemieExiste(droite2)) {
-						addListe(new Coordonnee(droite2.getX(), droite2.getY()), liste_voisin);
+						addListe(new Coordonnee(x+1, y+2), liste_voisin);
 					}
 				}
 				
 				if(!pierreEnnemieExiste(bas)) {
-					addListe(new Coordonnee(bas.getX(), bas.getY()), liste_voisin);
+					addListe(new Coordonnee(x+2, y), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(bas2)) {
-					addListe(new Coordonnee(bas2.getX(), bas2.getY()), liste_voisin);
+					addListe(new Coordonnee(x+2, y+1), liste_voisin);
 				}
 			}
 			
 			else if(bordBas(pierre, taille_goban)) {
 				if(!bordGauche(pierre)) {
 					if(!pierreEnnemieExiste(gauche)) {
-						addListe(new Coordonnee(gauche.getX(), gauche.getY()), liste_voisin);
+						addListe(new Coordonnee(x, y-1), liste_voisin);
 					}
 					if(!pierreEnnemieExiste(gauche2)) {
-						addListe(new Coordonnee(gauche2.getX(), gauche2.getY()), liste_voisin);
+						addListe(new Coordonnee(x+1, y-1), liste_voisin);
 					}
 				}
 				
 				if(!bordDroit(pierre, taille_goban)) {
 					if(!pierreEnnemieExiste(droite)) {
-						addListe(new Coordonnee(droite.getX(), droite.getY()), liste_voisin);
+						addListe(new Coordonnee(x, y+2), liste_voisin);
 					}
 					if(!pierreEnnemieExiste(droite2)) {
-						addListe(new Coordonnee(droite2.getX(), droite2.getY()), liste_voisin);
+						addListe(new Coordonnee(x+1, y+2), liste_voisin);
 					}
 				}
 				
 				if(!pierreEnnemieExiste(haut)) {
-					addListe(new Coordonnee(haut.getX(), haut.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(haut2)) {
-					addListe(new Coordonnee(haut2.getX(), haut2.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y+1), liste_voisin);
 				}
 			}
 			
 			else if(bordGauche(pierre)) {
 				if(!pierreEnnemieExiste(haut)) {
-					addListe(new Coordonnee(haut.getX(), haut.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(haut2)) {
-					addListe(new Coordonnee(haut2.getX(), haut2.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y+1), liste_voisin);
 				}
-				
+
 				if(!pierreEnnemieExiste(bas)) {
-					addListe(new Coordonnee(bas.getX(), bas.getY()), liste_voisin);
+					addListe(new Coordonnee(x+2, y), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(bas2)) {
-					addListe(new Coordonnee(bas2.getX(), bas2.getY()), liste_voisin);
+					addListe(new Coordonnee(x+2, y+1), liste_voisin);
 				}
-				
+
 				if(!pierreEnnemieExiste(droite)) {
-					addListe(new Coordonnee(droite.getX(), droite.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y+2), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(droite2)) {
-					addListe(new Coordonnee(droite2.getX(), droite2.getY()), liste_voisin);
+					addListe(new Coordonnee(x+1, y+2), liste_voisin);
 				}
 			}
 			
 			else if(bordDroit(pierre, taille_goban)) {
 				if(!pierreEnnemieExiste(haut)) {
-					addListe(new Coordonnee(haut.getX(), haut.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(haut2)) {
-					addListe(new Coordonnee(haut2.getX(), haut2.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y+1), liste_voisin);
 				}
-				
+
 				if(!pierreEnnemieExiste(bas)) {
-					addListe(new Coordonnee(bas.getX(), bas.getY()), liste_voisin);
+					addListe(new Coordonnee(x+2, y), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(bas2)) {
-					addListe(new Coordonnee(bas2.getX(), bas2.getY()), liste_voisin);
+					addListe(new Coordonnee(x+2, y+1), liste_voisin);
 				}
-				
+
 				if(!pierreEnnemieExiste(gauche)) {
-					addListe(new Coordonnee(gauche.getX(), gauche.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(gauche2)) {
-					addListe(new Coordonnee(gauche2.getX(), gauche2.getY()), liste_voisin);
+					addListe(new Coordonnee(x+1, y-1), liste_voisin);
 				}
 			}
 			
 			else {
 				if(!pierreEnnemieExiste(haut)) {
-					addListe(new Coordonnee(haut.getX(), haut.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(haut2)) {
-					addListe(new Coordonnee(haut2.getX(), haut2.getY()), liste_voisin);
+					addListe(new Coordonnee(x-1, y+1), liste_voisin);
 				}
-				
+
 				if(!pierreEnnemieExiste(bas)) {
-					addListe(new Coordonnee(bas.getX(), bas.getY()), liste_voisin);
+					addListe(new Coordonnee(x+2, y), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(bas2)) {
-					addListe(new Coordonnee(bas2.getX(), bas2.getY()), liste_voisin);
+					addListe(new Coordonnee(x+2, y+1), liste_voisin);
 				}
-				
+
 				if(!pierreEnnemieExiste(gauche)) {
-					addListe(new Coordonnee(gauche.getX(), gauche.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(gauche2)) {
-					addListe(new Coordonnee(gauche2.getX(), gauche2.getY()), liste_voisin);
+					addListe(new Coordonnee(x+1, y-1), liste_voisin);
 				}
-				
+
 				if(!pierreEnnemieExiste(droite)) {
-					addListe(new Coordonnee(droite.getX(), droite.getY()), liste_voisin);
+					addListe(new Coordonnee(x, y+2), liste_voisin);
 				}
 				if(!pierreEnnemieExiste(droite2)) {
-					addListe(new Coordonnee(droite2.getX(), droite2.getY()), liste_voisin);
+					addListe(new Coordonnee(x+1, y+2), liste_voisin);
 				}
 			}
 		}

@@ -19,6 +19,9 @@ public class FinDePartie {
 		
 		ArrayList<Coordonnee> interVide = new ArrayList<Coordonnee>();
 		ArrayList<Coordonnee> listeInterVide = new ArrayList<Coordonnee>();
+		ArrayList<Coordonnee> finalList = new ArrayList<Coordonnee>();
+		int compteur;
+		boolean ajouter = true;
 		
 		
 		for(Chaine chaine : hmChaine.values()) {
@@ -31,7 +34,33 @@ public class FinDePartie {
 						}
 					}
 				}
+			
+				interVide.clear();
+				interVide.addAll(listeInterVide);
+				for(Coordonnee coord : listeInterVide) {
+					compteur = 0;
+					for(Coordonnee c : interVide) {
+						if(coord.getX() == c.getX() && coord.getY() == c.getY()) {
+							compteur ++;
+						}
+					}
+					if(compteur >= 2) {
+						for (Coordonnee fl : finalList) {
+							if(fl.getX() == coord.getX() && fl.getY() == coord.getY()) {
+								ajouter = false;
+							}
+						}
+						if(ajouter) {
+							finalList.add(coord);
+						}
+						ajouter = true;
+					}
+				}
+				for(Coordonnee c : finalList) {
+					System.out.println("\n" + c.getX() + "-" + c.getY() + "\n");
+				}
 			}
+	
 		}	
 	}
 }
