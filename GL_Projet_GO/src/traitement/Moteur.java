@@ -332,7 +332,6 @@ public class Moteur {
 	
 	public void addPierre(AbstractPierre pierre) {
 		goban.addPierre(pierre);
-		System.out.println("x:" + pierre.getX() + " / y:" + pierre.getY());
 		Go.logger.info("Pierre créée aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
 		Go.logger.info("Ajout d'une Pierre / MegaPierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ") au joueur " + currentJoueur().getCouleur());
 		
@@ -399,13 +398,9 @@ public class Moteur {
 	}
 	
 	private void removePierre(ArrayList<AbstractPierre> chaine) {
-		Go.logger.debug("Destruction en cours !");
-		
 		for(AbstractPierre pierre : chaine) {
 			removePierre(pierre);
 		}
-		
-		Go.logger.debug("Destruction terminée !");
 	}
 	
 	private boolean canDestruct(int x, int y) {
@@ -477,12 +472,17 @@ public class Moteur {
 	}
 	
 	private void destruct(int x, int y) {
+		Go.logger.debug("Destruction en cours !");
+		
 		for(int i = x ; i <= x+1 ; i++) {
 			for(int j = y ; j <= y+1 ; j++) {
 				if(goban.existPierre(i, j)) {
+					goban.removePierreChaine(goban.getPierre(i, j));
 					removePierre(goban.getPierre(i, j));
 				}
 			}
 		}
+		
+		Go.logger.debug("Destruction terminée !");
 	}
 }

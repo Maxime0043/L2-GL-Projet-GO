@@ -216,6 +216,23 @@ public class Goban {
 		hmChaine.remove(name);
 	}
 	
+	public void removePierreChaine(AbstractPierre pierre) {
+		if(pierre.getNomChaine() != -1) {
+			AbstractPierre pierreChaine = null;
+			Chaine chaine = hmChaine.get(pierre.getNomChaine());
+			
+			for(AbstractPierre p : chaine.getChaine()) {
+				if(pierre.getX() == p.getX() && pierre.getY() == p.getY()) {
+					pierreChaine = p;
+				}
+			}
+			
+			if(pierreChaine != null) {
+				chaine.removePierre(pierreChaine);
+			}
+		}
+	}
+	
 	/**
 	 * Permet de supprimer la chaine et toute ses pierres du Goban
 	 * @param nomChaine
