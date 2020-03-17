@@ -3,6 +3,7 @@ package traitement;
 import java.util.ArrayList;
 
 import donnees.AbstractPierre;
+import donnees.Couleur;
 
 public class Chaine {
 	
@@ -20,6 +21,10 @@ public class Chaine {
 	
 	public boolean getTwoEyes() {
 		return twoEyes;
+	}
+	
+	public Couleur getCouleur() {
+		return chaine.get(0).getCouleur();
 	}
 	
 	public ArrayList<AbstractPierre> getChaine() {

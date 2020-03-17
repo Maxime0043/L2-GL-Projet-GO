@@ -5,14 +5,18 @@ import java.util.HashMap;
 
 import donnees.AbstractPierre;
 import donnees.Coordonnee;
+import traitement.Goban;
 
 
 public class FinDePartie {
 
-	int taille_goban;
+	private int taille_goban;
 	
-	public FinDePartie(int taille_goban) {
+	private Goban goban;
+	
+	public FinDePartie(int taille_goban, Goban goban) {
 		this.taille_goban = taille_goban;
+		this.goban = goban;
 	}
 	
 	public void setChaineTwoEye(HashMap<Integer, Chaine> hmChaine, AbstractPierre[][] plateau) {
@@ -20,8 +24,15 @@ public class FinDePartie {
 		ArrayList<Coordonnee> interVide = new ArrayList<Coordonnee>();
 		ArrayList<Coordonnee> listeInterVide = new ArrayList<Coordonnee>();
 		ArrayList<Coordonnee> finalList = new ArrayList<Coordonnee>();
-		int compteur;
+		
 		boolean ajouter = true;
+		boolean twoEye = true;
+		
+		int compteur;
+		int bordHaut = 0;
+		int bordBas = taille_goban - 1;
+		int bordGauche = 0;
+		int bordDroit = taille_goban - 1;
 		
 		
 		for(Chaine chaine : hmChaine.values()) {
@@ -56,12 +67,59 @@ public class FinDePartie {
 						ajouter = true;
 					}
 				}
-				for(Coordonnee c : finalList) {
-					System.out.println("\n" + c.getX() + "-" + c.getY() + "\n");
+				if(finalList.size() > 1) {
+					for(Coordonnee c : finalList) {
+						if(c.getX() != bordHaut) {
+							if(goban.existPierre(c.getX()-1, c.getY())) {
+								if(goban.getPierre(c.getX()-1, c.getY()).getCouleur() != chaine.getCouleur()) {
+									twoEye = false;
+								}
+							}
+							else {
+								twoEye = false;
+							}
+						}
+						if(c.getX() != bordBas) {
+							if(goban.existPierre(c.getX()+1, c.getY())) {
+								if(goban.getPierre(c.getX()+1, c.getY()).getCouleur() != chaine.getCouleur()) {
+									twoEye = false;
+								}
+							}
+							else {
+								twoEye = false;
+							}
+						}
+						if(c.getY() != bordGauche) {
+							if(goban.existPierre(c.getX(), c.getY()-1)) {
+								if(goban.getPierre(c.getX(), c.getY()-1).getCouleur() != chaine.getCouleur()) {
+									twoEye = false;
+								}
+							}
+							else {
+								twoEye = false;
+							}
+						}
+						if(c.getX() != bordDroit) {
+							if(goban.existPierre(c.getX(), c.getY()+1)) {
+								if(goban.getPierre(c.getX(), c.getY()+1).getCouleur() != chaine.getCouleur()) {
+									twoEye = false;
+								}
+							}
+							else {
+								twoEye = false;
+							}
+						}
+					}
+					if(twoEye) {
+						chaine.setTwoEyes(true);
+					}
 				}
+				else {
+					chaine.setTwoEyes(false);
+				}	
 			}
-	
-		}	
-	}
+		}
+	}	
 }
+
 
