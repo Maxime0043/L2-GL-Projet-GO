@@ -73,8 +73,17 @@ public class Go extends JFrame implements Runnable {
 	}
 
 	private void initLayout() {
-		/*----------------Menu------------------*/
+		initMenu();
+		initGoban();
 		
+		this.setVisible(true);
+		this.setSize(window_width, window_height);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setResizable(false);
+	}
+	
+	private void initMenu() {
 		menuPanel.setLayout(new BorderLayout(0, 0));
 		menuDroitPanel.setLayout(new GridBagLayout());
 		menuDroitPanel.setPreferredSize(new Dimension(window_width/2, window_height));
@@ -193,9 +202,9 @@ public class Go extends JFrame implements Runnable {
 		menuGauchePanel.setBackground(Color.decode("#F2B352"));
 		
 		this.setContentPane(menuPanel);
-		
-		/*----------------Go------------------*/
-		
+	}
+	
+	private void initGoban() {
 		goPanel.setLayout(new BorderLayout());
 		actionPanel.setLayout(new FlowLayout());
 		
@@ -210,14 +219,6 @@ public class Go extends JFrame implements Runnable {
 		JButton revenirMenu = new JButton("Revenir Menu");
 		revenirMenu.addActionListener(new RevenirMenu());
 		actionPanel.add(revenirMenu);
-		
-		/*----------------Parametres------------------*/
-		
-		this.setVisible(true);
-		this.setSize(window_width, window_height);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setResizable(false);
 	}
 
 	@Override
@@ -309,8 +310,7 @@ public class Go extends JFrame implements Runnable {
 	}
 	
 	public void lancer() {
-		gobanPanel = new GoPanel(choix, nb_joueur, nb_ordi, isDidacticiel);
-
+		gobanPanel = new GoPanel(choix, window_width, nb_joueur, nb_ordi, isDidacticiel);
 		gobanPanel.setLayout(new FlowLayout());
 		
 		initLabels();

@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -38,8 +39,8 @@ public class GoPanel extends JPanel{
 	private int taille_mega_cercle;
 	private int petit_decalage;
 	
-	public GoPanel(int choix, int nb_joueur, int nb_ordi, boolean didacticiel) {
-		initGoPanel(choix, nb_joueur, nb_ordi, didacticiel);
+	public GoPanel(int choix, int window_width, int nb_joueur, int nb_ordi, boolean didacticiel) {
+		initGoPanel(choix, window_width, nb_joueur, nb_ordi, didacticiel);
 		
 		this.addMouseListener(new Souris());
 		this.addMouseMotionListener(new DeplacementSouris());
@@ -48,7 +49,7 @@ public class GoPanel extends JPanel{
 		this.setBackground(Color.decode("#F2B352"));
 	}
 	
-	public void initGoPanel(int choix, int nb_joueur, int nb_ordi, boolean didacticiel) {
+	public void initGoPanel(int choix, int window_width, int nb_joueur, int nb_ordi, boolean didacticiel) {
 		if(choix == 0) {
 			cellule = ParametrePartie.LARGEUR_CASE_9;
 			taille_cerle = ParametrePartie.TAILLE_CERCLE_9;
@@ -63,12 +64,16 @@ public class GoPanel extends JPanel{
 			petit_decalage = ParametrePartie.PETITE_DECALAGE_19;
 		}
 
-		ecart_window_horizontal = ParametrePartie.ECART_HORIZONTAL;
 		ecart_window_vertical = ParametrePartie.ECART_VERTICAL;
 		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
 		nb_joueurs = nb_joueur + nb_ordi;
+		ecart_window_horizontal = ParametrePartie.ECART_HORIZONTAL;
 		
-		moteur = new Moteur(cellule, taille_goban, nb_joueur, nb_ordi, didacticiel);
+		if(!didacticiel) {
+			ecart_window_horizontal = (window_width - (taille_goban - 1) * cellule) / 2;
+		}
+		
+		moteur = new Moteur(cellule, ecart_window_horizontal, taille_goban, nb_joueur, nb_ordi, didacticiel);
 	}
 
 	@Override
@@ -77,7 +82,7 @@ public class GoPanel extends JPanel{
 		
 		drawGrid(g);
 		drawCercle(g);
-		drawCouleurJoueur(g);
+//		drawCouleurJoueur(g);
 	}
 	
 	private void drawGrid(Graphics g){

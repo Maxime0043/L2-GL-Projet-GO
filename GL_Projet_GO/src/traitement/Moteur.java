@@ -20,6 +20,7 @@ import traitement.FinDePartie;
 public class Moteur {
 	
 	private int cellule;
+	private int ecart_window_horizontal;
 	private int taille_goban;
 	private int nb_joueurs;
 	
@@ -44,14 +45,14 @@ public class Moteur {
 	private int Ko_compteur = 0;
 	private boolean isKo = false;
 	
-	public Moteur(int cellule, int taille_goban, int nb_joueur, int nb_ordi, boolean didacticiel) {
+	public Moteur(int cellule, int ecart_window_horizontal, int taille_goban, int nb_joueur, int nb_ordi, boolean didacticiel) {
 		this.cellule = cellule;
+		this.ecart_window_horizontal = ecart_window_horizontal;
 		this.taille_goban = taille_goban;
 		nb_joueurs = nb_joueur + nb_ordi;
 		
 		goban = new Goban(taille_goban);
 		fin = new FinDePartie(taille_goban, goban);
-		
 		joueurs = new Joueur[nb_joueurs];
 		cercle = new ArrayList<Cercle>();
 
@@ -95,7 +96,7 @@ public class Moteur {
 		if(pass_compteur == nb_joueurs) {
 			initPassCompteur();
 			fin.setChaineTwoEye(goban.getHmChaine(), goban.getPlateau());
-			System.out.println("Fini\n");
+			System.out.println("Fini");
 		}
 	}
 	
@@ -239,7 +240,7 @@ public class Moteur {
 	
 	public void survoleZone(int coordX, int coordY) {
 		int x = CalculFactory.getCoordTableau(coordY, ParametrePartie.ECART_VERTICAL, cellule);
-		int y = CalculFactory.getCoordTableau(coordX, ParametrePartie.ECART_HORIZONTAL, cellule);
+		int y = CalculFactory.getCoordTableau(coordX, ecart_window_horizontal, cellule);
 		
 		Couleur couleur;
 		
@@ -283,7 +284,7 @@ public class Moteur {
 		long startTime = System.currentTimeMillis();
 
 		int x = CalculFactory.getCoordTableau(coordY, ParametrePartie.ECART_VERTICAL, cellule);
-		int y = CalculFactory.getCoordTableau(coordX, ParametrePartie.ECART_HORIZONTAL, cellule);
+		int y = CalculFactory.getCoordTableau(coordX, ecart_window_horizontal, cellule);
 		
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
 			if(!isMegaPierre && !goban.existPierre(x, y)) {
