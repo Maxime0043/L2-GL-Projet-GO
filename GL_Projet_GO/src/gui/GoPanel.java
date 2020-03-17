@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import donnees.Cercle;
 import donnees.Couleur;
 import donnees.ParametrePartie;
+import traitement.CalculFactory;
 import traitement.Joueur;
 import traitement.Moteur;
 
@@ -28,7 +29,8 @@ public class GoPanel extends JPanel{
 	private Moteur moteur;
 	
 	private int cellule;
-	private int ecart_window;
+	private int ecart_window_horizontal;
+	private int ecart_window_vertical;
 	private int taille_goban;
 	private int nb_joueurs;
 	
@@ -60,12 +62,13 @@ public class GoPanel extends JPanel{
 			taille_mega_cercle = ParametrePartie.TAILLE_MEGA_CERCLE_19;
 			petit_decalage = ParametrePartie.PETITE_DECALAGE_19;
 		}
-		
-		ecart_window = ParametrePartie.ECART;
+
+		ecart_window_horizontal = ParametrePartie.ECART_HORIZONTAL;
+		ecart_window_vertical = ParametrePartie.ECART_VERTICAL;
 		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
 		nb_joueurs = nb_joueur + nb_ordi;
 		
-		moteur = new Moteur(cellule, ecart_window, taille_goban, nb_joueur, nb_ordi, didacticiel);
+		moteur = new Moteur(cellule, taille_goban, nb_joueur, nb_ordi, didacticiel);
 	}
 
 	@Override
@@ -81,8 +84,8 @@ public class GoPanel extends JPanel{
 		g.setColor(Color.BLACK);
 		
 		for(int i = 0 ; i < taille_goban ; i++){
-			g.drawLine(ecart_window, ecart_window + i * cellule, ecart_window + (taille_goban - 1) * cellule, ecart_window + i * cellule);
-			g.drawLine(ecart_window + i * cellule, ecart_window, ecart_window +i * cellule, ecart_window + (taille_goban - 1) * cellule);
+			g.drawLine(ecart_window_horizontal, ecart_window_vertical + i * cellule, ecart_window_horizontal + (taille_goban - 1) * cellule, ecart_window_vertical + i * cellule);
+			g.drawLine(ecart_window_horizontal + i * cellule, ecart_window_vertical, ecart_window_horizontal + i * cellule, ecart_window_vertical + (taille_goban - 1) * cellule);
 		}
 	}
 	
@@ -90,8 +93,8 @@ public class GoPanel extends JPanel{
 		int x, y;
 		
 		for(Cercle c : moteur.getCercleList()) {
-			x = c.getY() * cellule + ecart_window + petit_decalage - (cellule / 2);
-			y = c.getX() * cellule + ecart_window + petit_decalage - (cellule / 2);
+			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, petit_decalage);
+			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, petit_decalage);
 			
 			setColor(g, c.getCouleur());
 			
@@ -109,8 +112,8 @@ public class GoPanel extends JPanel{
 		Cercle survole = moteur.getSurvoleCercle();
 		
 		if(survole != null) {
-			x = survole.getY() * cellule + ecart_window + petit_decalage - (cellule / 2);
-			y = survole.getX() * cellule + ecart_window + petit_decalage - (cellule / 2);
+			x = CalculFactory.getCoordWindow(survole.getY(), ecart_window_horizontal, cellule, petit_decalage);
+			y = CalculFactory.getCoordWindow(survole.getX(), ecart_window_vertical, cellule, petit_decalage);
 			
 			setColor(g, survole.getCouleur());
 			
@@ -120,10 +123,10 @@ public class GoPanel extends JPanel{
 			
 			else if(moteur.currentJoueur().hasMegaPierre()){
 				if(survole.getY() == taille_goban - 1) {
-					x = (survole.getY() - 1) * cellule + ecart_window + petit_decalage - (cellule / 2);
+					x = CalculFactory.getCoordWindow(survole.getY() - 1, ecart_window_horizontal, cellule, petit_decalage);
 				}
 				if(survole.getX() == taille_goban - 1) {
-					y = (survole.getX() - 1) * cellule + ecart_window + petit_decalage - (cellule / 2);
+					y = CalculFactory.getCoordWindow(survole.getX() - 1, ecart_window_vertical, cellule, petit_decalage);
 				}
 				
 				g.fillOval(x, y, taille_mega_cercle, taille_mega_cercle);
@@ -144,7 +147,7 @@ public class GoPanel extends JPanel{
 			g.setColor(Color.RED);
 		}
 		
-		int x = ecart_window;
+		int x = ecart_window_horizontal;
 		int y = taille_goban * cellule + 15;
 		
 		g.fillOval(x, y, 30, 30);

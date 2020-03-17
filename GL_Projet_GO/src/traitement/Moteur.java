@@ -7,6 +7,7 @@ import donnees.Cercle;
 import donnees.Coordonnee;
 import donnees.Couleur;
 import donnees.MegaPierre;
+import donnees.ParametrePartie;
 import donnees.Pierre;
 import gui.Go;
 import traitement.FinDePartie;
@@ -19,7 +20,6 @@ import traitement.FinDePartie;
 public class Moteur {
 	
 	private int cellule;
-	private int ecart_window;
 	private int taille_goban;
 	private int nb_joueurs;
 	
@@ -44,9 +44,8 @@ public class Moteur {
 	private int Ko_compteur = 0;
 	private boolean isKo = false;
 	
-	public Moteur(int cellule, int ecart_window, int taille_goban, int nb_joueur, int nb_ordi, boolean didacticiel) {
+	public Moteur(int cellule, int taille_goban, int nb_joueur, int nb_ordi, boolean didacticiel) {
 		this.cellule = cellule;
-		this.ecart_window = ecart_window;
 		this.taille_goban = taille_goban;
 		nb_joueurs = nb_joueur + nb_ordi;
 		
@@ -238,8 +237,8 @@ public class Moteur {
 	}
 	
 	public void survoleZone(int coordX, int coordY) {
-		int x = (coordY - ecart_window + (cellule / 2)) / cellule;
-		int y = (coordX - ecart_window + (cellule / 2)) / cellule;
+		int x = CalculFactory.getCoordTableau(coordY, ParametrePartie.ECART_VERTICAL, cellule);
+		int y = CalculFactory.getCoordTableau(coordX, ParametrePartie.ECART_HORIZONTAL, cellule);
 		
 		Couleur couleur;
 		
@@ -281,9 +280,9 @@ public class Moteur {
 	
 	public void clicEvent(int coordX, int coordY) {
 		long startTime = System.currentTimeMillis();
-		
-		int x = (coordY - ecart_window + (cellule / 2)) / cellule;
-		int y = (coordX - ecart_window + (cellule / 2)) / cellule;
+
+		int x = CalculFactory.getCoordTableau(coordY, ParametrePartie.ECART_VERTICAL, cellule);
+		int y = CalculFactory.getCoordTableau(coordX, ParametrePartie.ECART_HORIZONTAL, cellule);
 		
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
 			if(!isMegaPierre && !goban.existPierre(x, y)) {
