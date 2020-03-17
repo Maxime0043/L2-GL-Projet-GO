@@ -5,7 +5,9 @@ public class ParametrePartie {
 
 	public static final int LARGEUR_CASE_19 = LARGEUR_CASE_9 / 2;
 	
-	public static final int ECART = 30;
+	public static final int ECART_HORIZONTAL = 30;
+	
+	public static final int ECART_VERTICAL = 50;
 	
 	public static final int TAILLE_CERCLE_9 = 36;
 	
