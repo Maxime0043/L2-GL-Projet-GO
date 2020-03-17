@@ -67,10 +67,7 @@ public class FinDePartie {
 						ajouter = true;
 					}
 				}
-				System.out.println(chaine.getCouleur());
-				for(Coordonnee c : finalList) {
-					System.out.println(c.getX() + "-" +c.getY());
-				}
+				
 				
 				if(finalList.size() > 1) {
 					compteurYeux = finalList.size();
@@ -116,20 +113,18 @@ public class FinDePartie {
 							}
 						}
 					}
+					
 					if(compteurYeux >= 2) {
 						chaine.setTwoEyes(true);
 					}
 				}
 			}
+			
 			interVide.clear();
 			listeInterVide.clear();
 			finalList.clear();
 		}
-		
-		for(Chaine chaine : hmChaine.values()) {
-			System.out.println("Chaine " +chaine.getCouleur() + " : " + chaine.getTwoEyes());
-		}
-	}	
+	}
 }
 
 
