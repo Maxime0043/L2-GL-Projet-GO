@@ -8,7 +8,6 @@ import donnees.Couleur;
 public class Chaine {
 	
 	private boolean twoEyes;
-	
 	private ArrayList<AbstractPierre> chaine;
 	
 	public Chaine() {

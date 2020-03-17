@@ -110,6 +110,7 @@ public class FinDePartie {
 							}
 						}
 					}
+					
 					if(twoEye) {
 						chaine.setTwoEyes(true);
 					}

@@ -51,6 +51,7 @@ public class Moteur {
 		
 		goban = new Goban(taille_goban);
 		fin = new FinDePartie(taille_goban, goban);
+		
 		joueurs = new Joueur[nb_joueurs];
 		cercle = new ArrayList<Cercle>();
 
