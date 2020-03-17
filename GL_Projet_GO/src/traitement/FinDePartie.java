@@ -26,9 +26,9 @@ public class FinDePartie {
 		ArrayList<Coordonnee> finalList = new ArrayList<Coordonnee>();
 		
 		boolean ajouter = true;
-		boolean twoEye = true;
 		
 		int compteur;
+		int compteurYeux;
 		int bordHaut = 0;
 		int bordBas = taille_goban - 1;
 		int bordGauche = 0;
@@ -73,62 +73,57 @@ public class FinDePartie {
 				}
 				
 				if(finalList.size() > 1) {
+					compteurYeux = finalList.size();
 					for(Coordonnee c : finalList) {
 						if(c.getX() > bordHaut) {
 							if(goban.existPierre(c.getX()-1, c.getY())) {
 								if(goban.getPierre(c.getX()-1, c.getY()).getCouleur() != chaine.getCouleur()) {
-									twoEye = false;
+									compteurYeux--;
 								}
 							}
 							else {
-								twoEye = false;
+								compteurYeux--;
 							}
 						}
-						if(c.getX() < bordBas) {
+						else if(c.getX() < bordBas) {
 							if(goban.existPierre(c.getX()+1, c.getY())) {
 								if(goban.getPierre(c.getX()+1, c.getY()).getCouleur() != chaine.getCouleur()) {
-									twoEye = false;
+									compteurYeux--;
 								}
 							}
 							else {
-								twoEye = false;
+								compteurYeux--;
 							}
 						}
-						if(c.getY() > bordGauche) {
+						else if(c.getY() > bordGauche) {
 							if(goban.existPierre(c.getX(), c.getY()-1)) {
 								if(goban.getPierre(c.getX(), c.getY()-1).getCouleur() != chaine.getCouleur()) {
-									twoEye = false;
+									compteurYeux--;
 								}
 							}
 							else {
-								twoEye = false;
+								compteurYeux--;
 							}
 						}
-						if(c.getY() < bordDroit) {
+						else if(c.getY() < bordDroit) {
 							if(goban.existPierre(c.getX(), c.getY()+1)) {
 								if(goban.getPierre(c.getX(), c.getY()+1).getCouleur() != chaine.getCouleur()) {
-									twoEye = false;
+									compteurYeux--;
 								}
 							}
 							else {
-								twoEye = false;
+								compteurYeux--;
 							}
 						}
 					}
-					
-					if(twoEye) {
+					if(compteurYeux >= 2) {
 						chaine.setTwoEyes(true);
 					}
 				}
-				else {
-					chaine.setTwoEyes(false);
-				}	
 			}
-			twoEye = true;
 			interVide.clear();
 			listeInterVide.clear();
 			finalList.clear();
-			System.out.println("------------------------------------------");
 		}
 		
 		for(Chaine chaine : hmChaine.values()) {
