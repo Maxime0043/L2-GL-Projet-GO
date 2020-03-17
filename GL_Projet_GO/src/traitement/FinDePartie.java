@@ -67,9 +67,14 @@ public class FinDePartie {
 						ajouter = true;
 					}
 				}
+				System.out.println(chaine.getCouleur());
+				for(Coordonnee c : finalList) {
+					System.out.println(c.getX() + "-" +c.getY());
+				}
+				
 				if(finalList.size() > 1) {
 					for(Coordonnee c : finalList) {
-						if(c.getX() != bordHaut) {
+						if(c.getX() > bordHaut) {
 							if(goban.existPierre(c.getX()-1, c.getY())) {
 								if(goban.getPierre(c.getX()-1, c.getY()).getCouleur() != chaine.getCouleur()) {
 									twoEye = false;
@@ -79,7 +84,7 @@ public class FinDePartie {
 								twoEye = false;
 							}
 						}
-						if(c.getX() != bordBas) {
+						if(c.getX() < bordBas) {
 							if(goban.existPierre(c.getX()+1, c.getY())) {
 								if(goban.getPierre(c.getX()+1, c.getY()).getCouleur() != chaine.getCouleur()) {
 									twoEye = false;
@@ -89,7 +94,7 @@ public class FinDePartie {
 								twoEye = false;
 							}
 						}
-						if(c.getY() != bordGauche) {
+						if(c.getY() > bordGauche) {
 							if(goban.existPierre(c.getX(), c.getY()-1)) {
 								if(goban.getPierre(c.getX(), c.getY()-1).getCouleur() != chaine.getCouleur()) {
 									twoEye = false;
@@ -99,7 +104,7 @@ public class FinDePartie {
 								twoEye = false;
 							}
 						}
-						if(c.getX() != bordDroit) {
+						if(c.getY() < bordDroit) {
 							if(goban.existPierre(c.getX(), c.getY()+1)) {
 								if(goban.getPierre(c.getX(), c.getY()+1).getCouleur() != chaine.getCouleur()) {
 									twoEye = false;
@@ -119,6 +124,15 @@ public class FinDePartie {
 					chaine.setTwoEyes(false);
 				}	
 			}
+			twoEye = true;
+			interVide.clear();
+			listeInterVide.clear();
+			finalList.clear();
+			System.out.println("------------------------------------------");
+		}
+		
+		for(Chaine chaine : hmChaine.values()) {
+			System.out.println("Chaine " +chaine.getCouleur() + " : " + chaine.getTwoEyes());
 		}
 	}	
 }
