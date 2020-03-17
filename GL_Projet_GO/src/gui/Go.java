@@ -17,12 +17,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 
 import org.apache.log4j.Logger;
 
 import donnees.Couleur;
 import donnees.ParametrePartie;
 import log.LoggerUtility;
+import test.input.InputFichier;
 import traitement.Moteur;
 
 public class Go extends JFrame implements Runnable {
@@ -31,7 +33,7 @@ public class Go extends JFrame implements Runnable {
 
 	public static Logger logger = LoggerUtility.getLogger(Moteur.class, "html");
 	
-	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel;
+	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel, descPanel;
 	private GoPanel gobanPanel;
 	
 	private int choix = 0;
@@ -50,7 +52,9 @@ public class Go extends JFrame implements Runnable {
 	private boolean checked = false;
 	private boolean isDidacticiel = false;
 	private JCheckBox megaPierre;
-
+	
+	private JTextArea desc_label;
+	
 	public Go() {
 		super("Jeu de GO");
 		
@@ -59,6 +63,7 @@ public class Go extends JFrame implements Runnable {
 		menuDroitPanel = new JPanel();
 		goPanel = new JPanel();
 		actionPanel = new JPanel();
+		descPanel = new JPanel();
 		scores = new JLabel[3];
 		
 		window_width = 700;
@@ -226,7 +231,7 @@ public class Go extends JFrame implements Runnable {
 				compteur++;
 				
 				if(fps >= 1000) {
-					logger.debug("Il y a actuellement " + compteur + " FPS (frames par seconde)");
+					logger.debug("Le logiciel tourne actuellement à " + compteur + " FPS (frames par seconde)");
 					
 					fps = 0;
 					compteur = 0;
@@ -250,6 +255,10 @@ public class Go extends JFrame implements Runnable {
 		if(isDidacticiel) {
 			if(gobanPanel.isDidacticielFini()) {
 				revenirMenu();
+			}
+			
+			else {
+				desc_label.setText(InputFichier.getDesciption(gobanPanel.getCurrentLevel()));
 			}
 		}
 	}
@@ -302,7 +311,7 @@ public class Go extends JFrame implements Runnable {
 	public void lancer() {
 		gobanPanel = new GoPanel(choix, nb_joueur, nb_ordi, isDidacticiel);
 
-		gobanPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		gobanPanel.setLayout(new FlowLayout());
 		
 		initLabels();
 		
@@ -312,6 +321,22 @@ public class Go extends JFrame implements Runnable {
 		
 		goPanel.add(gobanPanel, BorderLayout.CENTER);
 		goPanel.add(actionPanel, BorderLayout.SOUTH);
+		
+		if(isDidacticiel) {
+			descPanel.setLayout(new FlowLayout());
+			descPanel.setPreferredSize(new Dimension((int)(window_width / 2.5), gobanPanel.getHeight()));
+			descPanel.setBackground(Color.decode("#F2B352"));
+			
+			desc_label = new JTextArea();
+			desc_label.setEditable(false);
+			desc_label.setOpaque(false);
+			desc_label.setPreferredSize(new Dimension((int)(window_width / 2.5), 200));
+			
+			desc_label.setText(InputFichier.getDesciption(0));
+			descPanel.add(desc_label);
+			
+			goPanel.add(descPanel, BorderLayout.EAST);
+		}
 		
 		changeFenetre(goPanel);
 		
@@ -324,10 +349,15 @@ public class Go extends JFrame implements Runnable {
 	
 	public void revenirMenu() {
 		stop = true;
-		isDidacticiel = false;
 		
 		goPanel.remove(gobanPanel);
 		goPanel.remove(actionPanel);
+		
+		if(isDidacticiel) {
+			isDidacticiel = false;
+			descPanel.remove(desc_label);
+			goPanel.remove(descPanel);
+		}
 		
 		megaPierre.setSelected(false);
 		

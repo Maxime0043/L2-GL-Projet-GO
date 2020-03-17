@@ -62,20 +62,20 @@ public class Didacticiel {
 		}
 		
 		else if(level == 1) {
-			c = new Coordonnee(0, 1);
-			moteur.addPierre(new Pierre(Couleur.NOIR, c));
-			
-			c = new Coordonnee(0, 0);
-			moteur.addPierre(new Pierre(Couleur.BLANC, c));
-		}
-		
-		else if(level == 2) {
 			c = new Coordonnee(0, 3);
 			moteur.addPierre(new Pierre(Couleur.NOIR, c));
 			c = new Coordonnee(1, 4);
 			moteur.addPierre(new Pierre(Couleur.NOIR, c));
 			
 			c = new Coordonnee(0, 4);
+			moteur.addPierre(new Pierre(Couleur.BLANC, c));
+		}
+		
+		else if(level == 2) {
+			c = new Coordonnee(0, 1);
+			moteur.addPierre(new Pierre(Couleur.NOIR, c));
+			
+			c = new Coordonnee(0, 0);
 			moteur.addPierre(new Pierre(Couleur.BLANC, c));
 		}
 		

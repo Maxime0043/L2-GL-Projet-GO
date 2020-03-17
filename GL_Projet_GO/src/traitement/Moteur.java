@@ -88,10 +88,6 @@ public class Moteur {
 		}
 	}
 	
-	public boolean isDidacticielFini() {
-		return didacticiel_fini;
-	}
-	
 	public void passer() {
 		changeJoueur();
 		pass_compteur++;
@@ -216,6 +212,14 @@ public class Moteur {
 			noir = true;
 			blanc = false;
 		}
+	}
+	
+	public boolean isDidacticielFini() {
+		return didacticiel_fini;
+	}
+	
+	public int getCurrentLevel() {
+		return didacticiel.getLevel();
 	}
 	
 	private void changeLevel() {

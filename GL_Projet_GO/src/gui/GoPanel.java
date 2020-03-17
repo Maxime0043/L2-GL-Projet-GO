@@ -168,6 +168,10 @@ public class GoPanel extends JPanel{
 		return moteur.isDidacticielFini();
 	}
 	
+	public int getCurrentLevel() {
+		return moteur.getCurrentLevel();
+	}
+	
 	public void passer() {
 		moteur.passer();
 	}
