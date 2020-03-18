@@ -34,7 +34,6 @@ public class FinDePartie {
 		int bordGauche = 0;
 		int bordDroit = taille_goban - 1;
 		
-		
 		for(Chaine chaine : hmChaine.values()) {
 			if(chaine.getChaine().size() >= 6) {
 				for(AbstractPierre pierre : chaine.getChaine()) {
@@ -67,7 +66,6 @@ public class FinDePartie {
 						ajouter = true;
 					}
 				}
-				
 				
 				if(finalList.size() > 1) {
 					compteurYeux = finalList.size();
