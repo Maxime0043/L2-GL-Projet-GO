@@ -1,6 +1,9 @@
 package donnees;
 
 public class ParametrePartie {
+	public static final int WINDOW_WIDTH = 700;
+	
+	public static final int WINDOW_HEIGHT = 500;
 	
 	public static final int ECART_HORIZONTAL = 30;
 	
@@ -29,6 +32,8 @@ public class ParametrePartie {
 	public static final int[] DIFIICULTE_IA = {0, 1};
 	
 	public static final int[] TAILLE_GOBAN = {9, 19};
+	
+	public static final int LARGEUR_DESCRIPTION = (int)(WINDOW_WIDTH / 2.5);
 	
 	public static final int FPS = 16;
 }
