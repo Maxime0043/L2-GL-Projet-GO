@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -35,12 +35,14 @@ public class GoPanel extends JPanel{
 	private int taille_goban;
 	private int nb_joueurs;
 	
+	private boolean isDidacticiel;
+	
 	private int taille_cerle;
 	private int taille_mega_cercle;
 	private int petit_decalage;
 	
-	public GoPanel(int choix, int window_width, int nb_joueur, int nb_ordi, boolean didacticiel) {
-		initGoPanel(choix, window_width, nb_joueur, nb_ordi, didacticiel);
+	public GoPanel(Moteur moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
+		initGoPanel(moteur, choix, nb_joueurs, isDidacticiel);
 		
 		this.addMouseListener(new Souris());
 		this.addMouseMotionListener(new DeplacementSouris());
@@ -49,7 +51,7 @@ public class GoPanel extends JPanel{
 		this.setBackground(Color.decode("#F2B352"));
 	}
 	
-	public void initGoPanel(int choix, int window_width, int nb_joueur, int nb_ordi, boolean didacticiel) {
+	public void initGoPanel(Moteur moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
 		if(choix == 0) {
 			cellule = ParametrePartie.LARGEUR_CASE_9;
 			taille_cerle = ParametrePartie.TAILLE_CERCLE_9;
@@ -61,19 +63,16 @@ public class GoPanel extends JPanel{
 			cellule = ParametrePartie.LARGEUR_CASE_19;
 			taille_cerle = ParametrePartie.TAILLE_CERCLE_19;
 			taille_mega_cercle = ParametrePartie.TAILLE_MEGA_CERCLE_19;
-			petit_decalage = ParametrePartie.PETITE_DECALAGE_19;
+			petit_decalage = ParametrePartie.PETITE_DECALAGE_19;		
 		}
+		
+		this.moteur = moteur;
+		this.nb_joueurs = nb_joueurs;
+		this.isDidacticiel = isDidacticiel;
 
-		ecart_window_vertical = ParametrePartie.ECART_VERTICAL;
 		taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
-		nb_joueurs = nb_joueur + nb_ordi;
-		ecart_window_horizontal = ParametrePartie.ECART_HORIZONTAL;
-		
-		if(!didacticiel) {
-			ecart_window_horizontal = (window_width - (taille_goban - 1) * cellule) / 2;
-		}
-		
-		moteur = new Moteur(cellule, ecart_window_horizontal, taille_goban, nb_joueur, nb_ordi, didacticiel);
+		ecart_window_horizontal = CalculFactory.getCoordEcartHorizontal(taille_goban, cellule, isDidacticiel);
+		ecart_window_vertical = ParametrePartie.ECART_VERTICAL;
 	}
 
 	@Override
@@ -82,7 +81,8 @@ public class GoPanel extends JPanel{
 		
 		drawGrid(g);
 		drawCercle(g);
-//		drawCouleurJoueur(g);
+		drawScore(g);
+		drawCouleurJoueur(g);
 	}
 	
 	private void drawGrid(Graphics g){
@@ -122,7 +122,7 @@ public class GoPanel extends JPanel{
 			
 			setColor(g, survole.getCouleur());
 			
-			if(!moteur.getIsMegaPierre() || !moteur.currentJoueur().hasMegaPierre()) {
+			if(!moteur.isMegaPierre() || !moteur.currentJoueur().hasMegaPierre()) {
 				g.fillOval(x, y, taille_cerle, taille_cerle);
 			}
 			
@@ -141,7 +141,47 @@ public class GoPanel extends JPanel{
 		}
 	}
 	
-	private void drawCouleurJoueur(Graphics g) {
+	private void drawScore(Graphics g) {
+		g.setColor(Color.BLACK);		
+		g.setFont(new Font("Impact", Font.PLAIN, 18));
+		
+		int x, y;
+		
+		if(nb_joueurs < 3) {
+			x = ParametrePartie.WINDOW_WIDTH / 2 - 75;
+			y = 20;
+			
+			if(taille_goban == ParametrePartie.TAILLE_GOBAN[1]) {
+				x += 6;
+			}
+			
+			if(isDidacticiel) {
+				x -= ParametrePartie.LARGEUR_DESCRIPTION / 2 + 10;
+			}
+		}
+		
+		else {
+			x = ParametrePartie.WINDOW_WIDTH / 3;
+			y = 20;			
+		}
+		
+		String score = "Noir: " + getScores()[0];
+		g.drawString(score, x, y);
+		
+		x += 85;
+
+		score = "Blanc: " + getScores()[1];
+		g.drawString(score, x, y);
+
+		if(nb_joueurs == 3) {
+			x += 85;
+			
+			score = "Rouge: " + getScores()[2];
+			g.drawString(score, x, y);
+		}
+	}
+	
+	private void drawCouleurJoueur(Graphics g) {		
 		if(moteur.getNoir()) {
 			g.setColor(Color.BLACK);
 		}
@@ -152,12 +192,15 @@ public class GoPanel extends JPanel{
 			g.setColor(Color.RED);
 		}
 		
-		int x = ecart_window_horizontal;
-		int y = taille_goban * cellule + 15;
+		int x = 5;
+		int y = 5;
 		
-		g.fillOval(x, y, 30, 30);
+		g.fillOval(x, y, 20, 20);
+		
+		g.setColor(Color.BLACK);
+		g.drawRect(0, 0, 30, 30);
 	}
-	
+
 	private void setColor(Graphics g, Couleur couleur) {
 		if(couleur.equals(Couleur.NOIR)) {
 			g.setColor(Color.BLACK);
@@ -169,31 +212,6 @@ public class GoPanel extends JPanel{
 		
 		else if(couleur.equals(Couleur.ROUGE)) {
 			g.setColor(Color.RED);
-		}
-	}
-	
-	public boolean isDidacticielFini() {
-		return moteur.isDidacticielFini();
-	}
-	
-	public int getCurrentLevel() {
-		return moteur.getCurrentLevel();
-	}
-	
-	public void passer() {
-		moteur.passer();
-	}
-	
-	public boolean getIsMegaPierre() {
-		return moteur.getIsMegaPierre();
-	}
-	
-	public void poseMegaPierre() {
-		if(moteur.getIsMegaPierre()) {
-			moteur.setIsMegaPierre(false);
-		}
-		else {
-			moteur.setIsMegaPierre(true);
 		}
 	}
 	

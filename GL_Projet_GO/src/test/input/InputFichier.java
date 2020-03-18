@@ -32,7 +32,7 @@ public class InputFichier {
 	public static String getDesciption(int index) {
 		String[] tab = new String[8];
 		
-		tab[0] = "Pour capturer une pierre ennemie,\nil faut l'entourer avec nos pierres pour plus\nqu'il n'ait de libertés.\nLe nombre de liberté d’une pierre est le nombre d’intersections\nvoisines inoccupées de cette pierre.\nVous recevrez un point par pierre capturé.";
+		tab[0] = "Pour capturer une pierre ennemie,\nil faut l'entourer avec nos pierres pour plus\nqu'il n'ait de libertés.\nLe nombre de liberté d’une pierre est le nombre\nd’intersections voisines inoccupées de cette pierre.\nVous recevrez un point par pierre capturé.";
 		tab[1] = "Une pierre qui est posée sur l'un des 4 bords\ndu plateau se vera retirée 1 liberté.\nIl faudra donc 3 pierres pour la capturer.";
 		tab[2] = "Si elle est sur l'un des 4 coins du plateau, elle se vera retirée 2 libertées. Il faudra donc 2 pierres pour la capturer.";
 		tab[3] = "Une chaîne est un ensemble de pierres voisines de même couleur. Des intersections sont dites voisines quand elles sont sur la même ligne/colonne et sans intersection entre elles. Pour pouvoir capturer une chaîne il faudra l'entourée de pierres dont la couleur est différente de celle de la chaine à capturer.";

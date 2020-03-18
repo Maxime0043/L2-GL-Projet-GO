@@ -21,7 +21,6 @@ import javax.swing.JTextArea;
 
 import org.apache.log4j.Logger;
 
-import donnees.Couleur;
 import donnees.ParametrePartie;
 import log.LoggerUtility;
 import test.input.InputFichier;
@@ -32,19 +31,19 @@ public class Go extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	public static Logger logger = LoggerUtility.getLogger(Moteur.class, "html");
+	private Moteur moteur;
 	
 	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel, descPanel;
 	private GoPanel gobanPanel;
 	
 	private int choix = 0;
-	private int nb_joueur, nb_ordi;
+	private int cellule = ParametrePartie.LARGEUR_CASE_9;
+	private int taille_goban = ParametrePartie.TAILLE_GOBAN[0];
+	private int nb_joueur = 2, nb_ordi = 0;
+	
 	private JRadioButton taille9, taille19;
 	private JRadioButton joueur1, joueur2, joueur3;
 	private JRadioButton ordi0, ordi1, ordi2;
-	
-	private JLabel[] scores;
-	
-	private int window_width, window_height;
 	
 	private Go instance = this;
 
@@ -54,6 +53,7 @@ public class Go extends JFrame implements Runnable {
 	private JCheckBox megaPierre;
 	
 	private JTextArea desc_label;
+	private JButton suivant;
 	
 	public Go() {
 		super("Jeu de GO");
@@ -64,10 +64,6 @@ public class Go extends JFrame implements Runnable {
 		goPanel = new JPanel();
 		actionPanel = new JPanel();
 		descPanel = new JPanel();
-		scores = new JLabel[3];
-		
-		window_width = 700;
-		window_height = 500;
 		
 		initLayout();
 	}
@@ -77,7 +73,7 @@ public class Go extends JFrame implements Runnable {
 		initGoban();
 		
 		this.setVisible(true);
-		this.setSize(window_width, window_height);
+		this.setSize(ParametrePartie.WINDOW_WIDTH, ParametrePartie.WINDOW_HEIGHT);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
@@ -86,12 +82,12 @@ public class Go extends JFrame implements Runnable {
 	private void initMenu() {
 		menuPanel.setLayout(new BorderLayout(0, 0));
 		menuDroitPanel.setLayout(new GridBagLayout());
-		menuDroitPanel.setPreferredSize(new Dimension(window_width/2, window_height));
+		menuDroitPanel.setPreferredSize(new Dimension(ParametrePartie.WINDOW_WIDTH/2, ParametrePartie.WINDOW_HEIGHT));
 		menuGauchePanel.setLayout(new GridBagLayout());
-		menuGauchePanel.setPreferredSize(new Dimension(window_width/2, window_height));
+		menuGauchePanel.setPreferredSize(new Dimension(ParametrePartie.WINDOW_WIDTH/2, ParametrePartie.WINDOW_HEIGHT));
 		
 		GridBagConstraints gbcDoite = new GridBagConstraints();
-		gbcDoite.insets = new Insets(5, 5, 25, window_width / 10);
+		gbcDoite.insets = new Insets(5, 5, 25, ParametrePartie.WINDOW_WIDTH / 10);
 		gbcDoite.gridx = 1;
 		gbcDoite.gridy = 1;
 		
@@ -110,7 +106,7 @@ public class Go extends JFrame implements Runnable {
 		menuDroitPanel.add(quitterMenu, gbcDoite);
 		
 		GridBagConstraints gbcGauche = new GridBagConstraints();
-		gbcGauche.insets = new Insets(5, window_width / 10, 5, 5);
+		gbcGauche.insets = new Insets(5, ParametrePartie.WINDOW_WIDTH / 10, 5, 5);
 		gbcGauche.gridx = 0;
 		gbcGauche.gridy = 1;
 		
@@ -219,6 +215,9 @@ public class Go extends JFrame implements Runnable {
 		JButton revenirMenu = new JButton("Revenir Menu");
 		revenirMenu.addActionListener(new RevenirMenu());
 		actionPanel.add(revenirMenu);
+		
+		suivant = new JButton("Suivant");
+		suivant.addActionListener(new Suivant());
 	}
 
 	@Override
@@ -250,16 +249,15 @@ public class Go extends JFrame implements Runnable {
 	
 	private void update() {
 		updateFrame();
-		updateScore();
 		updatePlayMegaPierre();
 		
 		if(isDidacticiel) {
-			if(gobanPanel.isDidacticielFini()) {
+			if(moteur.isDidacticielFini()) {
 				revenirMenu();
 			}
 			
 			else {
-				desc_label.setText(InputFichier.getDesciption(gobanPanel.getCurrentLevel()));
+				desc_label.setText(InputFichier.getDesciption(moteur.getCurrentLevel()));
 			}
 		}
 	}
@@ -268,26 +266,8 @@ public class Go extends JFrame implements Runnable {
 		gobanPanel.repaint();
 	}
 	
-	private void initLabels() {
-		for(int i = 0 ; i < nb_joueur ; i++) {
-			scores[i] = new JLabel();
-		}
-	}
-	
-	private void updateScore() {
-		int scoreJoueur[] = gobanPanel.getScores();
-		Couleur[] couleurs = Couleur.getCouleurs();
-		String texte;
-		
-		for(int i = 0 ; i < nb_joueur ; i++) {
-			texte = couleurs[i].name() + " : " + String.valueOf(scoreJoueur[i]);
-			
-			scores[i].setText(texte + "  ");
-		}
-	}
-	
 	private void updatePlayMegaPierre() {
-		if(checked && !gobanPanel.getIsMegaPierre()) {
+		if(checked && !moteur.isMegaPierre()) {
 			megaPierre.setSelected(false);
 			checked = false;
 		}
@@ -310,30 +290,33 @@ public class Go extends JFrame implements Runnable {
 	}
 	
 	public void lancer() {
-		gobanPanel = new GoPanel(choix, window_width, nb_joueur, nb_ordi, isDidacticiel);
+		moteur = new Moteur(cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
+		gobanPanel = new GoPanel(moteur, choix, nb_joueur + nb_ordi, isDidacticiel);
 		gobanPanel.setLayout(new FlowLayout());
-		
-		initLabels();
-		
-		for(int i = 0 ; i < nb_joueur ; i++) {
-			gobanPanel.add(scores[i]);
-		}
 		
 		goPanel.add(gobanPanel, BorderLayout.CENTER);
 		goPanel.add(actionPanel, BorderLayout.SOUTH);
 		
 		if(isDidacticiel) {
-			descPanel.setLayout(new FlowLayout());
-			descPanel.setPreferredSize(new Dimension((int)(window_width / 2.5), gobanPanel.getHeight()));
+			descPanel.setLayout(new GridBagLayout());
+			descPanel.setPreferredSize(new Dimension(ParametrePartie.LARGEUR_DESCRIPTION, ParametrePartie.WINDOW_HEIGHT));
 			descPanel.setBackground(Color.decode("#F2B352"));
+			
+			GridBagConstraints gbcDesc = new GridBagConstraints();
+			gbcDesc.insets = new Insets(100, 5, 0, 0);
+			gbcDesc.gridx = 1;
+			gbcDesc.gridy = 1;
 			
 			desc_label = new JTextArea();
 			desc_label.setEditable(false);
 			desc_label.setOpaque(false);
-			desc_label.setPreferredSize(new Dimension((int)(window_width / 2.5), 200));
+			desc_label.setPreferredSize(new Dimension(ParametrePartie.LARGEUR_DESCRIPTION, 200));
 			
 			desc_label.setText(InputFichier.getDesciption(0));
-			descPanel.add(desc_label);
+			descPanel.add(desc_label, gbcDesc);
+
+			gbcDesc.gridy++;
+			descPanel.add(suivant, gbcDesc);
 			
 			goPanel.add(descPanel, BorderLayout.EAST);
 		}
@@ -356,6 +339,7 @@ public class Go extends JFrame implements Runnable {
 		if(isDidacticiel) {
 			isDidacticiel = false;
 			descPanel.remove(desc_label);
+			descPanel.remove(suivant);
 			goPanel.remove(descPanel);
 		}
 		
@@ -382,8 +366,17 @@ public class Go extends JFrame implements Runnable {
 			nb_joueur = 2;
 			nb_ordi = 0;
 			choix = 0;
+			taille_goban = ParametrePartie.TAILLE_GOBAN[0];
+			cellule = ParametrePartie.LARGEUR_CASE_9;
 			
 			lancer();
+		}
+	}
+	
+	private class Suivant implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			moteur.changeLevel();
 		}
 	}
 	
@@ -394,10 +387,15 @@ public class Go extends JFrame implements Runnable {
 			
 			if(source == taille9) {
 				choix = 0;
+				cellule = ParametrePartie.LARGEUR_CASE_9;
 			}
+			
 			else if(source == taille19) {
 				choix = 1;
+				cellule = ParametrePartie.LARGEUR_CASE_19;
 			}
+
+			taille_goban = ParametrePartie.TAILLE_GOBAN[choix];
 		}
 		
 	}
@@ -454,7 +452,12 @@ public class Go extends JFrame implements Runnable {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(megaPierre != null) {
-				gobanPanel.poseMegaPierre();
+				if(moteur.isMegaPierre()) {
+					moteur.setPoseMegaPierre(false);
+				}
+				else {
+					moteur.setPoseMegaPierre(true);
+				}
 				
 				if(!checked) {
 					checked = true;
@@ -471,7 +474,7 @@ public class Go extends JFrame implements Runnable {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			gobanPanel.passer();
+			moteur.passer();
 		}
 		
 	}

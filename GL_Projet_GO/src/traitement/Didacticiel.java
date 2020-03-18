@@ -132,9 +132,9 @@ public class Didacticiel {
 			moteur.addPierre(new Pierre(Couleur.NOIR, c));
 			
 			c = new Coordonnee(3, 3);
-			moteur.setIsMegaPierre(true);
+			moteur.setPoseMegaPierre(true);
 			moteur.addPierre(new MegaPierre(Couleur.BLANC, c));
-			moteur.setIsMegaPierre(false);
+			moteur.setPoseMegaPierre(false);
 		}
 		
 		else if(level == 6) {
@@ -158,9 +158,9 @@ public class Didacticiel {
 			moteur.addPierre(new Pierre(Couleur.NOIR, c));
 			
 			c = new Coordonnee(3, 3);
-			moteur.setIsMegaPierre(true);
+			moteur.setPoseMegaPierre(true);
 			moteur.addPierre(new MegaPierre(Couleur.BLANC, c));
-			moteur.setIsMegaPierre(false);
+			moteur.setPoseMegaPierre(false);
 			c = new Coordonnee(3, 5);
 			moteur.addPierre(new Pierre(Couleur.BLANC, c));
 			c = new Coordonnee(4, 5);
