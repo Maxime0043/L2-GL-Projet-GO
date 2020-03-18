@@ -45,11 +45,11 @@ public class Moteur {
 	private int Ko_compteur = 0;
 	private boolean isKo = false;
 	
-	public Moteur(int cellule, int ecart_window_horizontal, int taille_goban, int nb_joueur, int nb_ordi, boolean didacticiel) {
+	public Moteur(int cellule, int taille_goban, int nb_joueur, int nb_ordi, boolean isDidacticiel) {
 		this.cellule = cellule;
-		this.ecart_window_horizontal = ecart_window_horizontal;
 		this.taille_goban = taille_goban;
 		nb_joueurs = nb_joueur + nb_ordi;
+		ecart_window_horizontal = CalculFactory.getCoordEcartHorizontal(taille_goban, cellule, isDidacticiel);
 		
 		goban = new Goban(taille_goban);
 		fin = new FinDePartie(taille_goban, goban);
@@ -60,7 +60,7 @@ public class Moteur {
 		
 		this.didacticiel = null;
 		
-		if(didacticiel) {
+		if(isDidacticiel) {
 			this.didacticiel = new Didacticiel(this);
 			
 			Go.logger.debug("Début du Didacticiel");
@@ -71,7 +71,7 @@ public class Moteur {
 	
 	public void reinitGoban() {
 		goban.initPlateau();
-		setIsMegaPierre(false);
+		setPoseMegaPierre(false);
 		cercle.clear();
 		changeJoueur();
 	}
@@ -133,11 +133,11 @@ public class Moteur {
 		return rouge;
 	}
 	
-	public boolean getIsMegaPierre() {
+	public boolean isMegaPierre() {
 		return isMegaPierre;
 	}
 	
-	public void setIsMegaPierre(boolean bool) {
+	public void setPoseMegaPierre(boolean bool) {
 		isMegaPierre = bool;
 	}
 	
@@ -223,17 +223,15 @@ public class Moteur {
 		return didacticiel.getLevel();
 	}
 	
-	private void changeLevel() {
+	public void changeLevel() {
 		if(didacticiel != null) {
-			if(currentJoueur().getScore() > 0) {
-				if(didacticiel.getLevel() < didacticiel.getNbLevels()) {
-					didacticiel.changeLevel();
-				}
-				else {
-					didacticiel_fini = true;
-					
-					Go.logger.debug("Fin du didacticiel");
-				}
+			if(didacticiel.getLevel() < didacticiel.getNbLevels()) {
+				didacticiel.changeLevel();
+			}
+			else {
+				didacticiel_fini = true;
+				
+				Go.logger.debug("Fin du didacticiel");
 			}
 		}
 	}
@@ -277,6 +275,10 @@ public class Moteur {
 			else {
 				survole = null;
 			}
+		}
+		
+		else {
+			survole = null;
 		}
 	}
 	
@@ -328,9 +330,9 @@ public class Moteur {
 		}
 		
 		initPassCompteur();
-		setIsMegaPierre(false);
+		setPoseMegaPierre(false);
 		setSuicide(false);
-		changeLevel();
+//		changeLevel();
 		
 		Go.logger.info("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
 	}
