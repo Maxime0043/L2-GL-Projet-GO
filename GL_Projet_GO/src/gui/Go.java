@@ -25,14 +25,15 @@ import org.apache.log4j.Logger;
 import donnees.ParametrePartie;
 import log.LoggerUtility;
 import test.input.InputFichier;
-import traitement.MoteurPierre;
+import traitement.moteurs.Moteur;
+import traitement.moteurs.MoteurPierre;
 
 public class Go extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 
 	public static Logger logger = LoggerUtility.getLogger(MoteurPierre.class, "html");
-	private MoteurPierre moteur;
+	private Moteur moteur;
 	
 	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel, descPanel;
 	private GoPanel gobanPanel;
@@ -291,7 +292,7 @@ public class Go extends JFrame implements Runnable {
 	}
 	
 	public void lancer() {
-		moteur = new MoteurPierre(cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
+		moteur = new Moteur(cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
 		gobanPanel = new GoPanel(moteur, choix, nb_joueur + nb_ordi, isDidacticiel);
 		gobanPanel.setLayout(new FlowLayout());
 		

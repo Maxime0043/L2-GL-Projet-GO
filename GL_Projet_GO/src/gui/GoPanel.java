@@ -16,7 +16,7 @@ import donnees.Couleur;
 import donnees.ParametrePartie;
 import traitement.CalculFactory;
 import traitement.Joueur;
-import traitement.MoteurPierre;
+import traitement.moteurs.Moteur;
 
 /**
  * 
@@ -27,7 +27,7 @@ public class GoPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
-	private MoteurPierre moteur;
+	private Moteur moteur;
 	
 	private int cellule;
 	private int ecart_window_horizontal;
@@ -41,7 +41,7 @@ public class GoPanel extends JPanel{
 	private int taille_mega_cercle;
 	private int petit_decalage;
 	
-	public GoPanel(MoteurPierre moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
+	public GoPanel(Moteur moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
 		initGoPanel(moteur, choix, nb_joueurs, isDidacticiel);
 		
 		this.addMouseListener(new Souris());
@@ -51,7 +51,7 @@ public class GoPanel extends JPanel{
 		this.setBackground(Color.decode("#F2B352"));
 	}
 	
-	public void initGoPanel(MoteurPierre moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
+	public void initGoPanel(Moteur moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
 		if(choix == 0) {
 			cellule = ParametrePartie.LARGEUR_CASE_9;
 			taille_cerle = ParametrePartie.TAILLE_CERCLE_9;
