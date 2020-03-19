@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -24,14 +25,14 @@ import org.apache.log4j.Logger;
 import donnees.ParametrePartie;
 import log.LoggerUtility;
 import test.input.InputFichier;
-import traitement.Moteur;
+import traitement.MoteurPierre;
 
 public class Go extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 
-	public static Logger logger = LoggerUtility.getLogger(Moteur.class, "html");
-	private Moteur moteur;
+	public static Logger logger = LoggerUtility.getLogger(MoteurPierre.class, "html");
+	private MoteurPierre moteur;
 	
 	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel, descPanel;
 	private GoPanel gobanPanel;
@@ -290,7 +291,7 @@ public class Go extends JFrame implements Runnable {
 	}
 	
 	public void lancer() {
-		moteur = new Moteur(cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
+		moteur = new MoteurPierre(cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
 		gobanPanel = new GoPanel(moteur, choix, nb_joueur + nb_ordi, isDidacticiel);
 		gobanPanel.setLayout(new FlowLayout());
 		
@@ -303,7 +304,7 @@ public class Go extends JFrame implements Runnable {
 			descPanel.setBackground(Color.decode("#F2B352"));
 			
 			GridBagConstraints gbcDesc = new GridBagConstraints();
-			gbcDesc.insets = new Insets(100, 5, 0, 0);
+			gbcDesc.insets = new Insets(100, 0, 0, 50);
 			gbcDesc.gridx = 1;
 			gbcDesc.gridy = 1;
 			
@@ -312,6 +313,7 @@ public class Go extends JFrame implements Runnable {
 			desc_label.setOpaque(false);
 			desc_label.setPreferredSize(new Dimension(ParametrePartie.LARGEUR_DESCRIPTION, 200));
 			
+			desc_label.setFont(new Font("Impact", Font.PLAIN, 18));
 			desc_label.setText(InputFichier.getDesciption(0));
 			descPanel.add(desc_label, gbcDesc);
 

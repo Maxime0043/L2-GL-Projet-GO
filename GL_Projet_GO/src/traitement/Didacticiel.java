@@ -8,12 +8,12 @@ import gui.Go;
 
 public class Didacticiel {
 
-	private Moteur moteur;
+	private MoteurPierre moteur;
 	
 	private int nb_levels = 7;
 	private int level;
 	
-	public Didacticiel(Moteur moteur) {
+	public Didacticiel(MoteurPierre moteur) {
 		this.moteur = moteur;
 		level = 0;
 	}
