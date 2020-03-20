@@ -3,7 +3,8 @@ package donnees;
 public enum Couleur {
 	NOIR,
 	BLANC,
-	ROUGE;
+	ROUGE,
+	VERT;
 	
 	
 	public static Couleur[] getCouleurs() {

@@ -31,7 +31,9 @@ public class MoteurPierre {
 	
 	private ArrayList<Cercle> cercle;
 	private Cercle survole;
+	private Coordonnee position_jouable;
 	
+	private boolean isDidacticiel;
 	private boolean isMegaPierre = false;
 	private boolean suicide = false;
 	
@@ -44,6 +46,8 @@ public class MoteurPierre {
 		this.moteur_joueur = moteur_joueur;
 		this.cellule = cellule;
 		this.taille_goban = taille_goban;
+		this.isDidacticiel = isDidacticiel;
+		
 		nb_joueurs = nb_joueur + nb_ordi;
 		ecart_window_horizontal = CalculFactory.getCoordEcartHorizontal(taille_goban, cellule, isDidacticiel);
 		
@@ -69,6 +73,10 @@ public class MoteurPierre {
 	
 	public void setPoseMegaPierre(boolean bool) {
 		isMegaPierre = bool;
+	}
+	
+	public void setPositionJouable(Coordonnee coord) {
+		position_jouable = coord;
 	}
 	
 	private void setSuicide(boolean bool) {
@@ -114,7 +122,7 @@ public class MoteurPierre {
 				
 				if(!goban.existPierre(x, y) || !goban.existPierre(x+1, y) || !goban.existPierre(x, y+1) || !goban.existPierre(x+1, y+1)) {
 					if(canDestruct(x, y)) {
-						survole = new Cercle(new Coordonnee(x, y), couleur, true);						
+						survole = new Cercle(new Coordonnee(x, y), couleur, true);
 					}
 					
 					else {
@@ -130,6 +138,12 @@ public class MoteurPierre {
 			else {
 				survole = null;
 			}
+			
+			if(isDidacticiel) {
+				if((position_jouable.getX() != x) || (position_jouable.getY() != y)) {
+					survole = null;
+				}
+			}
 		}
 		
 		else {
@@ -143,16 +157,26 @@ public class MoteurPierre {
 		int x = CalculFactory.getCoordTableau(coordY, ParametrePartie.ECART_VERTICAL, cellule);
 		int y = CalculFactory.getCoordTableau(coordX, ecart_window_horizontal, cellule);
 		
+		boolean canPose = true;
+		
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
 			if(!isMegaPierre && !goban.existPierre(x, y)) {
 				AbstractPierre pierre = new Pierre(moteur_joueur.currentCouleur(), x, y);
 				
-				addPierre(pierre);
-				moteur_joueur.currentJoueur().addPierre(pierre);
+				if(isDidacticiel) {
+					if((position_jouable.getX() != x) || (position_jouable.getY() != y)) {
+						canPose = false;
+					}
+				}
 				
-				if(!suicide) {
-					moteur_joueur.changeJoueur();
-					incrementeKoCompteur();
+				if(canPose) {
+					addPierre(pierre);
+					moteur_joueur.currentJoueur().addPierre(pierre);
+					
+					if(!suicide) {
+						moteur_joueur.changeJoueur();
+						incrementeKoCompteur();
+					}
 				}
 			}
 			
@@ -168,7 +192,13 @@ public class MoteurPierre {
 				if(!goban.existPierre(x, y) || !goban.existPierre(x+1, y) || !goban.existPierre(x, y+1) || !goban.existPierre(x+1, y+1)) {
 					AbstractPierre pierre = new MegaPierre(moteur_joueur.currentCouleur(), x, y);
 					
-					if(canDestruct(x, y)) {
+					if(isDidacticiel) {
+						if((position_jouable.getX() != x) || (position_jouable.getY() != y)) {
+							canPose = false;
+						}
+					}
+					
+					if(canPose && canDestruct(x, y)) {
 						destruct(x, y);
 						
 						addPierre(pierre);
@@ -186,7 +216,6 @@ public class MoteurPierre {
 		
 		setPoseMegaPierre(false);
 		setSuicide(false);
-//		changeLevel();
 		
 		Go.logger.info("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
 	}

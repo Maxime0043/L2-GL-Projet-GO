@@ -3,6 +3,7 @@ package traitement.moteurs;
 import java.util.ArrayList;
 
 import donnees.Cercle;
+import donnees.Coordonnee;
 import donnees.Couleur;
 import gui.Go;
 import traitement.Didacticiel;
@@ -17,6 +18,7 @@ public class Moteur {
 	private MoteurOrdi moteur_ordi;
 	private MoteurPierre moteur_pierre;
 	private FinDePartie fin;
+	private Cercle position_jouable = null;
 
 	private int nb_joueurs;
 	private int pass_compteur = 0;
@@ -100,6 +102,20 @@ public class Moteur {
 				Go.logger.debug("Fin du didacticiel");
 			}
 		}
+	}
+	
+	public Cercle getPositionJouable() {
+		if(position_jouable != null && goban.existPierre(position_jouable.getX(), position_jouable.getY())) {
+			position_jouable = null;
+		}
+		
+		return position_jouable;
+	}
+	
+	public void setPositionJouable(Coordonnee coord) {
+		position_jouable = new Cercle(coord, Couleur.VERT, isMegaPierre());
+		
+		moteur_pierre.setPositionJouable(coord);
 	}
 	
 	public boolean isDidacticielFini() {

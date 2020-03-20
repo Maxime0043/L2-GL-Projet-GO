@@ -40,6 +40,10 @@ public class Didacticiel {
 		return level;
 	}
 	
+	public void setPositionJouable(int x, int y) {
+		moteur.setPositionJouable(new Coordonnee(x, y));
+	}
+	
 	public void changeLevel(boolean suivant) {
 		if(suivant) {
 			level++;
@@ -72,6 +76,8 @@ public class Didacticiel {
 			
 			c = new Coordonnee(4, 4);
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
+			
+			setPositionJouable(5, 4);
 		}
 		
 		else if(level == 1) {
@@ -82,6 +88,8 @@ public class Didacticiel {
 			
 			c = new Coordonnee(0, 4);
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
+			
+			setPositionJouable(0, 5);
 		}
 		
 		else if(level == 2) {
@@ -90,6 +98,8 @@ public class Didacticiel {
 			
 			c = new Coordonnee(0, 0);
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
+			
+			setPositionJouable(1, 0);
 		}
 		
 		else if(level == 3) {
@@ -108,6 +118,8 @@ public class Didacticiel {
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
 			c = new Coordonnee(3, 4);
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
+			
+			setPositionJouable(4, 4);
 		}
 		
 		else if(level == 4) {
@@ -125,7 +137,9 @@ public class Didacticiel {
 			c = new Coordonnee(2, 3);
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
 			c = new Coordonnee(4, 3);
-			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));		
+			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
+			
+			setPositionJouable(3, 3);
 		}
 		
 		else if(level == 5) {
@@ -148,6 +162,8 @@ public class Didacticiel {
 			moteur.setPoseMegaPierre(true);
 			moteur_pierre.addPierre(new MegaPierre(Couleur.BLANC, c));
 			moteur.setPoseMegaPierre(false);
+			
+			setPositionJouable(5, 4);
 		}
 		
 		else if(level == 6) {
@@ -178,6 +194,8 @@ public class Didacticiel {
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
 			c = new Coordonnee(4, 5);
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
+			
+			setPositionJouable(5, 5);
 		}
 		
 		else if(level == 7) {
@@ -202,6 +220,10 @@ public class Didacticiel {
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
 			c = new Coordonnee(4, 4);
 			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
+			
+			moteur.setPoseMegaPierre(true);
+			
+			setPositionJouable(3, 5);
 		}
 	}
 }
