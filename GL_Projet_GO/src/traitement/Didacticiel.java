@@ -5,6 +5,7 @@ import donnees.Couleur;
 import donnees.MegaPierre;
 import donnees.Pierre;
 import gui.Go;
+import test.input.Description;
 import traitement.moteurs.Moteur;
 import traitement.moteurs.MoteurPierre;
 
@@ -39,8 +40,14 @@ public class Didacticiel {
 		return level;
 	}
 	
-	public void changeLevel() {
-		level++;
+	public void changeLevel(boolean suivant) {
+		if(suivant) {
+			level++;
+		}
+		
+		else {
+			level--;
+		}
 		
 		Go.logger.info("Passage au niveau " + level);
 		
@@ -50,6 +57,8 @@ public class Didacticiel {
 	
 	public void chargeLevel() {
 		Go.logger.info("Chargement du niveau " + level);
+		
+		moteur.setDescription(Description.getDescription(level));
 		
 		Coordonnee c;
 		

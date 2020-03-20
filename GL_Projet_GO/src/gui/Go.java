@@ -1,10 +1,8 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,13 +16,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
 
 import org.apache.log4j.Logger;
 
 import donnees.ParametrePartie;
 import log.LoggerUtility;
-import test.input.InputFichier;
 import traitement.moteurs.Moteur;
 import traitement.moteurs.MoteurPierre;
 
@@ -35,8 +31,9 @@ public class Go extends JFrame implements Runnable {
 	public static Logger logger = LoggerUtility.getLogger(MoteurPierre.class, "html");
 	private Moteur moteur;
 	
-	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel, descPanel;
+	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel;
 	private GoPanel gobanPanel;
+	private DescriptionPanel descPanel;
 	
 	private int choix = 0;
 	private int cellule = ParametrePartie.LARGEUR_CASE_9;
@@ -54,8 +51,7 @@ public class Go extends JFrame implements Runnable {
 	private boolean isDidacticiel = false;
 	private JCheckBox megaPierre;
 	
-	private JTextArea desc_label;
-	private JButton suivant;
+	private JButton precedent, suivant;
 	
 	public Go() {
 		super("Jeu de GO");
@@ -65,7 +61,6 @@ public class Go extends JFrame implements Runnable {
 		menuDroitPanel = new JPanel();
 		goPanel = new JPanel();
 		actionPanel = new JPanel();
-		descPanel = new JPanel();
 		
 		initLayout();
 	}
@@ -187,17 +182,17 @@ public class Go extends JFrame implements Runnable {
 		menuPanel.add(menuDroitPanel, BorderLayout.EAST);
 		menuPanel.add(menuGauchePanel, BorderLayout.WEST);
 		
-		taille9.setBackground(Color.decode("#F2B352"));
-		taille19.setBackground(Color.decode("#F2B352"));
-		joueur1.setBackground(Color.decode("#F2B352"));
-		joueur2.setBackground(Color.decode("#F2B352"));
-		joueur3.setBackground(Color.decode("#F2B352"));
-		ordi0.setBackground(Color.decode("#F2B352"));
-		ordi1.setBackground(Color.decode("#F2B352"));
-		ordi2.setBackground(Color.decode("#F2B352"));
-		menuPanel.setBackground(Color.decode("#F2B352"));
-		menuDroitPanel.setBackground(Color.decode("#F2B352"));
-		menuGauchePanel.setBackground(Color.decode("#F2B352"));
+		taille9.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		taille19.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		joueur1.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		joueur2.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		joueur3.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		ordi0.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		ordi1.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		ordi2.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		menuPanel.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		menuDroitPanel.setBackground(ParametrePartie.BACKGROUND_COLOR);
+		menuGauchePanel.setBackground(ParametrePartie.BACKGROUND_COLOR);
 		
 		this.setContentPane(menuPanel);
 	}
@@ -218,8 +213,12 @@ public class Go extends JFrame implements Runnable {
 		revenirMenu.addActionListener(new RevenirMenu());
 		actionPanel.add(revenirMenu);
 		
+		precedent = new JButton("Précédent");
+		precedent.addActionListener(new ChangeLevel());
+		precedent.setEnabled(false);
+		
 		suivant = new JButton("Suivant");
-		suivant.addActionListener(new Suivant());
+		suivant.addActionListener(new ChangeLevel());
 	}
 
 	@Override
@@ -259,7 +258,7 @@ public class Go extends JFrame implements Runnable {
 			}
 			
 			else {
-				desc_label.setText(InputFichier.getDesciption(moteur.getCurrentLevel()));
+				descPanel.setDescription(moteur.getDescription());
 			}
 		}
 	}
@@ -300,26 +299,7 @@ public class Go extends JFrame implements Runnable {
 		goPanel.add(actionPanel, BorderLayout.SOUTH);
 		
 		if(isDidacticiel) {
-			descPanel.setLayout(new GridBagLayout());
-			descPanel.setPreferredSize(new Dimension(ParametrePartie.LARGEUR_DESCRIPTION, ParametrePartie.WINDOW_HEIGHT));
-			descPanel.setBackground(Color.decode("#F2B352"));
-			
-			GridBagConstraints gbcDesc = new GridBagConstraints();
-			gbcDesc.insets = new Insets(100, 0, 0, 50);
-			gbcDesc.gridx = 1;
-			gbcDesc.gridy = 1;
-			
-			desc_label = new JTextArea();
-			desc_label.setEditable(false);
-			desc_label.setOpaque(false);
-			desc_label.setPreferredSize(new Dimension(ParametrePartie.LARGEUR_DESCRIPTION, 200));
-			
-			desc_label.setFont(new Font("Impact", Font.PLAIN, 18));
-			desc_label.setText(InputFichier.getDesciption(0));
-			descPanel.add(desc_label, gbcDesc);
-
-			gbcDesc.gridy++;
-			descPanel.add(suivant, gbcDesc);
+			descPanel = new DescriptionPanel(precedent, suivant);
 			
 			goPanel.add(descPanel, BorderLayout.EAST);
 		}
@@ -336,13 +316,11 @@ public class Go extends JFrame implements Runnable {
 	public void revenirMenu() {
 		stop = true;
 		
-		goPanel.remove(gobanPanel);
-		goPanel.remove(actionPanel);
+		goPanel.removeAll();
 		
 		if(isDidacticiel) {
 			isDidacticiel = false;
-			descPanel.remove(desc_label);
-			descPanel.remove(suivant);
+			descPanel.removeAll();
 			goPanel.remove(descPanel);
 		}
 		
@@ -376,10 +354,26 @@ public class Go extends JFrame implements Runnable {
 		}
 	}
 	
-	private class Suivant implements ActionListener{
+	private class ChangeLevel implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			moteur.changeLevel();
+			Object source = e.getSource();
+			
+			if(source == precedent) {				
+				moteur.changeLevel(false);
+				
+				if(moteur.getCurrentLevel() == 0) {
+					precedent.setEnabled(false);
+				}
+			}
+			
+			else if(source == suivant) {				
+				moteur.changeLevel(true);
+				
+				if(moteur.getCurrentLevel() > 0) {
+					precedent.setEnabled(true);
+				}
+			}
 		}
 	}
 	

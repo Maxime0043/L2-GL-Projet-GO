@@ -14,11 +14,14 @@ public class Moteur {
 	private Goban goban;
 	private Didacticiel didacticiel;
 	private MoteurJoueur moteur_joueur;
+	private MoteurOrdi moteur_ordi;
 	private MoteurPierre moteur_pierre;
 	private FinDePartie fin;
 
 	private int nb_joueurs;
 	private int pass_compteur = 0;
+	
+	private String description;
 
 	private boolean didacticiel_fini = false;
 	
@@ -27,6 +30,10 @@ public class Moteur {
 		moteur_joueur = new MoteurJoueur(nb_joueur, nb_ordi, isDidacticiel);
 		moteur_pierre = new MoteurPierre(moteur_joueur, goban, cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
 		fin = new FinDePartie(taille_goban, goban);
+		
+		if(nb_ordi > 0) {
+			moteur_ordi = new MoteurOrdi(moteur_joueur, moteur_pierre, taille_goban);
+		}
 		
 		nb_joueurs = nb_joueur + nb_ordi; 
 		
@@ -46,7 +53,7 @@ public class Moteur {
 		
 		while(isRunning) {
 			if(currentJoueur().isOrdi()) {
-				
+				moteur_ordi.jouer();
 			}
 		}		
 	}
@@ -82,10 +89,10 @@ public class Moteur {
 		initPassCompteur();
 	}
 	
-	public void changeLevel() {
+	public void changeLevel(boolean suivant) {
 		if(didacticiel != null) {
 			if(didacticiel.getLevel() < didacticiel.getNbLevels()) {
-				didacticiel.changeLevel();
+				didacticiel.changeLevel(suivant);
 			}
 			else {
 				didacticiel_fini = true;
@@ -101,6 +108,14 @@ public class Moteur {
 	
 	public int getCurrentLevel() {
 		return didacticiel.getLevel();
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String desc) {
+		description = desc;
 	}
 	
 	public ArrayList<Cercle> getCercleList(){

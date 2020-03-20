@@ -48,7 +48,7 @@ public class GoPanel extends JPanel{
 		this.addMouseMotionListener(new DeplacementSouris());
 		this.addKeyListener(new Touche());
 		
-		this.setBackground(Color.decode("#F2B352"));
+		this.setBackground(ParametrePartie.BACKGROUND_COLOR);
 	}
 	
 	public void initGoPanel(Moteur moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
@@ -101,7 +101,7 @@ public class GoPanel extends JPanel{
 			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, petit_decalage);
 			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, petit_decalage);
 			
-			setColor(g, c.getCouleur());
+			setColor(g, c.getCouleur(), false);
 			
 			if(!c.getIsMegaPierre()) {
 				g.fillOval(x, y, taille_cerle, taille_cerle);
@@ -120,7 +120,7 @@ public class GoPanel extends JPanel{
 			x = CalculFactory.getCoordWindow(survole.getY(), ecart_window_horizontal, cellule, petit_decalage);
 			y = CalculFactory.getCoordWindow(survole.getX(), ecart_window_vertical, cellule, petit_decalage);
 			
-			setColor(g, survole.getCouleur());
+			setColor(g, survole.getCouleur(), true);
 			
 			if(!moteur.isMegaPierre() || !moteur.currentJoueur().hasMegaPierre()) {
 				g.fillOval(x, y, taille_cerle, taille_cerle);
@@ -201,17 +201,35 @@ public class GoPanel extends JPanel{
 		g.drawRect(0, 0, 30, 30);
 	}
 
-	private void setColor(Graphics g, Couleur couleur) {
+	private void setColor(Graphics g, Couleur couleur, boolean isTransparant) {
 		if(couleur.equals(Couleur.NOIR)) {
-			g.setColor(Color.BLACK);
+			if(isTransparant) {
+				g.setColor(new Color(0, 0, 0, 100));
+			}
+			
+			else {
+				g.setColor(Color.BLACK);
+			}
 		}
 		
 		else if(couleur.equals(Couleur.BLANC)) {
-			g.setColor(Color.WHITE);
+			if(isTransparant) {
+				g.setColor(new Color(255, 255, 255, 180));
+			}
+			
+			else {
+				g.setColor(Color.WHITE);
+			}
 		}
 		
 		else if(couleur.equals(Couleur.ROUGE)) {
-			g.setColor(Color.RED);
+			if(isTransparant) {
+				g.setColor(new Color(255, 0, 0, 100));
+			}
+			
+			else {
+				g.setColor(Color.RED);
+			}
 		}
 	}
 	

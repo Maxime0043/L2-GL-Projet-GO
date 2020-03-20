@@ -1,5 +1,7 @@
 package donnees;
 
+import java.awt.Color;
+
 public class ParametrePartie {
 	public static final int WINDOW_WIDTH = 700;
 	
@@ -36,4 +38,6 @@ public class ParametrePartie {
 	public static final int LARGEUR_DESCRIPTION = (int)(WINDOW_WIDTH / 2.5);
 	
 	public static final int FPS = 16;
+	
+	public static final Color BACKGROUND_COLOR = Color.decode("#F2B352");
 }
