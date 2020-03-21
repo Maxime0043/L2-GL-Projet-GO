@@ -6,6 +6,7 @@ public abstract class AbstractPierre {
 	private Couleur couleur;
 	private Liberte liberte;
 	private int nomChaine;
+	private boolean vivante;
 	
 	
 	public AbstractPierre(Couleur couleur) {
@@ -38,6 +39,14 @@ public abstract class AbstractPierre {
 	 */
 	public Couleur getCouleur() {
 		return couleur;
+	}
+	
+	public boolean isVivante() {
+		return vivante;
+	}
+	
+	public void setVivante(boolean vivante) {
+		this.vivante = vivante;
 	}
 	
 	public void setNomChaine(int nomChaine) {

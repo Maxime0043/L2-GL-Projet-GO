@@ -223,10 +223,14 @@ public class FinDePartie {
 						}
 						
 						if(vivante){
-							System.out.println(pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
+							System.out.println("chaine, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
 						}
 						else {
-							System.out.println(pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : morte");
+							System.out.println("chaine, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : morte");
+						}
+						
+						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {		//Defini si finalement les pierres de la chaine sont morte ou non
+							p.setVivante(vivante);
 						}
 						
 						//reset des variable a la fin
@@ -249,8 +253,7 @@ public class FinDePartie {
 				}
 			}
 			
-			else {				
-				//la pierre n'appartient pas à une chaine
+			else {				//la pierre n'appartient pas à une chaine
 				setBord(pierre);
 				finalInterVide = GoPierre.intersectionVide(pierre, plateau, taille_goban);  //recupère les premieres intersections vides autour de la chaine
 				
@@ -304,12 +307,13 @@ public class FinDePartie {
 //				}
 						
 				if(vivante){
-					System.out.println(pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
+					System.out.println("pierre, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
 				}
 				else {
-					System.out.println(pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : morte");
+					System.out.println("pierre, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : morte");
 				}
-						
+				
+				pierre.setVivante(vivante);
 				//reset des variable a la fin
 				vivante = false;
 				BordHaut = false;
