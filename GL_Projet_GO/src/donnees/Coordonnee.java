@@ -16,4 +16,7 @@ public class Coordonnee {
 	public int getY() {
 		return y;
 	}
+	public String toString () {
+		return this.getX() +"/"+ this.getY();
+	}
 }

@@ -78,6 +78,7 @@ public class Moteur {
 		if(pass_compteur == nb_joueurs) {
 			initPassCompteur();
 			fin.setChaineTwoEye(goban.getHmChaine(), goban.getPlateau());
+			fin.pierreMorte(goban.getPlateau(), goban.getHmChaine());
 			System.out.println("Fini");
 		}
 	}
