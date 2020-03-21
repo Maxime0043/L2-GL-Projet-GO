@@ -246,7 +246,10 @@ public class FinDePartie {
 						//---------------------------
 					}
 					else {
-						vivante = true;				//Si elle a deux yeux
+						vivante = true;
+						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {		//Defini si finalement les pierres de la chaine sont morte ou non
+							p.setVivante(vivante);
+						}
 					}
 					
 					ListChaine.add(pierre.getNomChaine()); //On ajoute la chaine aux chaines deja parcourue
