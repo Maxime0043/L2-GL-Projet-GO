@@ -88,7 +88,7 @@ public class FinDePartie {
 								compteurYeux--;
 							}
 						}
-						else if(c.getX() < bordBas) {
+						if(c.getX() < bordBas) {
 							if(goban.existPierre(c.getX()+1, c.getY())) {
 								if(goban.getPierre(c.getX()+1, c.getY()).getCouleur() != chaine.getCouleur()) {
 									compteurYeux--;
@@ -98,7 +98,7 @@ public class FinDePartie {
 								compteurYeux--;
 							}
 						}
-						else if(c.getY() > bordGauche) {
+						if(c.getY() > bordGauche) {
 							if(goban.existPierre(c.getX(), c.getY()-1)) {
 								if(goban.getPierre(c.getX(), c.getY()-1).getCouleur() != chaine.getCouleur()) {
 									compteurYeux--;
@@ -108,7 +108,7 @@ public class FinDePartie {
 								compteurYeux--;
 							}
 						}
-						else if(c.getY() < bordDroit) {
+						if(c.getY() < bordDroit) {
 							if(goban.existPierre(c.getX(), c.getY()+1)) {
 								if(goban.getPierre(c.getX(), c.getY()+1).getCouleur() != chaine.getCouleur()) {
 									compteurYeux--;
@@ -237,6 +237,7 @@ public class FinDePartie {
 						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
 							p.setVivante(vivante);
 						}
+						System.out.println("ici");
 					}
 					
 					ListChaine.add(pierre.getNomChaine());
@@ -327,6 +328,7 @@ public class FinDePartie {
 				}
 			}
 		}
+		
 		for(AbstractPierre pierre : ListPierre) {
 			if(pierre.hasChaine()) {				
 				if(!ListChaine.contains(pierre.getNomChaine())) {				
