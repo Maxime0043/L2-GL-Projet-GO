@@ -41,6 +41,7 @@ public class Moteur {
 		nb_joueurs = nb_joueur + nb_ordi; 
 		
 		didacticiel = null;
+		position_jouable = null;
 		
 		if(isDidacticiel) {
 			didacticiel = new Didacticiel(this, moteur_pierre);
@@ -103,6 +104,7 @@ public class Moteur {
 			}
 			else {
 				didacticiel_fini = true;
+				position_jouable = null;
 				
 				Go.logger.debug("Fin du didacticiel");
 			}

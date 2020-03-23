@@ -366,5 +366,15 @@ public class Didacticiel {
 			initPositionJouable(3, 4, Couleur.VERT, true);
 			moteur.setPositionJouable();
 		}
+		
+		/*-------------Territoires-----------------*/
+		
+		else if(level == 13) {
+			c = new Coordonnee(2, 3);
+			moteur_pierre.addPierre(new Pierre(Couleur.NOIR, c));
+			
+			c = new Coordonnee(3, 3);
+			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
+		}
 	}
 }
