@@ -135,8 +135,6 @@ public class FinDePartie {
 	public void pierreMorte (AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		
 		int i, j;
-
-		boolean marge = false;
 		
 		ArrayList<AbstractPierre> ListPierre = new ArrayList<AbstractPierre>();
 		ArrayList<Integer> ListChaine = new ArrayList<Integer>();
@@ -152,17 +150,18 @@ public class FinDePartie {
 				}
 			}
 		}
-		for(AbstractPierre pierre : ListPierre) {				//On parcours les pierres du plateau
+		
+		for(AbstractPierre pierre : ListPierre) {
 			
-			if(pierre.hasChaine()) {				//Si la pierre appartient à une chaine
-				if(!ListChaine.contains(pierre.getNomChaine())) {				//Si on a pas deja parcouru la chaine
-					if(!hmChaine.get(pierre.getNomChaine()).getTwoEyes()) {				//Si la chaine n'a pas d'yeux
+			if(pierre.hasChaine()) {
+				if(!ListChaine.contains(pierre.getNomChaine())) {
+					if(!hmChaine.get(pierre.getNomChaine()).getTwoEyes()) {
 						
 						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
 							setBord(p);
 							listeInterVide = GoPierre.intersectionVide(p, plateau, taille_goban);
 							
-							for(Coordonnee c : listeInterVide) {    			//recupère les premieres intersections vides autour de la chaine
+							for(Coordonnee c : listeInterVide) {
 								if(!dejaParcourue(c, finalInterVide)) {
 									setBord(c);
 									finalInterVide.add(c);
@@ -172,15 +171,9 @@ public class FinDePartie {
 							listeInterVide.clear();
 						}
 						
-						if(finalInterVide.size()>hmChaine.get(pierre.getNomChaine()).getChaine().size()) {
-							marge = true;
-						}
-						
-						//listeInterVide.clear();
-						//listeInterVide.addAll(finalInterVide);
 						InterVideDejaParcourue.addAll(finalInterVide);
 						
-						while (!vivante && finalInterVide.size() > 0) {				//Récupère les intersections suivantes et verifie si la pierre rencontre les 4 bords
+						while (!vivante && finalInterVide.size() > 0) {
 							listeInterVide.clear();
 							finalInterVide.clear();
 							
@@ -203,7 +196,7 @@ public class FinDePartie {
 							setVivante();
 						}
 						
-						if(!vivante) {												//Verifie si une chaine alentour existe et est à deux yeux.
+						if(!vivante) {
 							for(Coordonnee c : InterVideDejaParcourue) {
 								listeInterPleine = GoPierre.voisins(new Pierre(Couleur.NOIR, c), plateau, taille_goban);
 								for(AbstractPierre p : listeInterPleine) {
@@ -215,12 +208,7 @@ public class FinDePartie {
 								}
 							}
 						}
-						if(vivante && !marge) { //si elle a trouvé des alliés mais pas de place pour bouger
-							vivante = false;
-						}
-						if(!vivante && marge) { // si elle est seul mais a de la place pour faire des choses
-							vivante = true;
-						}
+
 						
 						if(vivante){
 							System.out.println("chaine, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
@@ -229,11 +217,10 @@ public class FinDePartie {
 							System.out.println("chaine, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : morte");
 						}
 						
-						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {		//Defini si finalement les pierres de la chaine sont morte ou non
+						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
 							p.setVivante(vivante);
 						}
 						
-						//reset des variable a la fin
 						vivante = false;
 						BordHaut = false;
 						BordBas = false;
@@ -243,30 +230,28 @@ public class FinDePartie {
 						listeInterVide.clear();
 						finalInterVide.clear();
 						InterVideDejaParcourue.clear();
-						//---------------------------
 					}
+					
 					else {
 						vivante = true;
-						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {		//Defini si finalement les pierres de la chaine sont morte ou non
+						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
 							p.setVivante(vivante);
 						}
 					}
 					
-					ListChaine.add(pierre.getNomChaine()); //On ajoute la chaine aux chaines deja parcourue
+					ListChaine.add(pierre.getNomChaine());
 				}
 			}
 			
-			else {				//la pierre n'appartient pas à une chaine
+			else {
 				setBord(pierre);
-				finalInterVide = GoPierre.intersectionVide(pierre, plateau, taille_goban);  //recupère les premieres intersections vides autour de la chaine
+				finalInterVide = GoPierre.intersectionVide(pierre, plateau, taille_goban);
 				
-//				if(finalInterVide.size()>=2) {
-//					marge = true;
-//				}
+
 						
 				InterVideDejaParcourue.addAll(finalInterVide);
 						
-				while (!vivante && finalInterVide.size() > 0) {				//Récupère les intersections suivantes et verifie si la pierre rencontre les 4 bords
+				while (!vivante && finalInterVide.size() > 0) {
 					listeInterVide.clear();
 					finalInterVide.clear();
 							
@@ -289,7 +274,7 @@ public class FinDePartie {
 					setVivante();
 				}
 						
-				if(!vivante) {												//Verifie si une chaine alentour existe et est à deux yeux.
+				if(!vivante) {
 					for(Coordonnee c : InterVideDejaParcourue) {
 						listeInterPleine = GoPierre.voisins(new Pierre(Couleur.NOIR, c), plateau, taille_goban);
 						for(AbstractPierre p : listeInterPleine) {
@@ -301,13 +286,6 @@ public class FinDePartie {
 						}
 					}
 				}
-				
-//				if(vivante && !marge) { //si elle a trouvé des alliés mais pas de place pour bouger
-//					vivante = false;
-//				}
-//				if(!vivante && marge) { // si elle est seul mais a de la place pour faire des choses
-//					vivante = true;
-//				}
 						
 				if(vivante){
 					System.out.println("pierre, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
@@ -317,27 +295,59 @@ public class FinDePartie {
 				}
 				
 				pierre.setVivante(vivante);
-				//reset des variable a la fin
+				
 				vivante = false;
 				BordHaut = false;
 				BordBas = false;
 				BordGauche = false;
 				BordDroit = false;
-						
+				
 				listeInterVide.clear();
 				finalInterVide.clear();
 				InterVideDejaParcourue.clear();
-				//---------------------------
 			}
-			
-			if(!vivante) {  //afficher une croix au dessus
-				if(pierre.hasChaine()) {
-					for(AbstractPierre ap : hmChaine.get(pierre.getNomChaine()).getChaine()) {
-						
-					}
+		}
+	}
+	
+	public void calculTerritoire(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
+		
+		int i, j;
+		
+		ArrayList<AbstractPierre> ListPierre = new ArrayList<AbstractPierre>();
+		ArrayList<Integer> ListChaine = new ArrayList<Integer>();
+		ArrayList<Coordonnee> listeInterVide = new ArrayList<Coordonnee>();
+		ArrayList<Coordonnee> finalInterVide = new ArrayList<Coordonnee>();
+		ArrayList<Coordonnee> InterVideDejaParcourue = new ArrayList<Coordonnee>();
+		ArrayList<AbstractPierre> listeInterPleine = new ArrayList<AbstractPierre>();
+		
+		for(i=0;i<taille_goban;i++) {
+			for(j=0;j<taille_goban;j++) {
+				if(goban.existPierre(i, j)) {
+					ListPierre.add(goban.getPierre(i, j));
 				}
-				else {
-					
+			}
+		}
+		for(AbstractPierre pierre : ListPierre) {
+			if(pierre.hasChaine()) {				
+				if(!ListChaine.contains(pierre.getNomChaine())) {				
+					if(!hmChaine.get(pierre.getNomChaine()).getTwoEyes()) {
+						
+						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
+							setBord(p);
+							listeInterVide = GoPierre.intersectionVide(p, plateau, taille_goban);
+							
+							for(Coordonnee c : listeInterVide) {
+								if(!dejaParcourue(c, finalInterVide)) {
+									setBord(c);
+									finalInterVide.add(c);
+								}
+							}
+							
+							listeInterVide.clear();
+						}
+						
+						InterVideDejaParcourue.addAll(finalInterVide);
+					}
 				}
 			}
 		}
