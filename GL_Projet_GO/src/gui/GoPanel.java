@@ -140,27 +140,19 @@ public class GoPanel extends JPanel{
 			Go.logger.trace("Le cercle de coordonnées (" + x + ", " + y + ") vient d'être dessinée au survole");
 		}
 		
-		Cercle position_jouable = moteur.getPositionJouable();
 		
-		if(position_jouable != null) {
+		for(Cercle position_jouable : moteur.getPositionJouable()) {
 			x = CalculFactory.getCoordWindow(position_jouable.getY(), ecart_window_horizontal, cellule, petit_decalage);
 			y = CalculFactory.getCoordWindow(position_jouable.getX(), ecart_window_vertical, cellule, petit_decalage);
 			
 			setColor(g, position_jouable.getCouleur(), true);
 			
-			if(!moteur.isMegaPierre() || !moteur.currentJoueur().hasMegaPierre()) {
-				g.fillOval(x, y, taille_cerle, taille_cerle);
+			if(!position_jouable.getIsMegaPierre()) {
+				g.drawOval(x, y, taille_cerle, taille_cerle);
 			}
 			
-			else if(moteur.currentJoueur().hasMegaPierre()){
-				if(position_jouable.getY() == taille_goban - 1) {
-					x = CalculFactory.getCoordWindow(position_jouable.getY() - 1, ecart_window_horizontal, cellule, petit_decalage);
-				}
-				if(position_jouable.getX() == taille_goban - 1) {
-					y = CalculFactory.getCoordWindow(position_jouable.getX() - 1, ecart_window_vertical, cellule, petit_decalage);
-				}
-				
-				g.fillOval(x, y, taille_mega_cercle, taille_mega_cercle);
+			else {
+				g.drawOval(x, y, taille_mega_cercle, taille_mega_cercle);
 			}
 			
 			Go.logger.trace("Le cercle de coordonnées (" + x + ", " + y + ") vient d'être dessinée au survole");
@@ -259,7 +251,7 @@ public class GoPanel extends JPanel{
 		}
 		
 		else if(couleur.equals(Couleur.VERT)) {
-			g.setColor(new Color(0, 160, 0, 160));
+			g.setColor(new Color(0, 160, 0));
 		}
 	}
 	

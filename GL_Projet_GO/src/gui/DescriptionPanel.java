@@ -42,7 +42,7 @@ public class DescriptionPanel extends JPanel {
 	
 	private void initHaut() {
 		haut = new JPanel();
-		haut.setLayout(new FlowLayout(FlowLayout.LEFT, 0, ParametrePartie.WINDOW_HEIGHT / 5));
+		haut.setLayout(new FlowLayout(FlowLayout.LEFT, 0, ParametrePartie.WINDOW_HEIGHT / 8));
 		haut.setBackground(ParametrePartie.BACKGROUND_COLOR);
 		
 		desc_text = new JTextArea();

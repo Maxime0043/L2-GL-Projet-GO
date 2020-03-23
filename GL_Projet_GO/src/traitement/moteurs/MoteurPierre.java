@@ -30,8 +30,8 @@ public class MoteurPierre {
 	private Goban goban;
 	
 	private ArrayList<Cercle> cercle;
+	private ArrayList<Cercle> position_jouable;
 	private Cercle survole;
-	private Coordonnee position_jouable;
 	
 	private boolean isDidacticiel;
 	private boolean isMegaPierre = false;
@@ -75,8 +75,8 @@ public class MoteurPierre {
 		isMegaPierre = bool;
 	}
 	
-	public void setPositionJouable(Coordonnee coord) {
-		position_jouable = coord;
+	public void setPositionJouable(ArrayList<Cercle> cercle) {
+		position_jouable = cercle;
 	}
 	
 	private void setSuicide(boolean bool) {
@@ -140,7 +140,15 @@ public class MoteurPierre {
 			}
 			
 			if(isDidacticiel) {
-				if((position_jouable.getX() != x) || (position_jouable.getY() != y)) {
+				boolean exist = false;
+				
+				for(Cercle pos : position_jouable) {
+					if((pos.getX() == x) && (pos.getY() == y)) {
+						exist = true;
+					}
+				}
+				
+				if(!exist) {
 					survole = null;
 				}
 			}
@@ -164,7 +172,15 @@ public class MoteurPierre {
 				AbstractPierre pierre = new Pierre(moteur_joueur.currentCouleur(), x, y);
 				
 				if(isDidacticiel) {
-					if((position_jouable.getX() != x) || (position_jouable.getY() != y)) {
+					boolean exist = false;
+					
+					for(Cercle pos : position_jouable) {
+						if((pos.getX() == x) && (pos.getY() == y)) {
+							exist = true;
+						}
+					}
+					
+					if(!exist) {
 						canPose = false;
 					}
 				}
@@ -193,7 +209,15 @@ public class MoteurPierre {
 					AbstractPierre pierre = new MegaPierre(moteur_joueur.currentCouleur(), x, y);
 					
 					if(isDidacticiel) {
-						if((position_jouable.getX() != x) || (position_jouable.getY() != y)) {
+						boolean exist = false;
+						
+						for(Cercle pos : position_jouable) {
+							if((pos.getX() == x) && (pos.getY() == y)) {
+								exist = true;
+							}
+						}
+						
+						if(!exist) {
 							canPose = false;
 						}
 					}
@@ -303,7 +327,7 @@ public class MoteurPierre {
 		
 		else {
 			if(goban.existPierre(x, y)) {
-				if(goban.getPierre(x, y).isMegaPierre()) {
+				if(goban.getPierre(x, y).isMegaPierre() || goban.getPierre(x, y).getCouleur() == moteur_joueur.currentJoueur().getCouleur()) {
 					return false;
 				}
 				
@@ -316,7 +340,7 @@ public class MoteurPierre {
 
 			
 			if(goban.existPierre(x+1, y)) {
-				if(goban.getPierre(x+1, y).isMegaPierre()) {
+				if(goban.getPierre(x+1, y).isMegaPierre() || goban.getPierre(x+1, y).getCouleur() == moteur_joueur.currentJoueur().getCouleur()) {
 					return false;
 				}
 				
@@ -329,7 +353,7 @@ public class MoteurPierre {
 
 			
 			if(goban.existPierre(x, y+1)) {
-				if(goban.getPierre(x, y+1).isMegaPierre()) {
+				if(goban.getPierre(x, y+1).isMegaPierre() || goban.getPierre(x, y+1).getCouleur() == moteur_joueur.currentJoueur().getCouleur()) {
 					return false;
 				}
 				
@@ -342,7 +366,7 @@ public class MoteurPierre {
 
 			
 			if(goban.existPierre(x+1, y+1)) {
-				if(goban.getPierre(x+1, y+1).isMegaPierre()) {
+				if(goban.getPierre(x+1, y+1).isMegaPierre() || goban.getPierre(x+1, y+1).getCouleur() == moteur_joueur.currentJoueur().getCouleur()) {
 					return false;
 				}
 				

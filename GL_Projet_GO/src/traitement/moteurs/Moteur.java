@@ -18,13 +18,14 @@ public class Moteur {
 	private MoteurOrdi moteur_ordi;
 	private MoteurPierre moteur_pierre;
 	private FinDePartie fin;
-	private Cercle position_jouable = null;
 
 	private int nb_joueurs;
 	private int pass_compteur = 0;
 	
 	private String description;
 
+	private ArrayList<Cercle> position_jouable;
+	
 	private boolean didacticiel_fini = false;
 	
 	public Moteur(int cellule, int taille_goban, int nb_joueur, int nb_ordi, boolean isDidacticiel) {
@@ -46,6 +47,7 @@ public class Moteur {
 			
 			Go.logger.debug("Début du Didacticiel");
 			
+			position_jouable = new ArrayList<Cercle>();
 			didacticiel.chargeLevel();
 		}
 	}
@@ -94,6 +96,8 @@ public class Moteur {
 	
 	public void changeLevel(boolean suivant) {
 		if(didacticiel != null) {
+			position_jouable.clear();
+			
 			if(didacticiel.getLevel() < didacticiel.getNbLevels()) {
 				didacticiel.changeLevel(suivant);
 			}
@@ -105,18 +109,20 @@ public class Moteur {
 		}
 	}
 	
-	public Cercle getPositionJouable() {
-		if(position_jouable != null && goban.existPierre(position_jouable.getX(), position_jouable.getY())) {
-			position_jouable = null;
-		}
+	public void initPositionJouable(Coordonnee coord, Couleur couleur, boolean isMegaPierre) {
+		position_jouable.add(new Cercle(coord, couleur, isMegaPierre));		
+	}
+	
+	public ArrayList<Cercle> getPositionJouable() {
+//		if(position_jouable != null && goban.existPierre(position_jouable.getX(), position_jouable.getY())) {
+//			position_jouable = null;
+//		}
 		
 		return position_jouable;
 	}
 	
-	public void setPositionJouable(Coordonnee coord) {
-		position_jouable = new Cercle(coord, Couleur.VERT, isMegaPierre());
-		
-		moteur_pierre.setPositionJouable(coord);
+	public void setPositionJouable() {
+		moteur_pierre.setPositionJouable(position_jouable);
 	}
 	
 	public boolean isDidacticielFini() {
