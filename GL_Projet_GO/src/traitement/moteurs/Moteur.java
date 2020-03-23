@@ -32,7 +32,7 @@ public class Moteur {
 		goban = new Goban(taille_goban);
 		moteur_joueur = new MoteurJoueur(nb_joueur, nb_ordi, isDidacticiel);
 		moteur_pierre = new MoteurPierre(moteur_joueur, goban, cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
-		fin = new FinDePartie(taille_goban, goban);
+		fin = new FinDePartie(taille_goban, goban, moteur_joueur);
 		
 		if(nb_ordi > 0) {
 			moteur_ordi = new MoteurOrdi(moteur_joueur, moteur_pierre, taille_goban);
@@ -80,8 +80,7 @@ public class Moteur {
 		
 		if(pass_compteur == nb_joueurs) {
 			initPassCompteur();
-			fin.setChaineTwoEye(goban.getHmChaine(), goban.getPlateau());
-			fin.pierreMorte(goban.getPlateau(), goban.getHmChaine());
+			fin.initFin(goban.getPlateau(), goban.getHmChaine());
 			System.out.println("Fini");
 		}
 	}

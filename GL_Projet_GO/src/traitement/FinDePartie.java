@@ -8,6 +8,7 @@ import donnees.Coordonnee;
 import donnees.Couleur;
 import donnees.Pierre;
 import traitement.Goban;
+import traitement.moteurs.MoteurJoueur;
 
 
 public class FinDePartie {
@@ -21,16 +22,24 @@ public class FinDePartie {
 	private boolean vivante = false;
 	
 	private Goban goban;
+	private MoteurJoueur moteur_joueur;
 	
-	public FinDePartie(int taille_goban, Goban goban) {
+	public FinDePartie(int taille_goban, Goban goban, MoteurJoueur moteur_joueur) {
 		this.taille_goban = taille_goban;
 		this.goban = goban;
+		this.moteur_joueur = moteur_joueur;
 	}
 	
-	public void setChaineTwoEye(HashMap<Integer, Chaine> hmChaine, AbstractPierre[][] plateau) {
+	public void initFin(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
+		setChaineTwoEye(plateau, hmChaine);
+		pierreMorte(plateau, hmChaine);
+		calculTerritoire(plateau, hmChaine);
+	}
+	
+	public void setChaineTwoEye(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		
-		ArrayList<Coordonnee> interVide = new ArrayList<Coordonnee>();
-		ArrayList<Coordonnee> listeInterVide = new ArrayList<Coordonnee>();
+		ArrayList<Coordonnee> interVidePierre = new ArrayList<Coordonnee>();
+		ArrayList<Coordonnee> InterVideChaine = new ArrayList<Coordonnee>();
 		ArrayList<Coordonnee> finalList = new ArrayList<Coordonnee>();
 		
 		boolean ajouter = true;
@@ -45,19 +54,19 @@ public class FinDePartie {
 		for(Chaine chaine : hmChaine.values()) {
 			if(chaine.getChaine().size() >= 6) {
 				for(AbstractPierre pierre : chaine.getChaine()) {
-					interVide = GoPierre.intersectionVide(pierre, plateau, taille_goban);
-					if (!interVide.isEmpty()) {
-						for(Coordonnee coord : interVide) {
-							listeInterVide.add(coord);
+					interVidePierre = GoPierre.intersectionVide(pierre, plateau, taille_goban);
+					if (!interVidePierre.isEmpty()) {
+						for(Coordonnee coord : interVidePierre) {
+							InterVideChaine.add(coord);
 						}
 					}
 				}
-			
-				interVide.clear();
-				interVide.addAll(listeInterVide);
-				for(Coordonnee coord : listeInterVide) {
+				
+				interVidePierre.clear();
+				interVidePierre.addAll(InterVideChaine);
+				for(Coordonnee coord : InterVideChaine) {
 					compteur = 0;
-					for(Coordonnee c : interVide) {
+					for(Coordonnee c : interVidePierre) {
 						if(coord.getX() == c.getX() && coord.getY() == c.getY()) {
 							compteur ++;
 						}
@@ -126,8 +135,8 @@ public class FinDePartie {
 				}
 			}
 			
-			interVide.clear();
-			listeInterVide.clear();
+			interVidePierre.clear();
+			InterVideChaine.clear();
 			finalList.clear();
 		}
 	}
@@ -209,7 +218,6 @@ public class FinDePartie {
 							}
 						}
 
-						
 						if(vivante){
 							System.out.println("chaine, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
 						}
@@ -237,7 +245,7 @@ public class FinDePartie {
 						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
 							p.setVivante(vivante);
 						}
-						System.out.println("ici");
+						System.out.println("chaine yeux" + pierre.getX() +"/"+ pierre.getY());
 					}
 					
 					ListChaine.add(pierre.getNomChaine());
@@ -247,8 +255,6 @@ public class FinDePartie {
 			else {
 				setBord(pierre);
 				finalInterVide = GoPierre.intersectionVide(pierre, plateau, taille_goban);
-				
-
 						
 				InterVideDejaParcourue.addAll(finalInterVide);
 						
@@ -313,13 +319,22 @@ public class FinDePartie {
 	public void calculTerritoire(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		
 		int i, j;
+		boolean end;
+		boolean endCote;
+		boolean neutre = false;
+//		int scoreNoir = 0;
+//		int scoreBlanc = 0;
+//		int scoreRouge = 0;
 		
 		ArrayList<AbstractPierre> ListPierre = new ArrayList<AbstractPierre>();
 		ArrayList<Integer> ListChaine = new ArrayList<Integer>();
+		
 		ArrayList<Coordonnee> listeInterVide = new ArrayList<Coordonnee>();
 		ArrayList<Coordonnee> finalInterVide = new ArrayList<Coordonnee>();
 		ArrayList<Coordonnee> InterVideDejaParcourue = new ArrayList<Coordonnee>();
-		ArrayList<AbstractPierre> listeInterPleine = new ArrayList<AbstractPierre>();
+		ArrayList<Coordonnee> InterVideAutourChaine = new ArrayList<Coordonnee>();
+		
+		ArrayList<AbstractPierre> InterPleine = new ArrayList<AbstractPierre>();
 		
 		for(i=0;i<taille_goban;i++) {
 			for(j=0;j<taille_goban;j++) {
@@ -331,26 +346,96 @@ public class FinDePartie {
 		
 		for(AbstractPierre pierre : ListPierre) {
 			if(pierre.hasChaine()) {				
-				if(!ListChaine.contains(pierre.getNomChaine())) {				
-					if(!hmChaine.get(pierre.getNomChaine()).getTwoEyes()) {
-						
-						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
-							setBord(p);
-							listeInterVide = GoPierre.intersectionVide(p, plateau, taille_goban);
+				if(!ListChaine.contains(pierre.getNomChaine())) {					
+					for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
+						listeInterVide = GoPierre.intersectionVide(p, plateau, taille_goban);
 							
-							for(Coordonnee c : listeInterVide) {
-								if(!dejaParcourue(c, finalInterVide)) {
-									setBord(c);
-									finalInterVide.add(c);
-								}
+						for(Coordonnee c : listeInterVide) {
+							if(!dejaParcourue(c, finalInterVide)) {
+								finalInterVide.add(c);
 							}
+						}
 							
+						listeInterVide.clear();
+					}
+						
+					InterVideAutourChaine.addAll(finalInterVide);
+					
+					end = true;
+					while(end) {
+						endCote = true;
+						
+						InterVideDejaParcourue.add(InterVideAutourChaine.get(0));
+						InterVideAutourChaine.remove(0);
+						
+						while(endCote) {
 							listeInterVide.clear();
+							finalInterVide.clear();
+							
+							for(Coordonnee cdp : InterVideDejaParcourue) {
+								listeInterVide = GoPierre.intersectionVide(new Pierre(Couleur.NOIR, cdp), plateau, taille_goban);
+								
+								for(Coordonnee c : listeInterVide) {
+									ArrayList<Coordonnee> list = new ArrayList<Coordonnee>();
+									list.addAll(InterVideAutourChaine);
+									for(Coordonnee l : list) {
+										if(c.getX() == l.getX() && c.getY() == l.getY()) {
+											InterVideAutourChaine.remove(l);
+										}
+									}
+									if(!dejaParcourue(c, finalInterVide) &&!dejaParcourue(c, InterVideDejaParcourue)) {
+										finalInterVide.add(c);
+									}
+								}
+								listeInterVide.clear();
+							}
+							for(Coordonnee ca : finalInterVide) {
+								InterVideDejaParcourue.add(ca);
+							}
+							if(finalInterVide.size()==0) {
+								endCote = false;
+							}
 						}
 						
-						InterVideDejaParcourue.addAll(finalInterVide);
+						for(Coordonnee n : InterVideDejaParcourue) {
+							InterPleine = GoPierre.voisins(new Pierre(Couleur.NOIR, n), plateau, i);
+							for(AbstractPierre ap : InterPleine) {
+								if(ap.getCouleur() != pierre.getCouleur()) {
+									neutre = true;
+								}
+							}
+						}
+						
+						if(!neutre) {
+							if(pierre.getCouleur() == Couleur.NOIR) {
+								moteur_joueur.getJoueurs()[0].addScore(hmChaine.get(pierre.getNomChaine()).getChaine().size());
+							}
+							else if(pierre.getCouleur() == Couleur.BLANC) {
+								moteur_joueur.getJoueurs()[1].addScore(InterVideDejaParcourue.size());
+							}
+							else if(pierre.getCouleur() == Couleur.ROUGE) {
+								moteur_joueur.getJoueurs()[2].addScore(InterVideDejaParcourue.size());
+							}
+						}
+						
+						neutre = false;
+						
+						InterVideDejaParcourue.clear();
+						if(InterVideAutourChaine.size()==0) {
+							end = false;
+						}
 					}
+					
+					listeInterVide.clear();
+					finalInterVide.clear();
+					InterVideDejaParcourue.clear();
+					InterVideAutourChaine.clear();
 				}
+				
+				ListChaine.add(pierre.getNomChaine());
+			}
+			else {
+				
 			}
 		}
 	}
@@ -369,6 +454,7 @@ public class FinDePartie {
 			return false;
 		}
 	}
+	
 	
 	public void setBord(AbstractPierre p) {
 		if(p.getX() == 0) {
