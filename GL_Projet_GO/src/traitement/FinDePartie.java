@@ -40,7 +40,7 @@ public class FinDePartie {
 		
 		ArrayList<Coordonnee> interVidePierre = new ArrayList<Coordonnee>();
 		ArrayList<Coordonnee> InterVideChaine = new ArrayList<Coordonnee>();
-		ArrayList<Coordonnee> finalList = new ArrayList<Coordonnee>();
+		ArrayList<Coordonnee> ListEye = new ArrayList<Coordonnee>();
 		
 		boolean ajouter = true;
 		
@@ -64,6 +64,7 @@ public class FinDePartie {
 				
 				interVidePierre.clear();
 				interVidePierre.addAll(InterVideChaine);
+				
 				for(Coordonnee coord : InterVideChaine) {
 					compteur = 0;
 					for(Coordonnee c : interVidePierre) {
@@ -72,21 +73,21 @@ public class FinDePartie {
 						}
 					}
 					if(compteur >= 2) {
-						for (Coordonnee fl : finalList) {
+						for (Coordonnee fl : ListEye) {
 							if(fl.getX() == coord.getX() && fl.getY() == coord.getY()) {
 								ajouter = false;
 							}
 						}
 						if(ajouter) {
-							finalList.add(coord);
+							ListEye.add(coord);
 						}
 						ajouter = true;
 					}
 				}
 				
-				if(finalList.size() > 1) {
-					compteurYeux = finalList.size();
-					for(Coordonnee c : finalList) {
+				if(ListEye.size() > 1) {
+					compteurYeux = ListEye.size();
+					for(Coordonnee c : ListEye) {
 						if(c.getX() > bordHaut) {
 							if(goban.existPierre(c.getX()-1, c.getY())) {
 								if(goban.getPierre(c.getX()-1, c.getY()).getCouleur() != chaine.getCouleur()) {
@@ -137,7 +138,7 @@ public class FinDePartie {
 			
 			interVidePierre.clear();
 			InterVideChaine.clear();
-			finalList.clear();
+			ListEye.clear();
 		}
 	}
 	
@@ -245,7 +246,7 @@ public class FinDePartie {
 						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
 							p.setVivante(vivante);
 						}
-						System.out.println("chaine yeux" + pierre.getX() +"/"+ pierre.getY());
+						//System.out.println("chaine yeux" + pierre.getX() +"/"+ pierre.getY());
 					}
 					
 					ListChaine.add(pierre.getNomChaine());
@@ -255,7 +256,6 @@ public class FinDePartie {
 			else {
 				setBord(pierre);
 				finalInterVide = GoPierre.intersectionVide(pierre, plateau, taille_goban);
-						
 				InterVideDejaParcourue.addAll(finalInterVide);
 						
 				while (!vivante && finalInterVide.size() > 0) {
@@ -322,9 +322,6 @@ public class FinDePartie {
 		boolean end;
 		boolean endCote;
 		boolean neutre = false;
-//		int scoreNoir = 0;
-//		int scoreBlanc = 0;
-//		int scoreRouge = 0;
 		
 		ArrayList<AbstractPierre> ListPierre = new ArrayList<AbstractPierre>();
 		ArrayList<Integer> ListChaine = new ArrayList<Integer>();
@@ -362,6 +359,7 @@ public class FinDePartie {
 					InterVideAutourChaine.addAll(finalInterVide);
 					
 					end = true;
+					
 					while(end) {
 						endCote = true;
 						
@@ -408,7 +406,7 @@ public class FinDePartie {
 						
 						if(!neutre) {
 							if(pierre.getCouleur() == Couleur.NOIR) {
-								moteur_joueur.getJoueurs()[0].addScore(hmChaine.get(pierre.getNomChaine()).getChaine().size());
+								moteur_joueur.getJoueurs()[0].addScore(InterVideDejaParcourue.size());
 							}
 							else if(pierre.getCouleur() == Couleur.BLANC) {
 								moteur_joueur.getJoueurs()[1].addScore(InterVideDejaParcourue.size());
