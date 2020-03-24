@@ -211,7 +211,7 @@ public class FinDePartie {
 								listeInterPleine = GoPierre.voisins(new Pierre(Couleur.NOIR, c), plateau, taille_goban);
 								for(AbstractPierre p : listeInterPleine) {
 									if(p.hasChaine()) {
-										if(p.getCouleur() == pierre.getCouleur() && p.getNomChaine() != pierre.getNomChaine() && hmChaine.get(p.getNomChaine()).getTwoEyes()) {
+										if(p.getCouleur() == pierre.getCouleur() && p.getNomChaine() != pierre.getNomChaine() /*&& hmChaine.get(p.getNomChaine()).getTwoEyes()*/) {
 											vivante = true;
 										}
 									}
