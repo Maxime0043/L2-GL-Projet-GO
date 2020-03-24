@@ -323,6 +323,10 @@ public class FinDePartie {
 		boolean endCote;
 		boolean neutre = false;
 		
+		ArrayList<Coordonnee> Noir = new ArrayList<Coordonnee>();
+		ArrayList<Coordonnee> Blanc = new ArrayList<Coordonnee>();
+		ArrayList<Coordonnee> Rouge = new ArrayList<Coordonnee>();
+		
 		ArrayList<AbstractPierre> ListPierre = new ArrayList<AbstractPierre>();
 		ArrayList<Integer> ListChaine = new ArrayList<Integer>();
 		
@@ -406,13 +410,28 @@ public class FinDePartie {
 						
 						if(!neutre) {
 							if(pierre.getCouleur() == Couleur.NOIR) {
-								moteur_joueur.getJoueurs()[0].addScore(InterVideDejaParcourue.size());
+								if(Noir.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Noir)) {
+									moteur_joueur.getJoueurs()[0].addScore(InterVideDejaParcourue.size());
+									for(Coordonnee c : InterVideDejaParcourue) {
+										Noir.add(c);
+									}
+								}
 							}
 							else if(pierre.getCouleur() == Couleur.BLANC) {
-								moteur_joueur.getJoueurs()[1].addScore(InterVideDejaParcourue.size());
+								if(Blanc.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Blanc)) {
+									moteur_joueur.getJoueurs()[1].addScore(InterVideDejaParcourue.size());
+									for(Coordonnee c : InterVideDejaParcourue) {
+										Blanc.add(c);
+									}
+								}
 							}
 							else if(pierre.getCouleur() == Couleur.ROUGE) {
-								moteur_joueur.getJoueurs()[2].addScore(InterVideDejaParcourue.size());
+								if(Rouge.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Rouge)) {
+									moteur_joueur.getJoueurs()[2].addScore(InterVideDejaParcourue.size());
+									for(Coordonnee c : InterVideDejaParcourue) {
+										Rouge.add(c);
+									}
+								}
 							}
 						}
 						
@@ -433,7 +452,91 @@ public class FinDePartie {
 				ListChaine.add(pierre.getNomChaine());
 			}
 			else {
+				InterVideAutourChaine = GoPierre.intersectionVide(pierre, plateau, taille_goban);
 				
+				end = true;
+				while(end) {
+					endCote = true;
+					
+					InterVideDejaParcourue.add(InterVideAutourChaine.get(0));
+					InterVideAutourChaine.remove(0);
+					
+					while(endCote) {
+						listeInterVide.clear();
+						finalInterVide.clear();
+						
+						for(Coordonnee cdp : InterVideDejaParcourue) {
+							listeInterVide = GoPierre.intersectionVide(new Pierre(Couleur.NOIR, cdp), plateau, taille_goban);
+							
+							for(Coordonnee c : listeInterVide) {
+								ArrayList<Coordonnee> list = new ArrayList<Coordonnee>();
+								list.addAll(InterVideAutourChaine);
+								for(Coordonnee l : list) {
+									if(c.getX() == l.getX() && c.getY() == l.getY()) {
+										InterVideAutourChaine.remove(l);
+									}
+								}
+								if(!dejaParcourue(c, finalInterVide) &&!dejaParcourue(c, InterVideDejaParcourue)) {
+									finalInterVide.add(c);
+								}
+							}
+							listeInterVide.clear();
+						}
+						for(Coordonnee ca : finalInterVide) {
+							InterVideDejaParcourue.add(ca);
+						}
+						if(finalInterVide.size()==0) {
+							endCote = false;
+						}
+					}
+					
+					for(Coordonnee n : InterVideDejaParcourue) {
+						InterPleine = GoPierre.voisins(new Pierre(Couleur.NOIR, n), plateau, i);
+						for(AbstractPierre ap : InterPleine) {
+							if(ap.getCouleur() != pierre.getCouleur()) {
+								neutre = true;
+							}
+						}
+					}
+					
+					if(!neutre) {
+						if(pierre.getCouleur() == Couleur.NOIR) {
+							if(Noir.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Noir)) {
+								moteur_joueur.getJoueurs()[0].addScore(InterVideDejaParcourue.size());
+								for(Coordonnee c : InterVideDejaParcourue) {
+									Noir.add(c);
+								}
+							}
+						}
+						else if(pierre.getCouleur() == Couleur.BLANC) {
+							if(Blanc.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Blanc)) {
+								moteur_joueur.getJoueurs()[1].addScore(InterVideDejaParcourue.size());
+								for(Coordonnee c : InterVideDejaParcourue) {
+									Blanc.add(c);
+								}
+							}
+						}
+						else if(pierre.getCouleur() == Couleur.ROUGE) {
+							if(Rouge.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Rouge)) {
+								moteur_joueur.getJoueurs()[2].addScore(InterVideDejaParcourue.size());
+								for(Coordonnee c : InterVideDejaParcourue) {
+									Rouge.add(c);
+								}
+							}
+						}
+					}
+					
+					neutre = false;
+					
+					InterVideDejaParcourue.clear();
+					if(InterVideAutourChaine.size()==0) {
+						end = false;
+					}
+				}
+				
+				
+				InterVideDejaParcourue.clear();
+				InterVideAutourChaine.clear();
 			}
 		}
 	}
