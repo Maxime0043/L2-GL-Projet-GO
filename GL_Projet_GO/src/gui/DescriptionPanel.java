@@ -24,17 +24,17 @@ public class DescriptionPanel extends JPanel {
 	
 	private JTextArea desc_text;
 
-	public DescriptionPanel(JButton precedent, JButton suivant) {
-		init(precedent, suivant);
+	public DescriptionPanel(JButton precedent, JButton suivant, JButton reinit) {
+		init(precedent, suivant, reinit);
 	}
 	
-	private void init(JButton precedent, JButton suivant) {
+	private void init(JButton precedent, JButton suivant, JButton reinit) {
 		this.setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(ParametrePartie.LARGEUR_DESCRIPTION, ParametrePartie.WINDOW_HEIGHT));
 		this.setBackground(Color.decode("#F2B352"));
 		
 		initHaut();
-		initBas(precedent, suivant);
+		initBas(precedent, suivant, reinit);
 		
 		this.add(haut, BorderLayout.CENTER);
 		this.add(bas, BorderLayout.SOUTH);
@@ -55,17 +55,20 @@ public class DescriptionPanel extends JPanel {
 		haut.add(desc_text);
 	}
 	
-	private void initBas(JButton precedent, JButton suivant) {
+	private void initBas(JButton precedent, JButton suivant, JButton reinit) {
 		bas = new JPanel();
 		bas.setLayout(new GridBagLayout());
 		bas.setBackground(ParametrePartie.BACKGROUND_COLOR);
 		
 		GridBagConstraints gbcBoutton = new GridBagConstraints();
-		gbcBoutton.insets = new Insets(5, 5, 5, ParametrePartie.LARGEUR_DESCRIPTION / 5);
+		gbcBoutton.insets = new Insets(5, 5, 5, 5);
 		gbcBoutton.gridx = 1;
 		gbcBoutton.gridy = 1;
 		
 		bas.add(precedent, gbcBoutton);
+
+		gbcBoutton.gridx++;
+		bas.add(reinit, gbcBoutton);
 		
 		gbcBoutton.gridx++;
 		bas.add(suivant, gbcBoutton);

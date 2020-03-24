@@ -229,7 +229,10 @@ public class MoteurPierre {
 						moteur_joueur.currentJoueur().addPierre(pierre);
 
 						if(!suicide) {
-							moteur_joueur.currentJoueur().playMegaPierre();
+							if (!isDidacticiel) {
+								moteur_joueur.currentJoueur().playMegaPierre();
+							}
+							
 							moteur_joueur.changeJoueur();
 							incrementeKoCompteur();
 						}						
@@ -238,7 +241,9 @@ public class MoteurPierre {
 			}
 		}
 		
-		setPoseMegaPierre(false);
+		if(!isDidacticiel) {
+			setPoseMegaPierre(false);
+		}
 		setSuicide(false);
 		
 		Go.logger.info("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));

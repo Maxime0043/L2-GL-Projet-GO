@@ -51,7 +51,7 @@ public class Go extends JFrame implements Runnable {
 	private boolean isDidacticiel = false;
 	private JCheckBox megaPierre;
 	
-	private JButton precedent, suivant;
+	private JButton passer, revenirMenu, precedent, suivant, reinit;
 	
 	public Go() {
 		super("Jeu de GO");
@@ -199,19 +199,16 @@ public class Go extends JFrame implements Runnable {
 	
 	private void initGoban() {
 		goPanel.setLayout(new BorderLayout());
-		actionPanel.setLayout(new FlowLayout());
+		actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 5));
 		
 		megaPierre = new JCheckBox("MegaPierre");
 		megaPierre.addActionListener(new Cocher());
-		actionPanel.add(megaPierre);
 		
-		JButton passer = new JButton("Passer");
+		passer = new JButton("Passer");
 		passer.addActionListener(new Passer());
-		actionPanel.add(passer);
 		
-		JButton revenirMenu = new JButton("Revenir Menu");
+		revenirMenu = new JButton("Revenir Menu");
 		revenirMenu.addActionListener(new RevenirMenu());
-		actionPanel.add(revenirMenu);
 		
 		precedent = new JButton("Précédent");
 		precedent.addActionListener(new ChangeLevel());
@@ -219,6 +216,9 @@ public class Go extends JFrame implements Runnable {
 		
 		suivant = new JButton("Suivant");
 		suivant.addActionListener(new ChangeLevel());
+		
+		reinit = new JButton("Reset");
+		reinit.addActionListener(new ChangeLevel());
 	}
 
 	@Override
@@ -299,10 +299,18 @@ public class Go extends JFrame implements Runnable {
 		goPanel.add(actionPanel, BorderLayout.SOUTH);
 		
 		if(isDidacticiel) {
-			descPanel = new DescriptionPanel(precedent, suivant);
+			precedent.setEnabled(false);
+			descPanel = new DescriptionPanel(precedent, suivant, reinit);
 			
 			goPanel.add(descPanel, BorderLayout.EAST);
 		}
+		
+		else {
+			actionPanel.add(megaPierre);
+			actionPanel.add(passer);
+		}
+		
+		actionPanel.add(revenirMenu);
 		
 		changeFenetre(goPanel);
 		
@@ -316,12 +324,12 @@ public class Go extends JFrame implements Runnable {
 	public void revenirMenu() {
 		stop = true;
 		
+		actionPanel.removeAll();
 		goPanel.removeAll();
 		
 		if(isDidacticiel) {
 			isDidacticiel = false;
 			descPanel.removeAll();
-			goPanel.remove(descPanel);
 		}
 		
 		megaPierre.setSelected(false);
@@ -373,6 +381,10 @@ public class Go extends JFrame implements Runnable {
 				if(moteur.getCurrentLevel() > 0) {
 					precedent.setEnabled(true);
 				}
+			}
+			
+			else if(source == reinit) {				
+				moteur.resetLevel();
 			}
 		}
 	}
@@ -468,7 +480,6 @@ public class Go extends JFrame implements Runnable {
 	}
 	
 	private class Passer implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			moteur.passer();

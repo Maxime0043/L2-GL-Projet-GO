@@ -98,15 +98,28 @@ public class Moteur {
 		if(didacticiel != null) {
 			position_jouable.clear();
 			
-			if(didacticiel.getLevel() < didacticiel.getNbLevels()) {
+			if(!suivant) {
 				didacticiel.changeLevel(suivant);
 			}
+			
+			else if(didacticiel.getLevel() < didacticiel.getNbLevels()) {
+				didacticiel.changeLevel(suivant);
+			}
+			
 			else {
 				didacticiel_fini = true;
 				position_jouable = null;
-				
-				Go.logger.debug("Fin du didacticiel");
 			}
+			
+			System.out.println(didacticiel.getLevel());
+		}
+	}
+	
+	public void resetLevel() {
+		if(didacticiel != null) {
+			position_jouable.clear();
+			
+			didacticiel.resetLevel();
 		}
 	}
 	
