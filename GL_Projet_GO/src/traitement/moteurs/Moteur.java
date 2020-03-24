@@ -110,8 +110,6 @@ public class Moteur {
 				didacticiel_fini = true;
 				position_jouable = null;
 			}
-			
-			System.out.println(didacticiel.getLevel());
 		}
 	}
 	
