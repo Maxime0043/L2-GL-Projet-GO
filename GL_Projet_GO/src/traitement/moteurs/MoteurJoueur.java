@@ -1,8 +1,8 @@
 package traitement.moteurs;
 
 import donnees.Couleur;
+import donnees.Joueur;
 import gui.Go;
-import traitement.Joueur;
 
 public class MoteurJoueur {
 

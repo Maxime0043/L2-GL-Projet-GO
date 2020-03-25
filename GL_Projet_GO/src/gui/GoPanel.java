@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 
 import donnees.Cercle;
 import donnees.Couleur;
+import donnees.Joueur;
 import donnees.ParametrePartie;
 import traitement.CalculFactory;
-import traitement.Joueur;
 import traitement.moteurs.Moteur;
 
 /**

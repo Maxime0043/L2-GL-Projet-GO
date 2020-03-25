@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import donnees.Cercle;
 import donnees.Coordonnee;
 import donnees.Couleur;
+import donnees.Joueur;
 import gui.Go;
 import traitement.Didacticiel;
 import traitement.FinDePartie;
 import traitement.Goban;
-import traitement.Joueur;
 
 public class Moteur {
 	private Goban goban;

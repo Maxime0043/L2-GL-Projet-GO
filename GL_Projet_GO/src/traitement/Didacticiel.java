@@ -2,6 +2,7 @@ package traitement;
 
 import donnees.Coordonnee;
 import donnees.Couleur;
+import donnees.Joueur;
 import donnees.MegaPierre;
 import donnees.Pierre;
 import gui.Go;

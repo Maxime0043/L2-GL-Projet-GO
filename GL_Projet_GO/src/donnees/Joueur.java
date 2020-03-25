@@ -1,10 +1,6 @@
-package traitement;
+package donnees;
 
 import java.util.ArrayList;
-
-import donnees.AbstractPierre;
-import donnees.Couleur;
-import donnees.Score;
 
 public class Joueur {
 	
