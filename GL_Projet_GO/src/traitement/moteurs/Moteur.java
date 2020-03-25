@@ -11,7 +11,7 @@ import traitement.Didacticiel;
 import traitement.FinDePartie;
 import traitement.Goban;
 
-public class Moteur {
+public class Moteur extends Thread {
 	private Goban goban;
 	private Didacticiel didacticiel;
 	private MoteurJoueur moteur_joueur;
@@ -53,6 +53,7 @@ public class Moteur {
 		}
 	}
 	
+	@Override
 	public void run() {
 		boolean isRunning = true;
 		
