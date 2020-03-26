@@ -34,6 +34,7 @@ public class Moteur extends Thread {
 		moteur_pierre = new MoteurPierre(moteur_joueur, goban, cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
 		fin = new FinDePartie(taille_goban, goban, moteur_joueur, moteur_pierre);
 		
+		
 		if(nb_ordi > 0) {
 			moteur_ordi = new MoteurOrdi(moteur_joueur, moteur_pierre, taille_goban);
 		}

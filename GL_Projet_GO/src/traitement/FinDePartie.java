@@ -15,7 +15,6 @@ import traitement.moteurs.MoteurPierre;
 public class FinDePartie {
 
 	private int taille_goban;
-	
 	private boolean BordHaut = false;
 	private boolean BordDroit = false;
 	private boolean BordGauche = false;
