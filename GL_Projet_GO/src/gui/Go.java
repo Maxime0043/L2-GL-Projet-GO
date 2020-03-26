@@ -316,8 +316,10 @@ public class Go extends JFrame implements Runnable {
 		
 		if(stop) {
 			stop = false;
+			
 			Thread goThread = new Thread(instance);
 			goThread.start();
+			moteur.start();
 		}
 	}
 	
