@@ -295,7 +295,7 @@ public class MoteurPierre {
 		}
 	}
 	
-	private void removePierre(AbstractPierre pierre) {
+	public void removePierre(AbstractPierre pierre) {
 		if(goban.existPierre(pierre.getX(), pierre.getY())) {
 			Go.logger.info("Pierre supprimée aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
 			goban.removePierre(pierre);
@@ -316,7 +316,7 @@ public class MoteurPierre {
 		}
 	}
 	
-	private void removePierre(ArrayList<AbstractPierre> chaine) {
+	public void removePierre(ArrayList<AbstractPierre> chaine) {
 		for(AbstractPierre pierre : chaine) {
 			removePierre(pierre);
 		}

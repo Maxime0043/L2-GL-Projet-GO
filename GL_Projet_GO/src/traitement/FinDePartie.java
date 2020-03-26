@@ -9,6 +9,7 @@ import donnees.Couleur;
 import donnees.Pierre;
 import traitement.Goban;
 import traitement.moteurs.MoteurJoueur;
+import traitement.moteurs.MoteurPierre;
 
 
 public class FinDePartie {
@@ -23,11 +24,13 @@ public class FinDePartie {
 	
 	private Goban goban;
 	private MoteurJoueur moteur_joueur;
+	private MoteurPierre moteur_pierre;
 	
-	public FinDePartie(int taille_goban, Goban goban, MoteurJoueur moteur_joueur) {
+	public FinDePartie(int taille_goban, Goban goban, MoteurJoueur moteur_joueur, MoteurPierre moteur_pierre) {
 		this.taille_goban = taille_goban;
 		this.goban = goban;
 		this.moteur_joueur = moteur_joueur;
+		this.moteur_pierre = moteur_pierre;
 	}
 	
 	public void initFin(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
@@ -218,27 +221,16 @@ public class FinDePartie {
 								}
 							}
 						}
-
-						if(vivante){
-							System.out.println("chaine, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
-						}
-						else {
-							System.out.println("chaine, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : morte");
-						}
 						
+//						if(vivante) {
+//							System.out.println("chaine, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
+//						}
+//						else {
+//							System.out.println("chaine, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : morte");
+//						}
 						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
 							p.setVivante(vivante);
 						}
-						
-						vivante = false;
-						BordHaut = false;
-						BordBas = false;
-						BordGauche = false;
-						BordDroit = false;
-						
-						listeInterVide.clear();
-						finalInterVide.clear();
-						InterVideDejaParcourue.clear();
 					}
 					
 					else {
@@ -246,7 +238,6 @@ public class FinDePartie {
 						for(AbstractPierre p : hmChaine.get(pierre.getNomChaine()).getChaine()) {
 							p.setVivante(vivante);
 						}
-						//System.out.println("chaine yeux" + pierre.getX() +"/"+ pierre.getY());
 					}
 					
 					ListChaine.add(pierre.getNomChaine());
@@ -294,24 +285,31 @@ public class FinDePartie {
 					}
 				}
 						
-				if(vivante){
-					System.out.println("pierre, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
-				}
-				else {
-					System.out.println("pierre, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : morte");
-				}
-				
+//				if(vivante){
+//					System.out.println("pierre, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : vivante");
+//				}
+//				else {
+//					System.out.println("pierre, " + pierre.getCouleur()  + " / " + pierre.getX() + "," + pierre.getY()+ " : morte");
+//				}
 				pierre.setVivante(vivante);
 				
-				vivante = false;
-				BordHaut = false;
-				BordBas = false;
-				BordGauche = false;
-				BordDroit = false;
-				
-				listeInterVide.clear();
-				finalInterVide.clear();
-				InterVideDejaParcourue.clear();
+			}
+			vivante = false;
+			BordHaut = false;
+			BordBas = false;
+			BordGauche = false;
+			BordDroit = false;
+			listeInterVide.clear();
+			finalInterVide.clear();
+			InterVideDejaParcourue.clear();
+		}
+		for(i=0;i<taille_goban;i++) {
+			for(j=0;j<taille_goban;j++) {
+				if(goban.existPierre(i, j)) {
+					if(!goban.getPierre(i, j).isVivante()) {
+						moteur_pierre.removePierre(goban.getPierre(i, j));
+					}
+				}
 			}
 		}
 	}
@@ -555,7 +553,6 @@ public class FinDePartie {
 			return false;
 		}
 	}
-	
 	
 	public void setBord(AbstractPierre p) {
 		if(p.getX() == 0) {
