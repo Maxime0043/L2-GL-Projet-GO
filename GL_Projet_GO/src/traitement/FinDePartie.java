@@ -185,6 +185,10 @@ public class FinDePartie {
 						
 						InterVideDejaParcourue.addAll(finalInterVide);
 						
+						if(InterVideDejaParcourue.size() >= hmChaine.get(pierre.getNomChaine()).getChaine().size()) {
+							vivante = true;
+						}
+						
 						while (!vivante && finalInterVide.size() > 0) {
 							listeInterVide.clear();
 							finalInterVide.clear();
@@ -213,7 +217,7 @@ public class FinDePartie {
 								listeInterPleine = GoPierre.voisins(new Pierre(Couleur.NOIR, c), plateau, taille_goban);
 								for(AbstractPierre p : listeInterPleine) {
 									if(p.hasChaine()) {
-										if(p.getCouleur() == pierre.getCouleur() && p.getNomChaine() != pierre.getNomChaine() /*&& hmChaine.get(p.getNomChaine()).getTwoEyes()*/) {
+										if(p.getCouleur() == pierre.getCouleur() && p.getNomChaine() != pierre.getNomChaine()) {
 											vivante = true;
 										}
 									}
@@ -276,7 +280,7 @@ public class FinDePartie {
 						listeInterPleine = GoPierre.voisins(new Pierre(Couleur.NOIR, c), plateau, taille_goban);
 						for(AbstractPierre p : listeInterPleine) {
 							if(p.hasChaine()) {
-								if(p.getCouleur() == pierre.getCouleur() && p.getNomChaine() != pierre.getNomChaine() /*&& hmChaine.get(p.getNomChaine()).getTwoEyes()*/) {
+								if(p.getCouleur() == pierre.getCouleur() && p.getNomChaine() != pierre.getNomChaine()) {
 									vivante = true;
 								}
 							}
