@@ -1,8 +1,8 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -100,105 +100,105 @@ public class Go extends JFrame implements Runnable {
 	}
 	
 	private void initMenu() {
-		menuPanel.setLayout(new BorderLayout(0, 0));
-		menuDroitPanel.setLayout(new GridBagLayout());
-		menuDroitPanel.setPreferredSize(new Dimension(ParametrePartie.WINDOW_WIDTH/2, ParametrePartie.WINDOW_HEIGHT));
-		menuGauchePanel.setLayout(new GridBagLayout());
-		menuGauchePanel.setPreferredSize(new Dimension(ParametrePartie.WINDOW_WIDTH/2, ParametrePartie.WINDOW_HEIGHT));
+		menuPanel.setLayout(new GridBagLayout());
 		
-		GridBagConstraints gbcDoite = new GridBagConstraints();
-		gbcDoite.insets = new Insets(5, 5, 25, ParametrePartie.WINDOW_WIDTH / 10);
-		gbcDoite.gridx = 1;
-		gbcDoite.gridy = 1;
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 1;
+		gbc.gridy = 1;
 		
+		JLabel titre = new JLabel("Jeu de Go");
+		titre.setFont(new Font("Impact", Font.PLAIN, 44));
+		menuPanel.add(titre, gbc);
+
+		gbc.gridy++;
 		JButton start = new JButton("Jouer");
 		start.addActionListener(new Lancer());
-		menuDroitPanel.add(start, gbcDoite);
+		menuPanel.add(start, gbc);
 		
-		gbcDoite.gridy++;
+		gbc.gridy++;
 		JButton didacticiel = new JButton("Didacticiel");
 		didacticiel.addActionListener(new Didacticiel());
-		menuDroitPanel.add(didacticiel, gbcDoite);
-
-		gbcDoite.gridy++;
-		JButton quitterMenu = new JButton("Quitter");
-		quitterMenu.addActionListener(new QuitterMenu());
-		menuDroitPanel.add(quitterMenu, gbcDoite);
+		menuPanel.add(didacticiel, gbc);
 		
-		GridBagConstraints gbcGauche = new GridBagConstraints();
-		gbcGauche.insets = new Insets(5, ParametrePartie.WINDOW_WIDTH / 10, 5, 5);
-		gbcGauche.gridx = 0;
-		gbcGauche.gridy = 1;
-		
+		gbc.gridy++;
 		JLabel taille = new JLabel("Taille du goban :");
-		menuGauchePanel.add(taille, gbcGauche);
+		menuPanel.add(taille, gbc);
 		
 		ButtonGroup tailleGroupe = new ButtonGroup();
-		
-		gbcGauche.gridy++;
+
+		gbc.gridx--;
+		gbc.gridy++;
 		taille9 = new JRadioButton("9*9", true);
 		taille9.addActionListener(new ChoixTaille());
 		tailleGroupe.add(taille9);
-		menuGauchePanel.add(taille9, gbcGauche);
+		menuPanel.add(taille9, gbc);
 		
-		gbcGauche.gridy++;
+		gbc.gridx += 2;
 		taille19 = new JRadioButton("19*19");
 		taille19.addActionListener(new ChoixTaille());
 		tailleGroupe.add(taille19);
-		menuGauchePanel.add(taille19, gbcGauche);
+		menuPanel.add(taille19, gbc);
 
-		gbcGauche.gridy++;
+		gbc.gridx--;
+		gbc.gridy++;
 		JLabel joueurs = new JLabel("Nombre de joueurs :");
-		menuGauchePanel.add(joueurs, gbcGauche);
+		menuPanel.add(joueurs, gbc);
 		
 		ButtonGroup joueurGroup = new ButtonGroup();
 
-		gbcGauche.gridy++;
+		gbc.gridx--;
+		gbc.gridy++;
 		joueur1 = new JRadioButton("1");
 		joueur1.addActionListener(new SelectionJoueur());
 		joueurGroup.add(joueur1);
-		menuGauchePanel.add(joueur1, gbcGauche);
+		menuPanel.add(joueur1, gbc);
 		
-		gbcGauche.gridy++;
+		gbc.gridx++;
 		joueur2 = new JRadioButton("2", true);
 		joueur2.addActionListener(new SelectionJoueur());
 		joueurGroup.add(joueur2);
-		menuGauchePanel.add(joueur2, gbcGauche);
+		menuPanel.add(joueur2, gbc);
 		nb_joueur = 2;
 		
-		gbcGauche.gridy++;
+		gbc.gridx++;
 		joueur3 = new JRadioButton("3");
 		joueur3.addActionListener(new SelectionJoueur());
 		joueurGroup.add(joueur3);
-		menuGauchePanel.add(joueur3, gbcGauche);
-		
-		gbcGauche.gridy++;
+		menuPanel.add(joueur3, gbc);
+
+		gbc.gridx--;
+		gbc.gridy++;
 		JLabel ordis = new JLabel("Nombre d'ordinateurs :");
-		menuGauchePanel.add(ordis, gbcGauche);
+		menuPanel.add(ordis, gbc);
 		
 		ButtonGroup ordiGroup = new ButtonGroup();
 		
-		gbcGauche.gridy++;
+		gbc.gridx--;
+		gbc.gridy++;
 		ordi0 = new JRadioButton("0", true);
 		ordi0.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi0);
-		menuGauchePanel.add(ordi0, gbcGauche);
+		menuPanel.add(ordi0, gbc);
 		nb_ordi = 0;
 		
-		gbcGauche.gridy++;
+		gbc.gridx++;
 		ordi1 = new JRadioButton("1");
 		ordi1.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi1);
-		menuGauchePanel.add(ordi1, gbcGauche);
+		menuPanel.add(ordi1, gbc);
 		
-		gbcGauche.gridy++;
+		gbc.gridx++;
 		ordi2 = new JRadioButton("2");
 		ordi2.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi2);
-		menuGauchePanel.add(ordi2, gbcGauche);
+		menuPanel.add(ordi2, gbc);
 
-		menuPanel.add(menuDroitPanel, BorderLayout.EAST);
-		menuPanel.add(menuGauchePanel, BorderLayout.WEST);
+		gbc.gridx--;
+		gbc.gridy++;
+		JButton quitterMenu = new JButton("Quitter");
+		quitterMenu.addActionListener(new QuitterMenu());
+		menuPanel.add(quitterMenu, gbc);
 		
 		taille9.setBackground(ParametrePartie.BACKGROUND_COLOR);
 		taille19.setBackground(ParametrePartie.BACKGROUND_COLOR);
@@ -209,8 +209,6 @@ public class Go extends JFrame implements Runnable {
 		ordi1.setBackground(ParametrePartie.BACKGROUND_COLOR);
 		ordi2.setBackground(ParametrePartie.BACKGROUND_COLOR);
 		menuPanel.setBackground(ParametrePartie.BACKGROUND_COLOR);
-		menuDroitPanel.setBackground(ParametrePartie.BACKGROUND_COLOR);
-		menuGauchePanel.setBackground(ParametrePartie.BACKGROUND_COLOR);
 		
 		this.setContentPane(menuPanel);
 	}
@@ -450,7 +448,7 @@ public class Go extends JFrame implements Runnable {
 				}
 				
 				if(moteur.getCurrentLevel() == moteur.getNbLevel()) {
-					suivant.setText("Finit !");
+					suivant.setText("Fin !");
 				}
 			}
 			
