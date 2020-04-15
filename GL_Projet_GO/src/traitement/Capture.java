@@ -6,6 +6,12 @@ import donnees.AbstractPierre;
 import donnees.Coordonnee;
 import donnees.Couleur;
 
+/**
+ * Cette classe permet de gérer les captures de pierres / méga-pierres et de chaînes.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class Capture {
 	
 	private int taille_goban;
@@ -28,11 +34,11 @@ public class Capture {
 	}
 	
 	/**
+	 * Permet de savoir si une pierre est capturée.
 	 * 
-	 * @param pierre
-	 * @param plateau
-	 * @param taille_goban
-	 * @return
+	 * @param pierre Définit la pierre que l'on souhaite vérifier. 
+	 * @param plateau Définit le plateau sur lequel est la pierre.
+	 * @return Indique si la pierre est capturée ou non.
 	 */
 	public boolean isCapture(AbstractPierre pierre, AbstractPierre[][] plateau) {
 		initCompteur();
@@ -82,11 +88,11 @@ public class Capture {
 	}
 	
 	/**
+	 * Permet de savoir si une pierre est capturée.
 	 * 
-	 * @param chaine
-	 * @param plateau
-	 * @param taille_goban
-	 * @return
+	 * @param chaine Définit la chaine que l'on souhaite vérifier. 
+	 * @param plateau Définit le plateau sur lequel est la chaine.
+	 * @return Indique si la chaine est capturée ou non.
 	 */
 	public boolean isCapture(ArrayList<AbstractPierre> chaine, AbstractPierre[][] plateau) {
 		initCompteur();
@@ -137,10 +143,11 @@ public class Capture {
 	}
 	
 	/**
+	 * Permet de vérifier si la pierre donner peut être capturée ou non.
 	 * 
-	 * @param pierre
-	 * @param plateau
-	 * @return
+	 * @param pierre Définit la chaine que l'on souhaite vérifier. 
+	 * @param plateau Définit le plateau sur lequel est la chaine.
+	 * @return Indique si la pierre peut être capturée.
 	 */
 	public boolean canBeCaptured(AbstractPierre pierre, AbstractPierre[][] plateau) {
 		pierre.updateLiberte(plateau, taille_goban);
@@ -179,10 +186,11 @@ public class Capture {
 	}
 	
 	/**
+	 * Permet de vérifier si la chaine donner peut être capturée ou non.
 	 * 
-	 * @param chaine
-	 * @param plateau
-	 * @return
+	 * @param chaine Définit la chaine que l'on souhaite vérifier. 
+	 * @param plateau Définit le plateau sur lequel est la chaine.
+	 * @return Indique si la chaine peut être capturée.
 	 */
 	public boolean canBeCaptured(ArrayList<AbstractPierre> chaine, AbstractPierre[][] plateau) {
 		ArrayList<AbstractPierre> voisin;

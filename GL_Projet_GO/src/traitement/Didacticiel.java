@@ -10,6 +10,13 @@ import test.input.Description;
 import traitement.moteurs.Moteur;
 import traitement.moteurs.MoteurPierre;
 
+/**
+ * Cette classe permet d'initialiser le didacticiel et de créer
+ * différentes situations avec les pierres et méga-pierres.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class Didacticiel {
 
 	private Moteur moteur;
@@ -19,12 +26,21 @@ public class Didacticiel {
 	private int level;
 	public final static int MAX_LEVEL_DEFENSE = 3;
 	
+	/**
+	 * Pour créer le didacticiel on aura besoin du moteur principal du jeu et du moteur des pierres.
+	 * 
+	 * @param moteur Définit le moteur principal du jeu.
+	 * @param moteur_pierre Définit le moteur des pierres.
+	 */
 	public Didacticiel(Moteur moteur, MoteurPierre moteur_pierre) {
 		this.moteur = moteur;
 		this.moteur_pierre = moteur_pierre;
 		level = 0;
 	}
 
+	/**
+	 * Permet de réinitialiser le goban et les joueurs.
+	 */
 	private void reinit() {
 		moteur.reinitGoban();
 		moteur.setPoseMegaPierre(false);
@@ -47,10 +63,23 @@ public class Didacticiel {
 		return MAX_LEVEL_DEFENSE;
 	}
 	
+	/**
+	 * Permier de définir les intersections jouables dans le didacticiel.
+	 * 
+	 * @param x Définit la ligne d'une position jouable sur le plateau.
+	 * @param y Définit la colonne d'une position jouable sur le plateau.
+	 * @param couleur Définit la couleur qu'aura le cercle quand il sera affiché.
+	 * @param isMegaPierre Définit si le cercle sera de la taille d'une méga-pierre.
+	 */
 	public void initPositionJouable(int x, int y, Couleur couleur, boolean isMegaPierre) {
 		moteur.initPositionJouable(new Coordonnee(x, y), couleur, isMegaPierre);
 	}
 	
+	/**
+	 * Permet de changer le niveau du didacticiel.
+	 * 
+	 * @param suivant Définit si on accède au niveau suivant ou précédent.
+	 */
 	public void changeLevel(boolean suivant) {
 		if(suivant) {
 			level++;
@@ -66,6 +95,9 @@ public class Didacticiel {
 		chargeLevel();
 	}
 	
+	/**
+	 * Permet de recharger le niveau courant du didacticiel.
+	 */
 	public void resetLevel() {
 		Go.logger.info("Réinitialisation du niveau " + level);
 		
@@ -73,6 +105,9 @@ public class Didacticiel {
 		chargeLevel();
 	}
 	
+	/**
+	 * Permet de charger le niveau actuel du didacticiel.
+	 */
 	public void chargeLevel() {
 		Go.logger.info("Chargement du niveau " + level);
 		
@@ -371,16 +406,6 @@ public class Didacticiel {
 			
 			initPositionJouable(3, 4, Couleur.VERT, true);
 			moteur.setPositionJouable();
-		}
-		
-		/*-------------Territoires-----------------*/
-		
-		else if(level == 13) {
-			c = new Coordonnee(2, 3);
-			moteur_pierre.addPierre(new Pierre(Couleur.NOIR, c));
-			
-			c = new Coordonnee(3, 3);
-			moteur_pierre.addPierre(new Pierre(Couleur.BLANC, c));
 		}
 	}
 }

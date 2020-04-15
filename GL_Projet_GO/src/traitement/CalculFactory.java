@@ -2,6 +2,14 @@ package traitement;
 
 import donnees.ParametrePartie;
 
+/**
+ * Cette classe permet d'effectuer différents calcul pour placer des éléments
+ * dans l'IHM graphique ou pour obtenir les coordoonnées dans un tableau à partir
+ * de la sous-fenêtre du jeu de go ou du didacticiel.
+ * 
+ * @author Maxime, Micael et Houssam.
+ *
+ */
 public class CalculFactory {
 	public static int getCoordTableau(int coord, int ecart_window, int cellule) {
 		return (coord - ecart_window + (cellule / 2)) / cellule;

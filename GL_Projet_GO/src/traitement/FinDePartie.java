@@ -12,7 +12,12 @@ import traitement.Goban;
 import traitement.moteurs.MoteurJoueur;
 import traitement.moteurs.MoteurPierre;
 
-
+/**
+ * 
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class FinDePartie {
 
 	private int taille_goban;
@@ -37,6 +42,12 @@ public class FinDePartie {
 		pierres_mortes = new ArrayList<AbstractPierre>();
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param plateau
+	 * @param hmChaine
+	 */
 	public void initFin(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		pierres_mortes.clear();
 		
@@ -46,6 +57,12 @@ public class FinDePartie {
 		calculTerritoire(plateau, hmChaine);
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param plateau
+	 * @param hmChaine
+	 */
 	public void setChaineTwoEye(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		
 		ArrayList<Coordonnee> interVidePierre = new ArrayList<Coordonnee>();
@@ -152,6 +169,12 @@ public class FinDePartie {
 		}
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param plateau
+	 * @param hmChaine
+	 */
 	public void pierreMorte(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		int i, j;
 		
@@ -316,6 +339,9 @@ public class FinDePartie {
 		}
 	}
 	
+	/**
+	 * Permet de supprimer les pierres mortes du plateau.
+	 */
 	private void supprimePierreMorte() {
 		for(int i = 0 ; i < taille_goban ; i++) {
 			for(int j = 0 ; j < taille_goban ; j++) {
@@ -333,6 +359,12 @@ public class FinDePartie {
 		return pierres_mortes;
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param plateau
+	 * @param hmChaine
+	 */
 	public void calculTerritoire(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		
 		int i, j;
@@ -429,6 +461,7 @@ public class FinDePartie {
 							if(pierre.getCouleur() == Couleur.NOIR) {
 								if(Noir.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Noir)) {
 									moteur_joueur.getJoueurs()[0].addScore(InterVideDejaParcourue.size());
+									
 									for(Coordonnee c : InterVideDejaParcourue) {
 										Noir.add(c);
 									}
@@ -437,6 +470,7 @@ public class FinDePartie {
 							else if(pierre.getCouleur() == Couleur.BLANC) {
 								if(Blanc.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Blanc)) {
 									moteur_joueur.getJoueurs()[1].addScore(InterVideDejaParcourue.size());
+									
 									for(Coordonnee c : InterVideDejaParcourue) {
 										Blanc.add(c);
 									}
@@ -445,6 +479,7 @@ public class FinDePartie {
 							else if(pierre.getCouleur() == Couleur.ROUGE) {
 								if(Rouge.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Rouge)) {
 									moteur_joueur.getJoueurs()[2].addScore(InterVideDejaParcourue.size());
+									
 									for(Coordonnee c : InterVideDejaParcourue) {
 										Rouge.add(c);
 									}
@@ -455,6 +490,7 @@ public class FinDePartie {
 						neutre = false;
 						
 						InterVideDejaParcourue.clear();
+						
 						if(InterVideAutourChaine.size()==0) {
 							end = false;
 						}
@@ -488,20 +524,25 @@ public class FinDePartie {
 							for(Coordonnee c : listeInterVide) {
 								ArrayList<Coordonnee> list = new ArrayList<Coordonnee>();
 								list.addAll(InterVideAutourChaine);
+								
 								for(Coordonnee l : list) {
 									if(c.getX() == l.getX() && c.getY() == l.getY()) {
 										InterVideAutourChaine.remove(l);
 									}
 								}
+								
 								if(!dejaParcourue(c, finalInterVide) &&!dejaParcourue(c, InterVideDejaParcourue)) {
 									finalInterVide.add(c);
 								}
 							}
+							
 							listeInterVide.clear();
 						}
+						
 						for(Coordonnee ca : finalInterVide) {
 							InterVideDejaParcourue.add(ca);
 						}
+						
 						if(finalInterVide.size()==0) {
 							endCote = false;
 						}
@@ -509,6 +550,7 @@ public class FinDePartie {
 					
 					for(Coordonnee n : InterVideDejaParcourue) {
 						InterPleine = GoPierre.voisins(new Pierre(Couleur.NOIR, n), plateau, i);
+						
 						for(AbstractPierre ap : InterPleine) {
 							if(ap.getCouleur() != pierre.getCouleur()) {
 								neutre = true;
@@ -520,14 +562,17 @@ public class FinDePartie {
 						if(pierre.getCouleur() == Couleur.NOIR) {
 							if(Noir.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Noir)) {
 								moteur_joueur.getJoueurs()[0].addScore(InterVideDejaParcourue.size());
+								
 								for(Coordonnee c : InterVideDejaParcourue) {
 									Noir.add(c);
 								}
 							}
 						}
+						
 						else if(pierre.getCouleur() == Couleur.BLANC) {
 							if(Blanc.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Blanc)) {
 								moteur_joueur.getJoueurs()[1].addScore(InterVideDejaParcourue.size());
+								
 								for(Coordonnee c : InterVideDejaParcourue) {
 									Blanc.add(c);
 								}
@@ -536,6 +581,7 @@ public class FinDePartie {
 						else if(pierre.getCouleur() == Couleur.ROUGE) {
 							if(Rouge.isEmpty() || !dejaParcourue(InterVideDejaParcourue.get(0), Rouge)) {
 								moteur_joueur.getJoueurs()[2].addScore(InterVideDejaParcourue.size());
+								
 								for(Coordonnee c : InterVideDejaParcourue) {
 									Rouge.add(c);
 								}
@@ -546,6 +592,7 @@ public class FinDePartie {
 					neutre = false;
 					
 					InterVideDejaParcourue.clear();
+					
 					if(InterVideAutourChaine.size()==0) {
 						end = false;
 					}
@@ -558,6 +605,13 @@ public class FinDePartie {
 		}
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param nc
+	 * @param InterVideDejaParcourue
+	 * @return
+	 */
 	public boolean dejaParcourue(Coordonnee nc, ArrayList<Coordonnee> InterVideDejaParcourue) {
 		boolean ajouter = true; 
 		for(Coordonnee c : InterVideDejaParcourue) {

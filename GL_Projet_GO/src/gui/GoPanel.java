@@ -1,8 +1,11 @@
 package gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -142,13 +145,13 @@ public class GoPanel extends JPanel{
 			Go.logger.trace("Le cercle de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
 		}
 		
-		Cercle survole = moteur.getSurvoleCercle();
+		Coordonnee survole = moteur.getSurvoleCercle();
 		
 		if(survole != null) {
 			x = CalculFactory.getCoordWindow(survole.getY(), ecart_window_horizontal, cellule, petit_decalage);
 			y = CalculFactory.getCoordWindow(survole.getX(), ecart_window_vertical, cellule, petit_decalage);
 			
-			setColor(g, survole.getCouleur(), true);
+			setColor(g, moteur.currentCouleur(), true);
 			
 			if(!moteur.isMegaPierre() || !moteur.currentJoueur().hasMegaPierre()) {
 				g.fillOval(x, y, taille_cercle, taille_cercle);
@@ -167,6 +170,40 @@ public class GoPanel extends JPanel{
 			
 			Go.logger.trace("Le cercle de coordonnées (" + x + ", " + y + ") vient d'être dessinée au survole");
 		}
+		
+		Coordonnee croix = moteur.getSurvoleCroix();
+		
+		if(croix != null) {
+			Graphics2D g2 = (Graphics2D)g;
+			Stroke s = g2.getStroke();
+			
+			x = CalculFactory.getCoordWindow(croix.getY(), ecart_window_horizontal, cellule, petit_decalage);
+			y = CalculFactory.getCoordWindow(croix.getX(), ecart_window_vertical, cellule, petit_decalage);
+			
+			setColor(g, moteur.currentCouleur(), true);
+			g2.setStroke(new BasicStroke(5));
+			
+			if(!moteur.isMegaPierre() || !moteur.currentJoueur().hasMegaPierre()) {
+				g2.drawLine(x, y, x + taille_cercle, y + taille_cercle);
+				g2.drawLine(x + taille_cercle, y, x, y + taille_cercle);
+			}
+			
+			else if(moteur.currentJoueur().hasMegaPierre()){
+				if(croix.getY() == taille_goban - 1) {
+					x = CalculFactory.getCoordWindow(croix.getY() - 1, ecart_window_horizontal, cellule, petit_decalage);
+				}
+				if(croix.getX() == taille_goban - 1) {
+					y = CalculFactory.getCoordWindow(croix.getX() - 1, ecart_window_vertical, cellule, petit_decalage);
+				}
+
+				g2.drawLine(x, y, x + taille_mega_cercle, y + taille_mega_cercle);
+				g2.drawLine(x + taille_mega_cercle, y, x, y + taille_mega_cercle);
+			}
+			
+			Go.logger.trace("La croix de coordonnées (" + x + ", " + y + ") vient d'être dessinée au survole");
+
+			g2.setStroke(s);	
+		}	
 		
 		if(moteur.getPositionJouable() != null) {
 			for(Cercle position_jouable : moteur.getPositionJouable()) {
@@ -316,7 +353,7 @@ public class GoPanel extends JPanel{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			moteur.setCoord(e.getX(), e.getY());
+			moteur.setCoord(CalculFactory.getCoordTableau(e.getY(), ParametrePartie.ECART_VERTICAL, cellule), CalculFactory.getCoordTableau(e.getX(), ecart_window_horizontal, cellule));
 		}
 
 		@Override
@@ -342,7 +379,7 @@ public class GoPanel extends JPanel{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			moteur.survoleZone(e.getX(), e.getY());
+			moteur.survoleZone(CalculFactory.getCoordTableau(e.getY(), ParametrePartie.ECART_VERTICAL, cellule), CalculFactory.getCoordTableau(e.getX(), ecart_window_horizontal, cellule));
 		}
 		
 	}

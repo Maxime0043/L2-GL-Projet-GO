@@ -7,11 +7,18 @@ import java.util.Stack;
 import donnees.AbstractPierre;
 import donnees.Coordonnee;
 import donnees.Couleur;
+import donnees.Joueur;
 import donnees.ParametrePartie;
 import donnees.Pierre;
 import traitement.GoPierre;
 import traitement.Goban;
 
+/**
+ * Cette classe gère les actions des ordinateurs dans la partie.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class MoteurOrdi {
 
 	private MoteurJoueur moteur_joueur;

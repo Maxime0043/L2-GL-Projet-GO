@@ -7,8 +7,9 @@ import donnees.Coordonnee;
 
 
 /**
+ * Cette classe permet de définir ce qu'il y a autour d'une pierre ou d'une méga-pierre.
  * 
- * @author 
+ * @author Maxime, Micael et Houssam
  *
  */
 public class GoPierre {
@@ -18,8 +19,10 @@ public class GoPierre {
 	}
 	
 	/**
+	 * Permet d'ajouter une pierre ou une méga-pierre à la liste de pierres voisines appelée.
 	 * 
-	 * @param numero
+	 * @param pierre Définit la pierre ou la méga-pierre que l'on ajoute à la liste.
+	 * @param liste_voisin Définit la liste de pierres voisines.
 	 */
 	public static void addListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
 		if(!liste_voisin.contains(pierre)) {
@@ -28,16 +31,20 @@ public class GoPierre {
 	}
 	
 	/**
+	 * Permet d'ajouter une coordonnée à la liste des intersections voisines vides appelée.
 	 * 
-	 * @param numero
+	 * @param coord Définit la coordonnée que l'on ajoute à la liste.
+	 * @param liste_voisin Définit la liste d'intersections vides voisines.
 	 */
 	public static void addListe(Coordonnee coord, ArrayList<Coordonnee> liste_voisin) {
 			liste_voisin.add(coord);
 	}
 	
 	/**
+	 * Permet de retirer une pierre ou une méga-pierre à la liste de pierres voisines appelée.
 	 * 
-	 * @param numero
+	 * @param pierre Définit la pierre ou la méga-pierre que l'on supprime à la liste.
+	 * @param liste_voisin Définit la liste de pierres voisines.
 	 */
 	public static void removeListe(AbstractPierre pierre, ArrayList<AbstractPierre> liste_voisin) {
 		if(liste_voisin.contains(pierre) && (liste_voisin.size() > 0)) {
@@ -46,8 +53,10 @@ public class GoPierre {
 	}
 	
 	/**
+	 * Permet de retirer une coordonnée à la liste des intersections voisines vides appelée.
 	 * 
-	 * @param numero
+	 * @param coord Définit la coordonnée que l'on supprime à la liste.
+	 * @param liste_voisin Définit la liste d'intersections vides voisines.
 	 */
 	public static void removeListe(Coordonnee coord, ArrayList<Coordonnee> liste_voisin) {
 		if(liste_voisin.contains(coord) && (liste_voisin.size() > 0)) {
@@ -56,22 +65,24 @@ public class GoPierre {
 	}
 	
 	/**
+	 * Permet de savoir si une pierre ou une méga-pierre est située sur le bord en haut du plateau.
 	 * 
-	 * @param pierre
-	 * @return bool
+	 * @param pierre Définit la pierre ou la méga-pierre que l'on souhaite vérifier.
+	 * @return Indique si la pierre ou la méga-pierre est sur le bord haut.
 	 */
 	public static boolean bordHaut(AbstractPierre pierre) {
 		if(pierre.getX() == 0) {
-				return true;
+			return true;
 		}
 		
 		return false;
 	}
 	
 	/**
+	 * Permet de savoir si une pierre ou une méga-pierre est située sur le bord à gauche du plateau.
 	 * 
-	 * @param pierre
-	 * @return
+	 * @param pierre Définit la pierre ou la méga-pierre que l'on souhaite vérifier.
+	 * @return Indique si la pierre ou la méga-pierre est sur le bord gauche.
 	 */
 	public static boolean bordGauche(AbstractPierre pierre) {
 		if(pierre.getY() == 0)
@@ -81,10 +92,11 @@ public class GoPierre {
 	}
 	
 	/**
+	 * Permet de savoir si une pierre ou une méga-pierre est située sur le bord à droite du plateau.
 	 * 
-	 * @param pierre
-	 * @param taille_goban
-	 * @return
+	 * @param pierre Définit la pierre ou la méga-pierre que l'on souhaite vérifier.
+	 * @param taille_goban Définit la taille du plateau de jeu.
+	 * @return Indique si la pierre ou la méga-pierre est sur le bord droit.
 	 */
 	public static boolean bordDroit(AbstractPierre pierre, int taille_goban) {
 		int y = pierre.getY();
@@ -101,10 +113,11 @@ public class GoPierre {
 	}
 	
 	/**
+	 * Permet de savoir si une pierre ou une méga-pierre est située sur le bord en bas du plateau.
 	 * 
-	 * @param pierre
-	 * @param choix
-	 * @return
+	 * @param pierre Définit la pierre ou la méga-pierre que l'on souhaite vérifier.
+	 * @param taille_goban Définit la taille du plateau de jeu.
+	 * @return Indique si la pierre ou la méga-pierre est sur le bord bas.
 	 */
 	public static boolean bordBas(AbstractPierre pierre, int taille_goban) {
 		int x = pierre.getX();
@@ -121,11 +134,12 @@ public class GoPierre {
 	}
 	
 	/**
+	 * Permet de récupérer les pierres et méga-pierres voisines autour d'une pierre ou d'une méga-pierre.
 	 * 
-	 * @param pierre
-	 * @param plateau
-	 * @param choix
-	 * @return
+	 * @param pierre Définit la pierre ou la méga-pierre que l'on souhaite regarder.
+	 * @param plateau Définir le plateau de jeu sur lequel est la pierre ou la méga-pierre.
+	 * @param taille_goban Définit la taille du plateau de jeu.
+	 * @return Renvoie la liste de pierres et méga-pierres voisines.
 	 */
 	public static ArrayList<AbstractPierre> voisins(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
 		ArrayList<AbstractPierre> liste_voisin = new ArrayList<AbstractPierre>();
@@ -382,9 +396,10 @@ public class GoPierre {
 	}
 	
 	/**
+	 * Permet de savoir si une pierre ou une méga-pierre existe ou non.
 	 * 
-	 * @param pierreEnnemi
-	 * @return
+	 * @param pierreEnnemi Définit la pierre ou la méga-pierre que l'on souhaite vérifier.
+	 * @return Renvoie si oui ou non la pierre ou la méga-pierre existe.
 	 */
 	public static boolean pierreVoisineExiste(AbstractPierre pierreEnnemi) {
 		if(pierreEnnemi != null) {
@@ -395,11 +410,12 @@ public class GoPierre {
 	}
 	
 	/**
+	 * Permet de récupérer les coordonnées d'intersections voisines vides autour d'une pierre ou d'une méga-pierre.
 	 * 
-	 * @param pierre
-	 * @param plateau
-	 * @param taille_goban
-	 * @return
+	 * @param pierre Définit la pierre ou la méga-pierre que l'on souhaite regarder.
+	 * @param plateau Définir le plateau de jeu sur lequel est la pierre ou la méga-pierre.
+	 * @param taille_goban Définit la taille du plateau de jeu.
+	 * @return Renvoie la liste de coordonnées d'intersections voisines vides.
 	 */
 	public static ArrayList<Coordonnee> intersectionVide(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
 		ArrayList<Coordonnee> liste_voisin = new ArrayList<Coordonnee>();
@@ -649,108 +665,6 @@ public class GoPierre {
 				if(!pierreVoisineExiste(droite2)) {
 					addListe(new Coordonnee(x+1, y+2), liste_voisin);
 				}
-			}
-		}
-		
-		return liste_voisin;
-	}
-	
-	public static ArrayList<AbstractPierre> cornerVoisins(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban){
-		ArrayList<AbstractPierre> liste_voisin = new ArrayList<AbstractPierre>();
-		
-		int x = pierre.getX();
-		int y = pierre.getY();
-		
-		AbstractPierre haut_gauche = null;
-		AbstractPierre haut_droit = null;
-		AbstractPierre bas_gauche = null;
-		AbstractPierre bas_droit = null;
-		
-		if(!pierre.isMegaPierre()) {
-			if(x > 0 && y > 0) {
-				haut_gauche = plateau[x-1][y-1];
-			}
-			if(x > 0 && y < taille_goban - 1) {
-				haut_droit = plateau[x-1][y+1];
-			}
-			if(x < taille_goban - 1 && y > 0) {
-				bas_gauche = plateau[x+1][y-1];
-			}
-			if(x < taille_goban - 1 && y < taille_goban - 1) {
-				bas_droit = plateau[x+1][y+1];
-			}
-		}
-		
-		else {
-			if(x > 0 && y > 0) {
-				haut_gauche = plateau[x-1][y-1];
-			}
-			if(x > 0 && y < taille_goban - 2) {
-				haut_droit = plateau[x-1][y+2];
-			}
-			if(x < taille_goban - 2 && y > 0) {
-				bas_gauche = plateau[x+2][y-1];
-			}
-			if(x < taille_goban - 2 && y < taille_goban - 2) {
-				bas_droit = plateau[x+2][y+2];
-			}
-		}
-			
-		if(bordHaut(pierre)) {
-			if(!bordGauche(pierre) && pierreVoisineExiste(bas_gauche)) {
-				addListe(bas_gauche, liste_voisin);
-			}
-			
-			if(!bordDroit(pierre, taille_goban) && pierreVoisineExiste(bas_droit)) {
-				addListe(bas_droit, liste_voisin);
-			}
-		}
-		
-		else if(bordBas(pierre, taille_goban)) {
-			if(!bordGauche(pierre) && pierreVoisineExiste(haut_gauche)) {
-				addListe(haut_gauche, liste_voisin);
-			}
-			
-			if(!bordDroit(pierre, taille_goban) && pierreVoisineExiste(haut_droit)) {
-				addListe(haut_droit, liste_voisin);
-			}
-		}
-		
-		else if(bordGauche(pierre)) {
-			if(pierreVoisineExiste(haut_droit)) {
-				addListe(haut_droit, liste_voisin);
-			}
-			
-			if(pierreVoisineExiste(bas_droit)) {
-				addListe(bas_droit, liste_voisin);
-			}
-		}
-		
-		else if(bordDroit(pierre, taille_goban)) {
-			if(pierreVoisineExiste(haut_gauche)) {
-				addListe(haut_gauche, liste_voisin);
-			}
-			
-			if(pierreVoisineExiste(bas_droit)) {
-				addListe(bas_droit, liste_voisin);
-			}
-		}
-		
-		else {
-			if(pierreVoisineExiste(haut_gauche)) {
-				addListe(haut_gauche, liste_voisin);
-			}
-			
-			if(pierreVoisineExiste(bas_gauche)) {
-				addListe(bas_gauche, liste_voisin);
-			}
-			
-			if(pierreVoisineExiste(haut_droit)) {
-				addListe(haut_droit, liste_voisin);
-			}
-			
-			if(pierreVoisineExiste(bas_droit)) {
-				addListe(bas_droit, liste_voisin);
 			}
 		}
 		

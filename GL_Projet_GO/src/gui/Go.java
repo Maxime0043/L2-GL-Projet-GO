@@ -103,7 +103,7 @@ public class Go extends JFrame implements Runnable {
 		menuPanel.setLayout(new GridBagLayout());
 		
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.insets = new Insets(5, 5, 15, 5);
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		

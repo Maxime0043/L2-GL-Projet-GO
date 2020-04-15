@@ -12,6 +12,13 @@ import donnees.ParametrePartie;
 import donnees.Pierre;
 import donnees.Plateau;
 
+/**
+ * Cette classe permet de gérer les pierres, les méga-pierres
+ * et les chaînes sur le plateau.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class Goban {
 	
 	private Plateau plateau;
@@ -22,6 +29,11 @@ public class Goban {
 	private int taille_goban;
 	private int nb_chaine;
 
+	/**
+	 * Pour créer le goban nous avons besoins de savoir quelle taille fait le plateau.
+	 * 
+	 * @param taille_goban Définit la taille du plateau.
+	 */
 	public Goban(int taille_goban) {
 		this.taille_goban = taille_goban;
 		nb_chaine = 0;
@@ -34,10 +46,16 @@ public class Goban {
 		initHoshis();
 	}
 	
+	/**
+	 * Permet d'initialiser le plateau de jeu.
+	 */
 	public void initPlateau() {
 		plateau.initPlateau(taille_goban);
 	}
 	
+	/**
+	 * Permet de définir les coordonnées des hoshis sur le plateau.
+	 */
 	public void initHoshis() {
 		int x;
 		
@@ -73,12 +91,22 @@ public class Goban {
 		return hmChaine;
 	}
 	
+	/**
+	 * Permet d'ajouter une pierre ou une méga-pierre sur le plateau.
+	 * 
+	 * @param pierre Définit la pierre ou méga-pierre à ajouter.
+	 */
 	public void addPierre(AbstractPierre pierre) {
 		plateau.addPierre(pierre);
 		
 		this.addToChaine(pierre);
 	}
 	
+	/**
+	 * Permet de supprimer une pierre ou une méga-pierre du plateau.
+	 * 
+	 * @param pierre Définit la pierre ou méga-pierre à supprimer
+	 */
 	public void removePierre(AbstractPierre pierre) {
 		int x = pierre.getX();
 		int y = pierre.getY();
@@ -97,6 +125,13 @@ public class Goban {
 		return plateau.getPierre(x, y);
 	}
 	
+	/**
+	 * Permet de vérifier si une pierre existe sur le plateau.
+	 * 
+	 * @param x Définit la ligne à laquelle on regarde sur le plateau.
+	 * @param y Définit la colonne à laquelle on regarde sur le plateau.
+	 * @return Indique si la pierre ou méga-pierre existe sur le plateau.
+	 */
 	public boolean existPierre(int x, int y) {
 		if (getPlateau()[x][y] != null) {
 			return true;
@@ -110,12 +145,34 @@ public class Goban {
 		return capture.getCompteur();
 	}
 	
+	/**
+	 * Permet de savoir si une pierre est capturée.
+	 * 
+	 * @param pierre Définit la pierre que l'on souhaite vérifier. 
+	 * @return Indique si la pierre est capturée ou non.
+	 */
 	public boolean isPierreCapture(AbstractPierre pierre) {
 		return capture.isCapture(pierre, getPlateau());
 	}
 	
+	/**
+	 * Permet de savoir si une pierre est capturée.
+	 * 
+	 * @param chaine Définit la chaine que l'on souhaite vérifier. 
+	 * @return Indique si la chaine est capturée ou non.
+	 */
 	public boolean isPierreCapture(ArrayList<AbstractPierre> chaine) {
 		return capture.isCapture(chaine, getPlateau());
+	}
+
+	/**
+	 * Permet de savoir si une pierre ou une méga-pierre se suicide.
+	 * 
+	 * @param pierre Définit la pierre ou méga-pierre que l'on souhaite vérifier.
+	 * @return Indique si la pierre ou méga-pierre est suicidée.
+	 */
+	public boolean isSuicide(AbstractPierre pierre) {
+		return isPierreCapture(pierre);
 	}
 	
 	public boolean isSuicide(int x, int y, Couleur couleur, boolean isMegaPierre) {
@@ -128,18 +185,32 @@ public class Goban {
 		}
 	}
 	
-	public boolean isSuicide(AbstractPierre pierre) {
-		return isPierreCapture(pierre);
-	}
-	
+	/**
+	 * Permet de savoir si une chaine se suicide.
+	 * 
+	 * @param pierre Définit la chaine que l'on souhaite vérifier.
+	 * @return Indique si la chaine est suicidée.
+	 */
 	public boolean isSuicide(ArrayList<AbstractPierre> chaine) {
 		return isPierreCapture(chaine);
 	}
 	
+	/**
+	 * Permet de vérifier si la pierre donner peut être capturée ou non.
+	 * 
+	 * @param pierre Définit la chaine que l'on souhaite vérifier. 
+	 * @return Indique si la pierre peut être capturée.
+	 */
 	public boolean canBeCaptured(AbstractPierre pierre) {
 		return capture.canBeCaptured(pierre, getPlateau());
 	}
 	
+	/**
+	 * Permet de vérifier si la chaine donner peut être capturée ou non.
+	 * 
+	 * @param chaine Définit la chaine que l'on souhaite vérifier. 
+	 * @return Indique si la chaine peut être capturée.
+	 */
 	public boolean canBeCaptured(ArrayList<AbstractPierre> chaine) {
 		return capture.canBeCaptured(chaine, getPlateau());
 	}
@@ -149,8 +220,9 @@ public class Goban {
 	}
 	
 	/**
-	 * apres avoir poser une pierre, permet de creer une chaine avec ses voisines ou de fusionner les chaines deja existante 
-	 * @param pierre
+	 * Apres avoir poser une pierre, permet de creer une chaine avec ses voisines ou de fusionner les chaines déjà existantes.
+	 * 
+	 * @param pierre Définit la pierre ou la méga-pierre que l'on a ajoutée au plateau.
 	 */
 	public void addToChaine(AbstractPierre pierre) {
 		int x = pierre.getX();
@@ -220,8 +292,9 @@ public class Goban {
 	
 	/**
 	 * Permet la fusion de deux chaines.
-	 * @param p1, pierre dont on garde la chaine et où on ajoute celle de p2
-	 * @param p2, pierre dont on supprime la chaine
+	 * 
+	 * @param p1 Pierre ou Méga-pierre dont on garde la chaine et où on ajoute celle de p2.
+	 * @param p2 Pierre ou Méga-pierre dont on supprime la chaine.
 	 */
 	public void chaineFusion(AbstractPierre p1, AbstractPierre p2) {
 		int x, y;
@@ -261,6 +334,11 @@ public class Goban {
 		hmChaine.remove(name);
 	}
 	
+	/**
+	 * Permet de supprimer une pierre ou une méga-pierre d'une chaine.
+	 * 
+	 * @param pierre Désigne la pierre ou la méga-pierre que l'on souhaite retirer.
+	 */
 	public void removePierreChaine(AbstractPierre pierre) {
 		if(pierre.getNomChaine() != -1) {
 			AbstractPierre pierreChaine = null;
@@ -280,8 +358,9 @@ public class Goban {
 	}
 	
 	/**
-	 * Permet de supprimer la chaine et toute ses pierres du Goban
-	 * @param nomChaine
+	 * Permet de supprimer la chaine et toute ses pierres du Goban.
+	 * 
+	 * @param nomChaine Désigne le nom de la chaine à supprimer.
 	 */
 	public void removeChaine(int nomChaine) {
 		ArrayList<AbstractPierre> chaine = new ArrayList<AbstractPierre>();
@@ -295,6 +374,9 @@ public class Goban {
 		hmChaine.remove(nomChaine);
 	}
 	
+	/**
+	 * Permet de mettre à jour chaque chaines présentes sur la plateau.
+	 */
 	public void updateChaines() {
 		HashMap<Integer, Chaine> copy_hm = new HashMap<Integer, Chaine>();
 		int nom_chaine;
@@ -329,6 +411,9 @@ public class Goban {
 		}
 	}
 	
+	/**
+	 * Permet de mettre à jour les libertés de chaque pierre et méga-pierre du plateau.
+	 */
 	public void updateLibertePlateau() {
 		for(int i = 0 ; i < taille_goban ; i++) {
 			for(int j = 0 ; j < taille_goban ; j++) {

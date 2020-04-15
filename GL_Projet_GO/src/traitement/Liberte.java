@@ -7,19 +7,20 @@ import donnees.Coordonnee;
 import donnees.MegaPierre;
 
 /**
+ * Permet de déterminer le nombre de libertés d'une pierre ou d'une méga_pierre.
  * 
- * @author 
+ * @author Maxime, Micael et Houssam
  *
  */
-
 public class Liberte {
 
 	private int nb_liberte;
 	private AbstractPierre pierre;
 	
 	/**
+	 * Pour créer la liberté d'une pierre ou d'une méga-pierre il suffit de la passer en paramètre.
 	 * 
-	 * @param pierre
+	 * @param pierre Définit la pierre ou méga-pierre où l'on veut définir sa liberté.
 	 */
 	public Liberte(AbstractPierre pierre) {
 		this.pierre = pierre;
@@ -30,18 +31,15 @@ public class Liberte {
 			nb_liberte = 4;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public int getLiberte() {
 		return nb_liberte;
 	}
 	
 	/**
+	 * Permet d'actualiser le nombre de libertés de la pierre ou méga-pierre définie.
 	 * 
-	 * @param plateau
-	 * @param taille_goban
+	 * @param plateau Définit le tableau dans lequel est la pierre ou méga-pierre.
+	 * @param taille_goban Définit la taille du tableau.
 	 */
 	public void updateLiberte(AbstractPierre[][] plateau, int taille_goban) {
 		nb_liberte = 0;

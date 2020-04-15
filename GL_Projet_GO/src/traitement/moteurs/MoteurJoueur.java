@@ -4,6 +4,12 @@ import donnees.Couleur;
 import donnees.Joueur;
 import gui.Go;
 
+/**
+ * Cette classe permet la gestion des joueurs de la partie avec la classe {@link Joueur}.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class MoteurJoueur {
 
 	private Joueur[] joueurs;
@@ -16,6 +22,15 @@ public class MoteurJoueur {
 	private boolean rouge = false;
 	private boolean isDidacticiel;
 	
+	/**
+	 * Pour créer le moteur de joueur il nous faut le nombre de joueurs (humain),
+	 * le nombre d'ordinateurs et on doit savoir si on est en partie ou
+	 * dans le didacticiel.
+	 * 
+	 * @param nb_joueur Définit le nombre de joueurs (humain).
+	 * @param nb_ordi Définit le nombre d'ordinateurs.
+	 * @param isDidacticiel Définit si on est dans le didacticiel.
+	 */
 	public MoteurJoueur(int nb_joueur, int nb_ordi, boolean isDidacticiel) {
 		nb_joueurs = nb_joueur + nb_ordi;
 		joueurs = new Joueur[nb_joueurs];
@@ -25,6 +40,9 @@ public class MoteurJoueur {
 		initJoueur();
 	}
 	
+	/**
+	 * Permet d'initialiser les joueurs de la partie.
+	 */
 	private void initJoueur() {
 		int i;
 		
@@ -43,6 +61,11 @@ public class MoteurJoueur {
 		return joueurs;
 	}
 	
+	/**
+	 * Permet de savoir si le joueur courant possède une méga-pierre ou non.
+	 * 
+	 * @return Indique si le joueur courant possède une méga-pierre.
+	 */
 	public boolean canPlayMegaPierre() {
 		return currentJoueur().hasMegaPierre();
 	}
@@ -59,6 +82,11 @@ public class MoteurJoueur {
 		}
 	}
 	
+	/**
+	 * Permet de récupérer le joueur courant.
+	 * 
+	 * @return Renvoie le joueur courant.
+	 */
 	public Joueur currentJoueur() {
 		Joueur j = null;
 		
@@ -71,6 +99,12 @@ public class MoteurJoueur {
 		return j;
 	}
 	
+	/**
+	 * Permet de récupérer un joueur grâce à une couleur donnée.
+	 * 
+	 * @param couleur Définit la couleur du joueur recherché.
+	 * @return Renvoie le joueur ayant la couleur fournie.
+	 */
 	public Joueur getJoueur(Couleur couleur) {
 		Joueur j = null;
 		
@@ -83,6 +117,9 @@ public class MoteurJoueur {
 		return j;
 	}
 	
+	/**
+	 * Permet de passer au joueur suivant.
+	 */
 	public void changeJoueur() {
 		if(isDidacticiel) {
 			noir = true;
@@ -113,6 +150,9 @@ public class MoteurJoueur {
 		}
 	}
 	
+	/**
+	 * Permet de revenir au joueur précédent.
+	 */
 	public void joueurPrecedent() {
 		if(noir) {
 			noir = false;
@@ -134,5 +174,20 @@ public class MoteurJoueur {
 			rouge = false;
 			blanc = true;
 		}
+	}
+	
+	/**
+	 * Permet de récupérer l'ensemble des scores de chaque joueur.
+	 * 
+	 * @return Renvoie les scores des joueurs sous forme de tableau.
+	 */
+	public int[] getScores() {
+		int[] scores = new int[nb_joueurs];
+		
+		for(int i = 0 ; i < nb_joueurs ; i++) {
+			scores[i] = getJoueurs()[i].getScore();
+		}
+		
+		return scores;
 	}
 }

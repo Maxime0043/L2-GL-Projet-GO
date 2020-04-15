@@ -12,7 +12,9 @@ import traitement.FinDePartie;
 import traitement.Goban;
 
 /**
- * 
+ * Cette classe est la classe de traitement principale.
+ * Elle permet d'accéder à l'ensemble des sous-moteurs
+ * {@link MoteurJoueur}, {@link MoteurOrdi} et {@link MoteurPierre}.
  * 
  * @author Maxime, Micael et Houssam
  *
@@ -37,10 +39,18 @@ public class Moteur /*implements Runnable*/ {
 //	private boolean is_tour_ordi = false;
 //	private Moteur instance = this;
 	
+	/**
+	 * Pour créer le moteur du jeu nous aurons besoin de plusieurs variables.
+	 * 
+	 * @param taille_goban Définit la taille du goban.
+	 * @param nb_joueur Définit le nombre de joueurs (humain) dans la partie.
+	 * @param nb_ordi Définit le nombre d'ordinateurs dans la partie.
+	 * @param isDidacticiel Définit si le didacticiel est actif.
+	 */
 	public Moteur(int cellule, int taille_goban, int nb_joueur, int nb_ordi, boolean isDidacticiel) {
 		goban = new Goban(taille_goban);
 		moteur_joueur = new MoteurJoueur(nb_joueur, nb_ordi, isDidacticiel);
-		moteur_pierre = new MoteurPierre(moteur_joueur, goban, cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
+		moteur_pierre = new MoteurPierre(moteur_joueur, goban, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
 		fin = new FinDePartie(taille_goban, goban, moteur_joueur, moteur_pierre);
 		
 		if(nb_ordi > 0) {
@@ -67,6 +77,10 @@ public class Moteur /*implements Runnable*/ {
 //		moteurThread.start();
 	}
 	
+	/**
+	 * Définit ce qu'il faut faire pour le joueur courant : il fait jouer l'ordinateur si c'est son tour,
+	 * sinon il attend d'avoir les coordonnées de clique de l'utilisateur.
+	 */
 //	@Override
 	public void run() {
 //		boolean isRunning = true;
@@ -102,6 +116,9 @@ public class Moteur /*implements Runnable*/ {
 //		}
 	}
 	
+	/**
+	 * Réinitialise totalement le goban et les joueurs.
+	 */
 	public void reinitGoban() {
 		goban.initPlateau();
 		setPoseMegaPierre(false);
@@ -109,10 +126,16 @@ public class Moteur /*implements Runnable*/ {
 		changeJoueur();
 	}
 	
+	/**
+	 * Initialise le nombre de fois où les joueurs passent consécutivement leur tour.
+	 */
 	private void initPassCompteur() {
 		pass_compteur = 0;
 	}
 	
+	/**
+	 * Permet à un joueur de passer son tour ou de finir la partie.
+	 */
 	public void passer() {
 		moteur_joueur.changeJoueur();
 		pass_compteur++;
@@ -138,36 +161,45 @@ public class Moteur /*implements Runnable*/ {
 //		}
 //	}
 	
-	public void survoleZone(int coordX, int coordY) {
-		moteur_pierre.survoleZone(coordX, coordY);
+	/**
+	 * Permet de définir les coordonnées de la zone survolée avec la souris.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void survoleZone(int x, int y) {
+		moteur_pierre.survoleZone(x, y);
 	}
 	
+	/**
+	 * Permet d'initialiser les coordonnées pour l'ajout de pierres.
+	 */
 	private void initCoord() {
 		x = -1;
 		y = -1;
 	}
 	
-	public void setCoord(int coordX, int coordY) {
-		x = coordX;
-		y = coordY;
+	public void setCoord(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 	
-	public void clicEvent(int coordX, int coordY) {
-		moteur_pierre.clicEvent(coordX, coordY);
+	/**
+	 * Permet d'ajouter, si possible, une pierre ou une méga-pierre sur le plateau.
+	 * 
+	 * @param x Ligne à laquelle la pierre va être ajoutée.
+	 * @param y Colonne à laquelle la pierre va être ajoutée.
+	 */
+	public void clicEvent(int x, int y) {
+		moteur_pierre.clicEvent(x, y);
 		initPassCompteur();
 	}
 	
-	public int[] getScores() {
-		int[] scores = new int[nb_joueurs];
-		Joueur[] joueurs = getJoueurs();
-		
-		for(int i = 0 ; i < nb_joueurs ; i++) {
-			scores[i] = joueurs[i].getScore();
-		}
-		
-		return scores;
-	}
-	
+	/**
+	 * Permet de changer le niveau du didacticiel.
+	 * 
+	 * @param suivant Définit si on accède au niveau suivant ou précédent.
+	 */
 	public void changeLevel(boolean suivant) {
 		if(didacticiel != null) {
 			position_jouable.clear();
@@ -187,6 +219,9 @@ public class Moteur /*implements Runnable*/ {
 		}
 	}
 	
+	/**
+	 * Permet de recharger le niveau courant.
+	 */
 	public void resetLevel() {
 		if(didacticiel != null) {
 			position_jouable.clear();
@@ -195,19 +230,26 @@ public class Moteur /*implements Runnable*/ {
 		}
 	}
 	
-	public ArrayList<Coordonnee> getHoshis() {
-		return goban.getHoshis();
-	}
-	
+	/**
+	 * Permier de définir les intersections jouables dans le didacticiel.
+	 * 
+	 * @param coord Définit la coordonnée d'une position jouable.
+	 * @param couleur Définit la couleur qu'aura le cercle quand il sera affiché.
+	 * @param isMegaPierre Définit si le cercle sera de la taille d'une méga-pierre.
+	 */
 	public void initPositionJouable(Coordonnee coord, Couleur couleur, boolean isMegaPierre) {
 		position_jouable.add(new Cercle(coord, couleur, isMegaPierre));		
 	}
 	
+	public int[] getScores() {
+		return moteur_joueur.getScores();
+	}
+	
+	public ArrayList<Coordonnee> getHoshis() {
+		return goban.getHoshis();
+	}
+	
 	public ArrayList<Cercle> getPositionJouable() {
-//		if(position_jouable != null && goban.existPierre(position_jouable.getX(), position_jouable.getY())) {
-//			position_jouable = null;
-//		}
-		
 		return position_jouable;
 	}
 	
@@ -239,8 +281,12 @@ public class Moteur /*implements Runnable*/ {
 		return moteur_pierre.getCercleList();
 	}
 	
-	public Cercle getSurvoleCercle() {
+	public Coordonnee getSurvoleCercle() {
 		return moteur_pierre.getSurvoleCercle();
+	}
+	
+	public Coordonnee getSurvoleCroix() {
+		return moteur_pierre.getSurvoleCroix();
 	}
 	
 	public Couleur currentCouleur() {
