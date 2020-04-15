@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import donnees.AbstractPierre;
+import donnees.Chaine;
 import donnees.Coordonnee;
 import donnees.Couleur;
 import donnees.Pierre;
@@ -25,16 +26,23 @@ public class FinDePartie {
 	private MoteurJoueur moteur_joueur;
 	private MoteurPierre moteur_pierre;
 	
+	private ArrayList<AbstractPierre> pierres_mortes;
+	
 	public FinDePartie(int taille_goban, Goban goban, MoteurJoueur moteur_joueur, MoteurPierre moteur_pierre) {
 		this.taille_goban = taille_goban;
 		this.goban = goban;
 		this.moteur_joueur = moteur_joueur;
 		this.moteur_pierre = moteur_pierre;
+		
+		pierres_mortes = new ArrayList<AbstractPierre>();
 	}
 	
 	public void initFin(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
+		pierres_mortes.clear();
+		
 		setChaineTwoEye(plateau, hmChaine);
 		pierreMorte(plateau, hmChaine);
+		supprimePierreMorte();
 		calculTerritoire(plateau, hmChaine);
 	}
 	
@@ -144,8 +152,7 @@ public class FinDePartie {
 		}
 	}
 	
-	public void pierreMorte (AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
-		
+	public void pierreMorte(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		int i, j;
 		
 		ArrayList<AbstractPierre> ListPierre = new ArrayList<AbstractPierre>();
@@ -280,7 +287,7 @@ public class FinDePartie {
 						listeInterPleine = GoPierre.voisins(new Pierre(Couleur.NOIR, c), plateau, taille_goban);
 						for(AbstractPierre p : listeInterPleine) {
 							if(p.hasChaine()) {
-								if(p.getCouleur() == pierre.getCouleur() && p.getNomChaine() != pierre.getNomChaine()) {
+								if(p.getCouleur() == pierre.getCouleur() && p.getNomChaine() != pierre.getNomChaine() /*&& hmChaine.get(p.getNomChaine()).getTwoEyes()*/) {
 									vivante = true;
 								}
 							}
@@ -297,6 +304,7 @@ public class FinDePartie {
 				pierre.setVivante(vivante);
 				
 			}
+			
 			vivante = false;
 			BordHaut = false;
 			BordBas = false;
@@ -306,15 +314,23 @@ public class FinDePartie {
 			finalInterVide.clear();
 			InterVideDejaParcourue.clear();
 		}
-		for(i=0;i<taille_goban;i++) {
-			for(j=0;j<taille_goban;j++) {
+	}
+	
+	private void supprimePierreMorte() {
+		for(int i = 0 ; i < taille_goban ; i++) {
+			for(int j = 0 ; j < taille_goban ; j++) {
 				if(goban.existPierre(i, j)) {
 					if(!goban.getPierre(i, j).isVivante()) {
+						pierres_mortes.add(goban.getPierre(i, j));
 						moteur_pierre.removePierre(goban.getPierre(i, j));
 					}
 				}
 			}
 		}
+	}
+	
+	public ArrayList<AbstractPierre> getPierresMortes(){
+		return pierres_mortes;
 	}
 	
 	public void calculTerritoire(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
@@ -340,7 +356,7 @@ public class FinDePartie {
 		
 		for(i=0;i<taille_goban;i++) {
 			for(j=0;j<taille_goban;j++) {
-				if(goban.existPierre(i, j)) {
+				if(goban.existPierre(i, j) && goban.getPierre(i, j).isVivante()) {
 					ListPierre.add(goban.getPierre(i, j));
 				}
 			}

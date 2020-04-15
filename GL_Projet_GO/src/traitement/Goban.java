@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import donnees.AbstractPierre;
+import donnees.Chaine;
+import donnees.Coordonnee;
 import donnees.Couleur;
 import donnees.MegaPierre;
+import donnees.ParametrePartie;
 import donnees.Pierre;
 import donnees.Plateau;
 
 public class Goban {
 	
 	private Plateau plateau;
+	private ArrayList<Coordonnee> hoshis;
 	private HashMap<Integer, Chaine> hmChaine;
 	private Capture capture;
 	
@@ -23,16 +27,46 @@ public class Goban {
 		nb_chaine = 0;
 		
 		plateau = new Plateau(taille_goban);
+		hoshis = new ArrayList<Coordonnee>();
 		hmChaine = new HashMap <Integer, Chaine>();
 		capture = new Capture(taille_goban);
+		
+		initHoshis();
 	}
 	
 	public void initPlateau() {
 		plateau.initPlateau(taille_goban);
 	}
 	
+	public void initHoshis() {
+		int x;
+		
+		if(taille_goban == ParametrePartie.TAILLE_GOBAN[0]) {
+			x = 2;
+		}
+		
+		else {
+			x = 3;
+			
+			hoshis.add(new Coordonnee(x, (taille_goban - 1) / 2));
+			hoshis.add(new Coordonnee(taille_goban - 1 - x, (taille_goban - 1) / 2));
+			hoshis.add(new Coordonnee((taille_goban - 1) / 2, x));
+			hoshis.add(new Coordonnee((taille_goban - 1) / 2, (taille_goban - 1) / 2));
+			hoshis.add(new Coordonnee((taille_goban - 1) / 2, taille_goban - 1 - x));
+		}
+		
+		hoshis.add(new Coordonnee(x, x));
+		hoshis.add(new Coordonnee(taille_goban - 1 - x, x));
+		hoshis.add(new Coordonnee(x, taille_goban - 1 - x));
+		hoshis.add(new Coordonnee(taille_goban - 1 - x, taille_goban - 1 - x));
+	}
+	
 	public AbstractPierre[][] getPlateau(){
 		return plateau.getPlateau();
+	}
+	
+	public ArrayList<Coordonnee> getHoshis(){
+		return hoshis;
 	}
 	
 	public HashMap<Integer, Chaine> getHmChaine (){
@@ -43,13 +77,13 @@ public class Goban {
 		plateau.addPierre(pierre);
 		
 		this.addToChaine(pierre);
-		
 	}
 	
 	public void removePierre(AbstractPierre pierre) {
 		int x = pierre.getX();
 		int y = pierre.getY();
 
+		removePierreChaine(pierre);
 		plateau.removePierre(x, y);
 		
 		if(pierre.isMegaPierre()) {
@@ -57,7 +91,6 @@ public class Goban {
 			plateau.removePierre(x, y+1);
 			plateau.removePierre(x+1, y+1);
 		}
-		
 	}
 	
 	public AbstractPierre getPierre(int x, int y) {
@@ -103,6 +136,14 @@ public class Goban {
 		return isPierreCapture(chaine);
 	}
 	
+	public boolean canBeCaptured(AbstractPierre pierre) {
+		return capture.canBeCaptured(pierre, getPlateau());
+	}
+	
+	public boolean canBeCaptured(ArrayList<AbstractPierre> chaine) {
+		return capture.canBeCaptured(chaine, getPlateau());
+	}
+	
 	public ArrayList<AbstractPierre> getChaine(int nom){
 		return hmChaine.get(nom).getChaine();
 	}
@@ -128,13 +169,15 @@ public class Goban {
 					if(pierreVoisine.hasChaine()) {
 						
 						if(pierre.hasChaine() && (pierre.getNomChaine() != pierreVoisine.getNomChaine())) {
-							if (pierre.getNomChaine() < pierreVoisine.getNomChaine() ) {
+							if(pierre.getNomChaine() < pierreVoisine.getNomChaine() ) {
 								this.chaineFusion(pierre, pierreVoisine);
 							}
+							
 							else {
 								this.chaineFusion(pierreVoisine, pierre);
 							}
 						}
+						
 						else {
 							hmChaine.get(pierreVoisine.getNomChaine()).addPierre(pierre);
 							pierre.setNomChaine(pierreVoisine.getNomChaine());
@@ -152,6 +195,7 @@ public class Goban {
 							hmChaine.get(pierre.getNomChaine()).addPierre(pierreVoisine);
 							pierreVoisine.setNomChaine(pierre.getNomChaine());
 						}
+						
 						else {
 							Chaine c = new Chaine();
 							c.addPierre(pierre);
@@ -194,6 +238,7 @@ public class Goban {
 				
 				hmChaine.get(p1.getNomChaine()).addPierre(p);
 			}
+			
 			else {
 				if(!verif) {
 					p.setNomChaine(p1.getNomChaine());
@@ -229,6 +274,7 @@ public class Goban {
 			
 			if(pierreChaine != null) {
 				chaine.removePierre(pierreChaine);
+				pierreChaine.setNomChaine(-1);
 			}
 		}
 	}
@@ -237,11 +283,59 @@ public class Goban {
 	 * Permet de supprimer la chaine et toute ses pierres du Goban
 	 * @param nomChaine
 	 */
-	public void removeChaine (int nomChaine) {
-		for (AbstractPierre p : hmChaine.get(nomChaine).getChaine()) {
+	public void removeChaine(int nomChaine) {
+		ArrayList<AbstractPierre> chaine = new ArrayList<AbstractPierre>();
+		
+		chaine.addAll(hmChaine.get(nomChaine).getChaine());
+		
+		for(AbstractPierre p : chaine) {
 			this.removePierre(p);
 		}
 		
 		hmChaine.remove(nomChaine);
+	}
+	
+	public void updateChaines() {
+		HashMap<Integer, Chaine> copy_hm = new HashMap<Integer, Chaine>();
+		int nom_chaine;
+		
+		for(int i = 0 ; i < taille_goban ; i++) {
+			for(int j = 0 ; j < taille_goban ; j++) {
+				if(existPierre(i, j) && getPierre(i, j).hasChaine()) {
+					boolean hasChaine = false;
+					
+					for(AbstractPierre p : GoPierre.voisins(getPierre(i, j), getPlateau(), taille_goban)) {
+						if(p.getCouleur() == getPierre(i, j).getCouleur()) {
+							hasChaine = true;
+						}
+					}
+					
+					if(!hasChaine) {
+						removePierreChaine(getPierre(i, j));
+					}
+				}
+			}
+		}
+		
+		copy_hm.putAll(hmChaine);
+		
+		for(Chaine chaine : copy_hm.values()) {
+			if(chaine.getChaine().size() == 1) {
+				nom_chaine = chaine.getChaine().get(0).getNomChaine();
+				
+				chaine.getChaine().get(0).setNomChaine(-1);
+				hmChaine.remove(nom_chaine);
+			}
+		}
+	}
+	
+	public void updateLibertePlateau() {
+		for(int i = 0 ; i < taille_goban ; i++) {
+			for(int j = 0 ; j < taille_goban ; j++) {
+				if(existPierre(i, j)) {
+					getPierre(i, j).updateLiberte(getPlateau(), taille_goban);
+				}
+			}
+		}
 	}
 }

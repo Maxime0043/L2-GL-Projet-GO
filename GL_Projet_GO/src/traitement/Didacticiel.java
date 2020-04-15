@@ -17,6 +17,7 @@ public class Didacticiel {
 	
 	private int nb_levels = 12;
 	private int level;
+	public final static int MAX_LEVEL_DEFENSE = 3;
 	
 	public Didacticiel(Moteur moteur, MoteurPierre moteur_pierre) {
 		this.moteur = moteur;
@@ -40,6 +41,10 @@ public class Didacticiel {
 	
 	public int getLevel() {
 		return level;
+	}
+	
+	public int getMaxLevelDefense() {
+		return MAX_LEVEL_DEFENSE;
 	}
 	
 	public void initPositionJouable(int x, int y, Couleur couleur, boolean isMegaPierre) {

@@ -2,6 +2,14 @@ package donnees;
 
 import java.awt.Color;
 
+/**
+ * Cette classe représente toutes les constantes qui
+ * définir les dimensions de la fenêtre, de ses éléments
+ * qui la compose et aussi des paramètres du jeu de go.
+ * 
+ * @author Maxime
+ *
+ */
 public class ParametrePartie {
 	public static final int WINDOW_WIDTH = 700;
 	
@@ -27,6 +35,16 @@ public class ParametrePartie {
 	
 	public static final int PETITE_DECALAGE_19 = (LARGEUR_CASE_19 - TAILLE_CERCLE_19) / 2;
 	
+	public static final int TAILLE_HOSHI_9 = TAILLE_CERCLE_9 / 3;
+	
+	public static final int PETIT_DECALAGE_HOSHI_9 = (LARGEUR_CASE_9 - TAILLE_HOSHI_9) / 2;
+	
+	public static final int TAILLE_HOSHI_19 = TAILLE_CERCLE_19 / 3;
+	
+	public static final int PETIT_DECALAGE_HOSHI_19 = (LARGEUR_CASE_19 - TAILLE_HOSHI_19) / 2;
+	
+	public static final int LARGEUR_DESCRIPTION = (int)(WINDOW_WIDTH / 2.5);
+	
 	public static final int[] NOMBRE_JOUEUR = {1, 2, 3};
 	
 	public static final int[] NOMBRE_IA = {0, 1, 2};
@@ -34,8 +52,6 @@ public class ParametrePartie {
 	public static final int[] DIFIICULTE_IA = {0, 1};
 	
 	public static final int[] TAILLE_GOBAN = {9, 19};
-	
-	public static final int LARGEUR_DESCRIPTION = (int)(WINDOW_WIDTH / 2.5);
 	
 	public static final int FPS = 16;
 	

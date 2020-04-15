@@ -3,8 +3,6 @@ package gui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -12,15 +10,20 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 import donnees.Cercle;
+import donnees.Coordonnee;
 import donnees.Couleur;
-import donnees.Joueur;
 import donnees.ParametrePartie;
 import traitement.CalculFactory;
 import traitement.moteurs.Moteur;
 
 /**
+ * Cette classe gère l'affichage graphique lié au jeu de go.
  * 
- * @author Maxime
+ * Cette classe est seulement responsable de l'affichage des résultats graphique.
+ * 
+ * Il n'y a pas de traitement algorithmique dans cette classe.
+ * 
+ * @author Maxime, Micael et Houssam
  *
  */
 public class GoPanel extends JPanel{
@@ -37,16 +40,17 @@ public class GoPanel extends JPanel{
 	
 	private boolean isDidacticiel;
 	
-	private int taille_cerle;
+	private int taille_cercle;
 	private int taille_mega_cercle;
 	private int petit_decalage;
+	private int taille_hoshi;
+	private int petit_decalage_hoshi;
 	
 	public GoPanel(Moteur moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
 		initGoPanel(moteur, choix, nb_joueurs, isDidacticiel);
 		
 		this.addMouseListener(new Souris());
 		this.addMouseMotionListener(new DeplacementSouris());
-		this.addKeyListener(new Touche());
 		
 		this.setBackground(ParametrePartie.BACKGROUND_COLOR);
 	}
@@ -54,16 +58,20 @@ public class GoPanel extends JPanel{
 	public void initGoPanel(Moteur moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
 		if(choix == 0) {
 			cellule = ParametrePartie.LARGEUR_CASE_9;
-			taille_cerle = ParametrePartie.TAILLE_CERCLE_9;
+			taille_cercle = ParametrePartie.TAILLE_CERCLE_9;
 			taille_mega_cercle = ParametrePartie.TAILLE_MEGA_CERCLE_9;
 			petit_decalage = ParametrePartie.PETITE_DECALAGE_9;
+			taille_hoshi = ParametrePartie.TAILLE_HOSHI_9;
+			petit_decalage_hoshi = ParametrePartie.PETIT_DECALAGE_HOSHI_9;
 		}
 		
 		else {
 			cellule = ParametrePartie.LARGEUR_CASE_19;
-			taille_cerle = ParametrePartie.TAILLE_CERCLE_19;
+			taille_cercle = ParametrePartie.TAILLE_CERCLE_19;
 			taille_mega_cercle = ParametrePartie.TAILLE_MEGA_CERCLE_19;
-			petit_decalage = ParametrePartie.PETITE_DECALAGE_19;		
+			petit_decalage = ParametrePartie.PETITE_DECALAGE_19;
+			taille_hoshi = ParametrePartie.TAILLE_HOSHI_19;
+			petit_decalage_hoshi = ParametrePartie.PETIT_DECALAGE_HOSHI_19;
 		}
 		
 		this.moteur = moteur;
@@ -75,17 +83,23 @@ public class GoPanel extends JPanel{
 		ecart_window_vertical = ParametrePartie.ECART_VERTICAL;
 	}
 
+	/**
+	 * Définit ce que l'on fait lorsque la méthode repaint() est appelée.
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		drawGrid(g);
+		drawGrille(g);
 		drawCercle(g);
 		drawScore(g);
 		drawCouleurJoueur(g);
 	}
 	
-	private void drawGrid(Graphics g){
+	/**
+	 * Dessine la grille du goban sur la sous-fenêtre GoPanel.
+	 */
+	private void drawGrille(Graphics g){
 		g.setColor(Color.BLACK);
 		
 		for(int i = 0 ; i < taille_goban ; i++){
@@ -94,8 +108,22 @@ public class GoPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * Dessine les cercles des pierres / méga-pierres du goban sur la sous-fenêtre GoPanel.
+	 */	
 	private void drawCercle(Graphics g) {
 		int x, y;
+		
+		for(Coordonnee c : moteur.getHoshis()) {
+			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, petit_decalage_hoshi);
+			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, petit_decalage_hoshi);
+			
+			setColor(g, Couleur.NOIR, false);
+			
+			g.fillOval(x, y, taille_hoshi, taille_hoshi);
+
+			Go.logger.trace("Le hoshi de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
+		}
 		
 		for(Cercle c : moteur.getCercleList()) {
 			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, petit_decalage);
@@ -104,7 +132,7 @@ public class GoPanel extends JPanel{
 			setColor(g, c.getCouleur(), false);
 			
 			if(!c.getIsMegaPierre()) {
-				g.fillOval(x, y, taille_cerle, taille_cerle);
+				g.fillOval(x, y, taille_cercle, taille_cercle);
 			}
 			
 			else {
@@ -123,7 +151,7 @@ public class GoPanel extends JPanel{
 			setColor(g, survole.getCouleur(), true);
 			
 			if(!moteur.isMegaPierre() || !moteur.currentJoueur().hasMegaPierre()) {
-				g.fillOval(x, y, taille_cerle, taille_cerle);
+				g.fillOval(x, y, taille_cercle, taille_cercle);
 			}
 			
 			else if(moteur.currentJoueur().hasMegaPierre()){
@@ -148,7 +176,7 @@ public class GoPanel extends JPanel{
 				setColor(g, position_jouable.getCouleur(), true);
 				
 				if(!position_jouable.getIsMegaPierre()) {
-					g.drawOval(x, y, taille_cerle, taille_cerle);
+					g.drawOval(x, y, taille_cercle, taille_cercle);
 				}
 				
 				else {
@@ -160,6 +188,9 @@ public class GoPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * Dessine le score des joueurs sur la sous-fenêtre GoPanel.
+	 */
 	private void drawScore(Graphics g) {
 		g.setColor(Color.BLACK);		
 		g.setFont(new Font("Impact", Font.PLAIN, 18));
@@ -184,22 +215,25 @@ public class GoPanel extends JPanel{
 			y = 20;			
 		}
 		
-		String score = "Noir: " + getScores()[0];
+		String score = "Noir: " + moteur.getScores()[0];
 		g.drawString(score, x, y);
 		
 		x += 85;
 
-		score = "Blanc: " + getScores()[1];
+		score = "Blanc: " + moteur.getScores()[1];
 		g.drawString(score, x, y);
 
 		if(nb_joueurs == 3) {
 			x += 85;
 			
-			score = "Rouge: " + getScores()[2];
+			score = "Rouge: " + moteur.getScores()[2];
 			g.drawString(score, x, y);
 		}
 	}
 	
+	/**
+	 * Dessine une pastille avec la couleur du joueur courant sur la sous-fenêtre GoPanel.
+	 */
 	private void drawCouleurJoueur(Graphics g) {		
 		if(moteur.currentCouleur() == Couleur.getCouleurs()[0]) {
 			g.setColor(Color.BLACK);
@@ -256,22 +290,13 @@ public class GoPanel extends JPanel{
 		}
 	}
 	
-	public boolean canPlayMegaPierre() {
-		return moteur.canPlayMegaPierre();
-	}
-	
-	public int[] getScores() {
-		int[] scores = new int[nb_joueurs];
-		Joueur[] joueurs = moteur.getJoueurs();
-		
-		for(int i = 0 ; i < nb_joueurs ; i++) {
-			scores[i] = joueurs[i].getScore();
-		}
-		
-		return scores;
-	}
-	
-	
+	/**
+	 * Cette classe permet de récupérer des informations 
+	 * lors d'un clique de la souris
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class Souris implements MouseListener{
 
 		@Override
@@ -291,7 +316,7 @@ public class GoPanel extends JPanel{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			moteur.clicEvent(e.getX(), e.getY());
+			moteur.setCoord(e.getX(), e.getY());
 		}
 
 		@Override
@@ -301,6 +326,13 @@ public class GoPanel extends JPanel{
 
 	}
 	
+	/**
+	 * Cette classe permet de récupérer des informations 
+	 * lorsque la souris bouge dans la sous-fenêtre GoPanel.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class DeplacementSouris implements MouseMotionListener{
 
 		@Override
@@ -314,24 +346,4 @@ public class GoPanel extends JPanel{
 		}
 		
 	}
-	
-	private class Touche implements KeyListener{
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			
-		}
-
-		@Override
-		public void keyTyped(KeyEvent e) {
-			
-		}
-		
-	}
-
 }

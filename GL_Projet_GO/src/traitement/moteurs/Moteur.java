@@ -11,7 +11,13 @@ import traitement.Didacticiel;
 import traitement.FinDePartie;
 import traitement.Goban;
 
-public class Moteur extends Thread {
+/**
+ * 
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
+public class Moteur /*implements Runnable*/ {
 	private Goban goban;
 	private Didacticiel didacticiel;
 	private MoteurJoueur moteur_joueur;
@@ -21,12 +27,15 @@ public class Moteur extends Thread {
 
 	private int nb_joueurs;
 	private int pass_compteur = 0;
+	private int x = -1, y = -1;
 	
 	private String description;
 
 	private ArrayList<Cercle> position_jouable;
 	
 	private boolean didacticiel_fini = false;
+//	private boolean is_tour_ordi = false;
+//	private Moteur instance = this;
 	
 	public Moteur(int cellule, int taille_goban, int nb_joueur, int nb_ordi, boolean isDidacticiel) {
 		goban = new Goban(taille_goban);
@@ -34,9 +43,8 @@ public class Moteur extends Thread {
 		moteur_pierre = new MoteurPierre(moteur_joueur, goban, cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
 		fin = new FinDePartie(taille_goban, goban, moteur_joueur, moteur_pierre);
 		
-		
 		if(nb_ordi > 0) {
-			moteur_ordi = new MoteurOrdi(moteur_joueur, moteur_pierre, taille_goban);
+			moteur_ordi = new MoteurOrdi(moteur_joueur, moteur_pierre, goban, taille_goban, 2);
 		}
 		
 		nb_joueurs = nb_joueur + nb_ordi; 
@@ -52,17 +60,46 @@ public class Moteur extends Thread {
 			position_jouable = new ArrayList<Cercle>();
 			didacticiel.chargeLevel();
 		}
+		
+		initCoord();
+		
+//		Thread moteurThread = new Thread(instance);
+//		moteurThread.start();
 	}
 	
-	@Override
+//	@Override
 	public void run() {
-		boolean isRunning = true;
-		
-		while(isRunning) {
-			if(currentJoueur().isOrdi()) {
-				moteur_ordi.jouer();
-			}
-		}		
+//		boolean isRunning = true;
+//		
+//		while (isRunning) {
+//			try {
+//				Thread.sleep(ParametrePartie.FPS);
+//				
+//			} catch (InterruptedException e) {
+//				System.out.println(e.getMessage());
+//			}
+//
+//			if (isRunning) {
+				if(currentJoueur().isOrdi()) {
+					long startTime = System.currentTimeMillis();
+					
+					System.out.println("-------Ordi Début--------" + moteur_joueur.currentCouleur() + "\n");
+					moteur_ordi.jouer();
+					System.out.println("\n-------Ordi Fin--------");
+					
+//					moteur_pierre.addPierre(moteur_ordi.getCoup());
+					
+					System.out.println("Temps ordi: " + (System.currentTimeMillis() - startTime) + "\n\n");
+				}
+				
+				else {
+					if(x != -1 && y != -1) {
+						clicEvent(x, y);
+						initCoord();
+					}
+				}
+//			}
+//		}
 	}
 	
 	public void reinitGoban() {
@@ -87,13 +124,48 @@ public class Moteur extends Thread {
 		}
 	}
 	
+//	public void tourOrdi() {
+//		if(!is_tour_ordi) {
+//			System.out.println("-------Ordi Début--------");
+//			is_tour_ordi = true;
+//			moteur_pierre.setTourOrdi(true);
+//		}
+//		
+//		else {
+//			System.out.println("-------Ordi Fin--------");
+//			is_tour_ordi = false;
+//			moteur_pierre.setTourOrdi(false);
+//		}
+//	}
+	
 	public void survoleZone(int coordX, int coordY) {
 		moteur_pierre.survoleZone(coordX, coordY);
+	}
+	
+	private void initCoord() {
+		x = -1;
+		y = -1;
+	}
+	
+	public void setCoord(int coordX, int coordY) {
+		x = coordX;
+		y = coordY;
 	}
 	
 	public void clicEvent(int coordX, int coordY) {
 		moteur_pierre.clicEvent(coordX, coordY);
 		initPassCompteur();
+	}
+	
+	public int[] getScores() {
+		int[] scores = new int[nb_joueurs];
+		Joueur[] joueurs = getJoueurs();
+		
+		for(int i = 0 ; i < nb_joueurs ; i++) {
+			scores[i] = joueurs[i].getScore();
+		}
+		
+		return scores;
 	}
 	
 	public void changeLevel(boolean suivant) {
@@ -123,6 +195,10 @@ public class Moteur extends Thread {
 		}
 	}
 	
+	public ArrayList<Coordonnee> getHoshis() {
+		return goban.getHoshis();
+	}
+	
 	public void initPositionJouable(Coordonnee coord, Couleur couleur, boolean isMegaPierre) {
 		position_jouable.add(new Cercle(coord, couleur, isMegaPierre));		
 	}
@@ -145,6 +221,10 @@ public class Moteur extends Thread {
 	
 	public int getCurrentLevel() {
 		return didacticiel.getLevel();
+	}
+	
+	public int getNbLevel() {
+		return didacticiel.getNbLevels();
 	}
 	
 	public String getDescription() {

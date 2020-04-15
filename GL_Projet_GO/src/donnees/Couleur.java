@@ -1,5 +1,13 @@
 package donnees;
 
+/**
+ * Cette classe est une énumération des
+ * couleurs que peuvent prendre les
+ * pierres, les méga-pierres et les cercles.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public enum Couleur {
 	NOIR,
 	BLANC,

@@ -14,6 +14,12 @@ import donnees.ParametrePartie;
 import donnees.Pierre;
 import traitement.Goban;
 
+/**
+ * Cette classe permet des testes unitaires sur la création et suppréssion de chaines de pierres et de méga-pierres.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class GoTestChaine {
 	private Goban goban;
 	private int taille_goban;

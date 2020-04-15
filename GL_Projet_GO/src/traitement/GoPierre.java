@@ -157,75 +157,75 @@ public class GoPierre {
 		
 		if(!pierre.isMegaPierre()) {
 			if(bordHaut(pierre)) {
-				if(!bordGauche(pierre) && pierreEnnemieExiste(gauche)) {
+				if(!bordGauche(pierre) && pierreVoisineExiste(gauche)) {
 					addListe(gauche, liste_voisin);
 				}
 				
-				if(!bordDroit(pierre, taille_goban) && pierreEnnemieExiste(droite)) {
+				if(!bordDroit(pierre, taille_goban) && pierreVoisineExiste(droite)) {
 					addListe(droite, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(bas)) {
+				if(pierreVoisineExiste(bas)) {
 					addListe(bas, liste_voisin);
 				}
 			}
 			
 			else if(bordBas(pierre, taille_goban)) {
-				if(!bordGauche(pierre) && pierreEnnemieExiste(gauche)) {
+				if(!bordGauche(pierre) && pierreVoisineExiste(gauche)) {
 					addListe(gauche, liste_voisin);
 				}
 				
-				if(!bordDroit(pierre, taille_goban) && pierreEnnemieExiste(droite)) {
+				if(!bordDroit(pierre, taille_goban) && pierreVoisineExiste(droite)) {
 					addListe(droite, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(haut)) {
+				if(pierreVoisineExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}
 			}
 			
 			else if(bordGauche(pierre)) {
-				if(pierreEnnemieExiste(haut)) {
+				if(pierreVoisineExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(bas)) {
+				if(pierreVoisineExiste(bas)) {
 					addListe(bas, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(droite)) {
+				if(pierreVoisineExiste(droite)) {
 					addListe(droite, liste_voisin);
 				}
 			}
 			
 			else if(bordDroit(pierre, taille_goban)) {
-				if(pierreEnnemieExiste(haut)) {
+				if(pierreVoisineExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(bas)) {
+				if(pierreVoisineExiste(bas)) {
 					addListe(bas, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(gauche)) {
+				if(pierreVoisineExiste(gauche)) {
 					addListe(gauche, liste_voisin);
 				}
 			}
 			
 			else {
-				if(pierreEnnemieExiste(haut)) {
+				if(pierreVoisineExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(bas)) {
+				if(pierreVoisineExiste(bas)) {
 					addListe(bas, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(gauche)) {
+				if(pierreVoisineExiste(gauche)) {
 					addListe(gauche, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(droite)) {
+				if(pierreVoisineExiste(droite)) {
 					addListe(droite, liste_voisin);
 				}
 			}
@@ -249,130 +249,130 @@ public class GoPierre {
 			
 			if(bordHaut(pierre)) {
 				if(!bordGauche(pierre)) {
-					if(pierreEnnemieExiste(gauche)) {
+					if(pierreVoisineExiste(gauche)) {
 						addListe(gauche, liste_voisin);
 					}
-					if(pierreEnnemieExiste(gauche2)) {
+					if(pierreVoisineExiste(gauche2)) {
 						addListe(gauche2, liste_voisin);
 					}
 				}
 				
 				if(!bordDroit(pierre, taille_goban)) {
-					if(pierreEnnemieExiste(droite)) {
+					if(pierreVoisineExiste(droite)) {
 						addListe(droite, liste_voisin);
 					}
-					if(pierreEnnemieExiste(droite2)) {
+					if(pierreVoisineExiste(droite2)) {
 						addListe(droite2, liste_voisin);
 					}
 				}
 				
-				if(pierreEnnemieExiste(bas)) {
+				if(pierreVoisineExiste(bas)) {
 					addListe(bas, liste_voisin);
 				}
-				if(pierreEnnemieExiste(bas2)) {
+				if(pierreVoisineExiste(bas2)) {
 					addListe(bas2, liste_voisin);
 				}
 			}
 			
 			else if(bordBas(pierre, taille_goban)) {
 				if(!bordGauche(pierre)) {
-					if(pierreEnnemieExiste(gauche)) {
+					if(pierreVoisineExiste(gauche)) {
 						addListe(gauche, liste_voisin);
 					}
-					if(pierreEnnemieExiste(gauche2)) {
+					if(pierreVoisineExiste(gauche2)) {
 						addListe(gauche2, liste_voisin);
 					}
 				}
 				
 				if(!bordDroit(pierre, taille_goban)) {
-					if(pierreEnnemieExiste(droite)) {
+					if(pierreVoisineExiste(droite)) {
 						addListe(droite, liste_voisin);
 					}
-					if(pierreEnnemieExiste(droite2)) {
+					if(pierreVoisineExiste(droite2)) {
 						addListe(droite2, liste_voisin);
 					}
 				}
 				
-				if(pierreEnnemieExiste(haut)) {
+				if(pierreVoisineExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}
-				if(pierreEnnemieExiste(haut2)) {
+				if(pierreVoisineExiste(haut2)) {
 					addListe(haut2, liste_voisin);
 				}
 			}
 			
 			else if(bordGauche(pierre)) {
-				if(pierreEnnemieExiste(haut)) {
+				if(pierreVoisineExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}
-				if(pierreEnnemieExiste(haut2)) {
+				if(pierreVoisineExiste(haut2)) {
 					addListe(haut2, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(bas)) {
+				if(pierreVoisineExiste(bas)) {
 					addListe(bas, liste_voisin);
 				}
-				if(pierreEnnemieExiste(bas2)) {
+				if(pierreVoisineExiste(bas2)) {
 					addListe(bas2, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(droite)) {
+				if(pierreVoisineExiste(droite)) {
 					addListe(droite, liste_voisin);
 				}
-				if(pierreEnnemieExiste(droite2)) {
+				if(pierreVoisineExiste(droite2)) {
 					addListe(droite2, liste_voisin);
 				}
 			}
 			
 			else if(bordDroit(pierre, taille_goban)) {
-				if(pierreEnnemieExiste(haut)) {
+				if(pierreVoisineExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}
-				if(pierreEnnemieExiste(haut2)) {
+				if(pierreVoisineExiste(haut2)) {
 					addListe(haut2, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(bas)) {
+				if(pierreVoisineExiste(bas)) {
 					addListe(bas, liste_voisin);
 				}
-				if(pierreEnnemieExiste(bas2)) {
+				if(pierreVoisineExiste(bas2)) {
 					addListe(bas2, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(gauche)) {
+				if(pierreVoisineExiste(gauche)) {
 					addListe(gauche, liste_voisin);
 				}
-				if(pierreEnnemieExiste(gauche2)) {
+				if(pierreVoisineExiste(gauche2)) {
 					addListe(gauche2, liste_voisin);
 				}
 			}
 			
 			else {
-				if(pierreEnnemieExiste(haut)) {
+				if(pierreVoisineExiste(haut)) {
 					addListe(haut, liste_voisin);
 				}
-				if(pierreEnnemieExiste(haut2)) {
+				if(pierreVoisineExiste(haut2)) {
 					addListe(haut2, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(bas)) {
+				if(pierreVoisineExiste(bas)) {
 					addListe(bas, liste_voisin);
 				}
-				if(pierreEnnemieExiste(bas2)) {
+				if(pierreVoisineExiste(bas2)) {
 					addListe(bas2, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(gauche)) {
+				if(pierreVoisineExiste(gauche)) {
 					addListe(gauche, liste_voisin);
 				}
-				if(pierreEnnemieExiste(gauche2)) {
+				if(pierreVoisineExiste(gauche2)) {
 					addListe(gauche2, liste_voisin);
 				}
 				
-				if(pierreEnnemieExiste(droite)) {
+				if(pierreVoisineExiste(droite)) {
 					addListe(droite, liste_voisin);
 				}
-				if(pierreEnnemieExiste(droite2)) {
+				if(pierreVoisineExiste(droite2)) {
 					addListe(droite2, liste_voisin);
 				}
 			}
@@ -386,7 +386,7 @@ public class GoPierre {
 	 * @param pierreEnnemi
 	 * @return
 	 */
-	public static boolean pierreEnnemieExiste(AbstractPierre pierreEnnemi) {
+	public static boolean pierreVoisineExiste(AbstractPierre pierreEnnemi) {
 		if(pierreEnnemi != null) {
 			return true;
 		}
@@ -398,7 +398,7 @@ public class GoPierre {
 	 * 
 	 * @param pierre
 	 * @param plateau
-	 * @param choix
+	 * @param taille_goban
 	 * @return
 	 */
 	public static ArrayList<Coordonnee> intersectionVide(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban) {
@@ -431,75 +431,75 @@ public class GoPierre {
 		
 		if(!pierre.isMegaPierre()) {
 			if(bordHaut(pierre)) {
-				if(!bordGauche(pierre) && !pierreEnnemieExiste(gauche)) {
+				if(!bordGauche(pierre) && !pierreVoisineExiste(gauche)) {
 					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 				
-				if(!bordDroit(pierre, taille_goban) && !pierreEnnemieExiste(droite)) {
+				if(!bordDroit(pierre, taille_goban) && !pierreVoisineExiste(droite)) {
 					addListe(new Coordonnee(x, y+1), liste_voisin);
 				}
 				
-				if(!pierreEnnemieExiste(bas)) {
+				if(!pierreVoisineExiste(bas)) {
 					addListe(new Coordonnee(x+1, y), liste_voisin);
 				}
 			}
 			
 			else if(bordBas(pierre, taille_goban)) {
-				if(!bordGauche(pierre) && !pierreEnnemieExiste(gauche)) {
+				if(!bordGauche(pierre) && !pierreVoisineExiste(gauche)) {
 					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 				
-				if(!bordDroit(pierre, taille_goban) && !pierreEnnemieExiste(droite)) {
+				if(!bordDroit(pierre, taille_goban) && !pierreVoisineExiste(droite)) {
 					addListe(new Coordonnee(x, y+1), liste_voisin);
 				}
 				
-				if(!pierreEnnemieExiste(haut)) {
+				if(!pierreVoisineExiste(haut)) {
 					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 			}
 			
 			else if(bordGauche(pierre)) {
-				if(!pierreEnnemieExiste(haut)) {
+				if(!pierreVoisineExiste(haut)) {
 					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				
-				if(!pierreEnnemieExiste(bas)) {
+				if(!pierreVoisineExiste(bas)) {
 					addListe(new Coordonnee(x+1, y), liste_voisin);
 				}
 				
-				if(!pierreEnnemieExiste(droite)) {
+				if(!pierreVoisineExiste(droite)) {
 					addListe(new Coordonnee(x, y+1), liste_voisin);
 				}
 			}
 			
 			else if(bordDroit(pierre, taille_goban)) {
-				if(!pierreEnnemieExiste(haut)) {
+				if(!pierreVoisineExiste(haut)) {
 					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				
-				if(!pierreEnnemieExiste(bas)) {
+				if(!pierreVoisineExiste(bas)) {
 					addListe(new Coordonnee(x+1, y), liste_voisin);
 				}
 				
-				if(!pierreEnnemieExiste(gauche)) {
+				if(!pierreVoisineExiste(gauche)) {
 					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 			}
 			
 			else {
-				if(!pierreEnnemieExiste(haut)) {
+				if(!pierreVoisineExiste(haut)) {
 					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
 				
-				if(!pierreEnnemieExiste(bas)) {
+				if(!pierreVoisineExiste(bas)) {
 					addListe(new Coordonnee(x+1, y), liste_voisin);
 				}
 				
-				if(!pierreEnnemieExiste(gauche)) {
+				if(!pierreVoisineExiste(gauche)) {
 					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
 				
-				if(!pierreEnnemieExiste(droite)) {
+				if(!pierreVoisineExiste(droite)) {
 					addListe(new Coordonnee(x, y+1), liste_voisin);
 				}
 			}
@@ -523,132 +523,234 @@ public class GoPierre {
 			
 			if(bordHaut(pierre)) {
 				if(!bordGauche(pierre)) {
-					if(!pierreEnnemieExiste(gauche)) {
+					if(!pierreVoisineExiste(gauche)) {
 						addListe(new Coordonnee(x, y-1), liste_voisin);
 					}
-					if(!pierreEnnemieExiste(gauche2)) {
+					if(!pierreVoisineExiste(gauche2)) {
 						addListe(new Coordonnee(x+1, y-1), liste_voisin);
 					}
 				}
 				
 				if(!bordDroit(pierre, taille_goban)) {
-					if(!pierreEnnemieExiste(droite)) {
+					if(!pierreVoisineExiste(droite)) {
 						addListe(new Coordonnee(x, y+2), liste_voisin);
 					}
-					if(!pierreEnnemieExiste(droite2)) {
+					if(!pierreVoisineExiste(droite2)) {
 						addListe(new Coordonnee(x+1, y+2), liste_voisin);
 					}
 				}
 				
-				if(!pierreEnnemieExiste(bas)) {
+				if(!pierreVoisineExiste(bas)) {
 					addListe(new Coordonnee(x+2, y), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(bas2)) {
+				if(!pierreVoisineExiste(bas2)) {
 					addListe(new Coordonnee(x+2, y+1), liste_voisin);
 				}
 			}
 			
 			else if(bordBas(pierre, taille_goban)) {
 				if(!bordGauche(pierre)) {
-					if(!pierreEnnemieExiste(gauche)) {
+					if(!pierreVoisineExiste(gauche)) {
 						addListe(new Coordonnee(x, y-1), liste_voisin);
 					}
-					if(!pierreEnnemieExiste(gauche2)) {
+					if(!pierreVoisineExiste(gauche2)) {
 						addListe(new Coordonnee(x+1, y-1), liste_voisin);
 					}
 				}
 				
 				if(!bordDroit(pierre, taille_goban)) {
-					if(!pierreEnnemieExiste(droite)) {
+					if(!pierreVoisineExiste(droite)) {
 						addListe(new Coordonnee(x, y+2), liste_voisin);
 					}
-					if(!pierreEnnemieExiste(droite2)) {
+					if(!pierreVoisineExiste(droite2)) {
 						addListe(new Coordonnee(x+1, y+2), liste_voisin);
 					}
 				}
 				
-				if(!pierreEnnemieExiste(haut)) {
+				if(!pierreVoisineExiste(haut)) {
 					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(haut2)) {
+				if(!pierreVoisineExiste(haut2)) {
 					addListe(new Coordonnee(x-1, y+1), liste_voisin);
 				}
 			}
 			
 			else if(bordGauche(pierre)) {
-				if(!pierreEnnemieExiste(haut)) {
+				if(!pierreVoisineExiste(haut)) {
 					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(haut2)) {
+				if(!pierreVoisineExiste(haut2)) {
 					addListe(new Coordonnee(x-1, y+1), liste_voisin);
 				}
 
-				if(!pierreEnnemieExiste(bas)) {
+				if(!pierreVoisineExiste(bas)) {
 					addListe(new Coordonnee(x+2, y), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(bas2)) {
+				if(!pierreVoisineExiste(bas2)) {
 					addListe(new Coordonnee(x+2, y+1), liste_voisin);
 				}
 
-				if(!pierreEnnemieExiste(droite)) {
+				if(!pierreVoisineExiste(droite)) {
 					addListe(new Coordonnee(x, y+2), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(droite2)) {
+				if(!pierreVoisineExiste(droite2)) {
 					addListe(new Coordonnee(x+1, y+2), liste_voisin);
 				}
 			}
 			
 			else if(bordDroit(pierre, taille_goban)) {
-				if(!pierreEnnemieExiste(haut)) {
+				if(!pierreVoisineExiste(haut)) {
 					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(haut2)) {
+				if(!pierreVoisineExiste(haut2)) {
 					addListe(new Coordonnee(x-1, y+1), liste_voisin);
 				}
 
-				if(!pierreEnnemieExiste(bas)) {
+				if(!pierreVoisineExiste(bas)) {
 					addListe(new Coordonnee(x+2, y), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(bas2)) {
+				if(!pierreVoisineExiste(bas2)) {
 					addListe(new Coordonnee(x+2, y+1), liste_voisin);
 				}
 
-				if(!pierreEnnemieExiste(gauche)) {
+				if(!pierreVoisineExiste(gauche)) {
 					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(gauche2)) {
+				if(!pierreVoisineExiste(gauche2)) {
 					addListe(new Coordonnee(x+1, y-1), liste_voisin);
 				}
 			}
 			
 			else {
-				if(!pierreEnnemieExiste(haut)) {
+				if(!pierreVoisineExiste(haut)) {
 					addListe(new Coordonnee(x-1, y), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(haut2)) {
+				if(!pierreVoisineExiste(haut2)) {
 					addListe(new Coordonnee(x-1, y+1), liste_voisin);
 				}
 
-				if(!pierreEnnemieExiste(bas)) {
+				if(!pierreVoisineExiste(bas)) {
 					addListe(new Coordonnee(x+2, y), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(bas2)) {
+				if(!pierreVoisineExiste(bas2)) {
 					addListe(new Coordonnee(x+2, y+1), liste_voisin);
 				}
 
-				if(!pierreEnnemieExiste(gauche)) {
+				if(!pierreVoisineExiste(gauche)) {
 					addListe(new Coordonnee(x, y-1), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(gauche2)) {
+				if(!pierreVoisineExiste(gauche2)) {
 					addListe(new Coordonnee(x+1, y-1), liste_voisin);
 				}
 
-				if(!pierreEnnemieExiste(droite)) {
+				if(!pierreVoisineExiste(droite)) {
 					addListe(new Coordonnee(x, y+2), liste_voisin);
 				}
-				if(!pierreEnnemieExiste(droite2)) {
+				if(!pierreVoisineExiste(droite2)) {
 					addListe(new Coordonnee(x+1, y+2), liste_voisin);
 				}
+			}
+		}
+		
+		return liste_voisin;
+	}
+	
+	public static ArrayList<AbstractPierre> cornerVoisins(AbstractPierre pierre, AbstractPierre[][] plateau, int taille_goban){
+		ArrayList<AbstractPierre> liste_voisin = new ArrayList<AbstractPierre>();
+		
+		int x = pierre.getX();
+		int y = pierre.getY();
+		
+		AbstractPierre haut_gauche = null;
+		AbstractPierre haut_droit = null;
+		AbstractPierre bas_gauche = null;
+		AbstractPierre bas_droit = null;
+		
+		if(!pierre.isMegaPierre()) {
+			if(x > 0 && y > 0) {
+				haut_gauche = plateau[x-1][y-1];
+			}
+			if(x > 0 && y < taille_goban - 1) {
+				haut_droit = plateau[x-1][y+1];
+			}
+			if(x < taille_goban - 1 && y > 0) {
+				bas_gauche = plateau[x+1][y-1];
+			}
+			if(x < taille_goban - 1 && y < taille_goban - 1) {
+				bas_droit = plateau[x+1][y+1];
+			}
+		}
+		
+		else {
+			if(x > 0 && y > 0) {
+				haut_gauche = plateau[x-1][y-1];
+			}
+			if(x > 0 && y < taille_goban - 2) {
+				haut_droit = plateau[x-1][y+2];
+			}
+			if(x < taille_goban - 2 && y > 0) {
+				bas_gauche = plateau[x+2][y-1];
+			}
+			if(x < taille_goban - 2 && y < taille_goban - 2) {
+				bas_droit = plateau[x+2][y+2];
+			}
+		}
+			
+		if(bordHaut(pierre)) {
+			if(!bordGauche(pierre) && pierreVoisineExiste(bas_gauche)) {
+				addListe(bas_gauche, liste_voisin);
+			}
+			
+			if(!bordDroit(pierre, taille_goban) && pierreVoisineExiste(bas_droit)) {
+				addListe(bas_droit, liste_voisin);
+			}
+		}
+		
+		else if(bordBas(pierre, taille_goban)) {
+			if(!bordGauche(pierre) && pierreVoisineExiste(haut_gauche)) {
+				addListe(haut_gauche, liste_voisin);
+			}
+			
+			if(!bordDroit(pierre, taille_goban) && pierreVoisineExiste(haut_droit)) {
+				addListe(haut_droit, liste_voisin);
+			}
+		}
+		
+		else if(bordGauche(pierre)) {
+			if(pierreVoisineExiste(haut_droit)) {
+				addListe(haut_droit, liste_voisin);
+			}
+			
+			if(pierreVoisineExiste(bas_droit)) {
+				addListe(bas_droit, liste_voisin);
+			}
+		}
+		
+		else if(bordDroit(pierre, taille_goban)) {
+			if(pierreVoisineExiste(haut_gauche)) {
+				addListe(haut_gauche, liste_voisin);
+			}
+			
+			if(pierreVoisineExiste(bas_droit)) {
+				addListe(bas_droit, liste_voisin);
+			}
+		}
+		
+		else {
+			if(pierreVoisineExiste(haut_gauche)) {
+				addListe(haut_gauche, liste_voisin);
+			}
+			
+			if(pierreVoisineExiste(bas_gauche)) {
+				addListe(bas_gauche, liste_voisin);
+			}
+			
+			if(pierreVoisineExiste(haut_droit)) {
+				addListe(haut_droit, liste_voisin);
+			}
+			
+			if(pierreVoisineExiste(bas_droit)) {
+				addListe(bas_droit, liste_voisin);
 			}
 		}
 		

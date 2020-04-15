@@ -24,14 +24,30 @@ import log.LoggerUtility;
 import traitement.moteurs.Moteur;
 import traitement.moteurs.MoteurPierre;
 
+/**
+ * C'est la principale classe graphique. Elle contient un {@link GoPanel}
+ * et un {@link DescriptionPanel} qui permettent l'affichage du jeu de go
+ * et du didacticiel.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class Go extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 
 	public static Logger logger = LoggerUtility.getLogger(MoteurPierre.class, "html");
+	
+	/**
+	 * La prartie moteur est gérée dans une autre classe.
+	 */
 	private Moteur moteur;
 	
 	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel;
+	
+	/**
+	 * Les prarties gobanPanel et descPanel sont gérées dans d'autres classes.
+	 */
 	private GoPanel gobanPanel;
 	private DescriptionPanel descPanel;
 	
@@ -44,9 +60,16 @@ public class Go extends JFrame implements Runnable {
 	private JRadioButton joueur1, joueur2, joueur3;
 	private JRadioButton ordi0, ordi1, ordi2;
 	
+	/**
+	 * Cette instance sevira à créer un thread.
+	 */
 	private Go instance = this;
 
+	/**
+	 * Statut initial pour l'actualisation de l'affichage de la fenêtre.
+	 */
 	private boolean stop = true;
+	
 	private boolean checked = false;
 	private boolean isDidacticiel = false;
 	private JCheckBox megaPierre;
@@ -88,7 +111,7 @@ public class Go extends JFrame implements Runnable {
 		gbcDoite.gridx = 1;
 		gbcDoite.gridy = 1;
 		
-		JButton start = new JButton("Lancer");
+		JButton start = new JButton("Jouer");
 		start.addActionListener(new Lancer());
 		menuDroitPanel.add(start, gbcDoite);
 		
@@ -173,11 +196,6 @@ public class Go extends JFrame implements Runnable {
 		ordi2.addActionListener(new SelectionJoueur());
 		ordiGroup.add(ordi2);
 		menuGauchePanel.add(ordi2, gbcGauche);
-		
-		joueur1.setEnabled(false);
-		ordi0.setEnabled(false);
-		ordi1.setEnabled(false);
-		ordi2.setEnabled(false);
 
 		menuPanel.add(menuDroitPanel, BorderLayout.EAST);
 		menuPanel.add(menuGauchePanel, BorderLayout.WEST);
@@ -221,6 +239,10 @@ public class Go extends JFrame implements Runnable {
 		reinit.addActionListener(new ChangeLevel());
 	}
 
+	/**
+	 * Définit ce qu'il faut faire pour chaque unité de temps (par défaut 1 seconde) : il actualise l'affichage de la fenêtre
+	 * et permet à l'utilisateur de jouer.
+	 */
 	@Override
 	public void run() {	
 		int fps = 0, compteur = 0;;
@@ -242,12 +264,16 @@ public class Go extends JFrame implements Runnable {
 				System.out.println(e.getMessage());
 			}
 
-			if (!stop) {
+			if (!stop) {				
 				update();
+				moteur.run();
 			}
 		}
 	}
 	
+	/**
+	 * Actualise l'affichage de la fenêtre et modifie le champs d'actions possibles avec les boutons
+	 */
 	private void update() {
 		updateFrame();
 		updatePlayMegaPierre();
@@ -258,22 +284,28 @@ public class Go extends JFrame implements Runnable {
 			}
 			
 			else {
-				descPanel.setDescription(moteur.getDescription());
+				descPanel.update_didacticiel();
 			}
 		}
 	}
 
+	/**
+	 * Actualise l'affichage de la fenêtre.
+	 */
 	private void updateFrame() {
 		gobanPanel.repaint();
 	}
 	
+	/**
+	 * Modifie le champs d'actions possibles avec les boutons présentes sur la fenêtre.
+	 */
 	private void updatePlayMegaPierre() {
 		if(checked && !moteur.isMegaPierre()) {
 			megaPierre.setSelected(false);
 			checked = false;
 		}
 		
-		if(gobanPanel.canPlayMegaPierre()) {
+		if(moteur.canPlayMegaPierre()) {
 			if(!megaPierre.isEnabled()) {
 				megaPierre.setEnabled(true);
 			}
@@ -285,11 +317,19 @@ public class Go extends JFrame implements Runnable {
 		}
 	}
 	
+	/**
+	 * Permet de changer de sous-fenêtre.
+	 * 
+	 * @param panel Sous-fenêtre qui va remplacer celle présente.
+	 */
 	public void changeFenetre(JPanel panel) {
 		this.setContentPane(panel);
 		this.revalidate();
 	}
 	
+	/**
+	 * Parmet d'initialiser les sous-fenêtres du logiciel ainsi que le moteur du jeu de go.
+	 */
 	public void lancer() {
 		moteur = new Moteur(cellule, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
 		gobanPanel = new GoPanel(moteur, choix, nb_joueur + nb_ordi, isDidacticiel);
@@ -300,7 +340,7 @@ public class Go extends JFrame implements Runnable {
 		
 		if(isDidacticiel) {
 			precedent.setEnabled(false);
-			descPanel = new DescriptionPanel(precedent, suivant, reinit);
+			descPanel = new DescriptionPanel(moteur, precedent, suivant, reinit);
 			
 			goPanel.add(descPanel, BorderLayout.EAST);
 		}
@@ -319,10 +359,12 @@ public class Go extends JFrame implements Runnable {
 			
 			Thread goThread = new Thread(instance);
 			goThread.start();
-			moteur.start();
 		}
 	}
 	
+	/**
+	 * Parmet de revenir la sous-fenêtre du menu et de retirer les précédentes.
+	 */
 	public void revenirMenu() {
 		stop = true;
 		
@@ -339,10 +381,19 @@ public class Go extends JFrame implements Runnable {
 		changeFenetre(menuPanel);
 	}
 	
+	/**
+	 * Parmet de fermer le logiciel.
+	 */
 	public void fermer() {
 		this.dispose();
 	}
 	
+	/**
+	 * Permet de lancer une partie du jeu de go.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class Lancer implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -350,6 +401,12 @@ public class Go extends JFrame implements Runnable {
 		}
 	}
 	
+	/**
+	 * Permet de lancer le didacticiel du jeu de go.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class Didacticiel implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -364,6 +421,12 @@ public class Go extends JFrame implements Runnable {
 		}
 	}
 	
+	/**
+	 * Permet de naviguer entre les niveaux du didacticiel du jeu de go.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class ChangeLevel implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -375,6 +438,8 @@ public class Go extends JFrame implements Runnable {
 				if(moteur.getCurrentLevel() == 0) {
 					precedent.setEnabled(false);
 				}
+				
+				suivant.setText("Suivant");
 			}
 			
 			else if(source == suivant) {				
@@ -382,6 +447,10 @@ public class Go extends JFrame implements Runnable {
 				
 				if(moteur.getCurrentLevel() > 0) {
 					precedent.setEnabled(true);
+				}
+				
+				if(moteur.getCurrentLevel() == moteur.getNbLevel()) {
+					suivant.setText("Finit !");
 				}
 			}
 			
@@ -391,6 +460,12 @@ public class Go extends JFrame implements Runnable {
 		}
 	}
 	
+	/**
+	 * Permet de choisir quelle taille fera le plateau du jeu de go.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class ChoixTaille implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -411,6 +486,12 @@ public class Go extends JFrame implements Runnable {
 		
 	}
 	
+	/**
+	 * Permet de sélectionner combien de joueurs seront présents dans une partie de jeu de go.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class SelectionJoueur implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -459,6 +540,12 @@ public class Go extends JFrame implements Runnable {
 		
 	}
 	
+	/**
+	 * Permet au joueur courant de jouer une méga-pierre dans une partie de jeu de go.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class Cocher implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -481,6 +568,12 @@ public class Go extends JFrame implements Runnable {
 		
 	}
 	
+	/**
+	 * Permet au joueur courant de passer son tour dans une partie de jeu de go.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class Passer implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -489,6 +582,12 @@ public class Go extends JFrame implements Runnable {
 		
 	}
 	
+	/**
+	 * Permet de revenir à la sous-fenêtre du menu.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class RevenirMenu implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {			
@@ -497,15 +596,17 @@ public class Go extends JFrame implements Runnable {
 		
 	}
 	
+	/**
+	 * Permet de fermer le logiciel.
+	 * 
+	 * @author Maxime, Micael et Houssam
+	 *
+	 */
 	private class QuitterMenu implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			fermer();
 		}
 		
-	}
-	
-	public static void main(String[] args) {
-		new Go();
 	}
 }

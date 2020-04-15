@@ -3,6 +3,7 @@ package traitement;
 import java.util.ArrayList;
 
 import donnees.AbstractPierre;
+import donnees.Coordonnee;
 import donnees.Couleur;
 
 public class Capture {
@@ -41,12 +42,12 @@ public class Capture {
 			return false;
 		}
 		
-		else {
+		else {			
 			ArrayList<AbstractPierre> listVoisin = GoPierre.voisins(pierre, plateau, taille_goban);
 			Couleur couleurPierre = pierre.getCouleur();
 			Couleur couleurP = null;
 			boolean debut = true;
-			
+
 			for(AbstractPierre p : listVoisin) {
 				if(debut) {
 					couleurP = p.getCouleur();
@@ -71,11 +72,12 @@ public class Capture {
 			if(!pierre.isMegaPierre()) {
 				addCompteur(1);
 			}
+			
 			else {
 				addCompteur(4);
 			}
 		}
-		
+
 		return true;
 	}
 	
@@ -111,6 +113,7 @@ public class Capture {
 						debut = false;
 					}
 				}
+				
 				else {
 					if(!couleurVoisin.equals(pierreVoisine.getCouleur()) && !couleurPierre.equals(pierreVoisine.getCouleur())) {
 						initCompteur();
@@ -124,8 +127,110 @@ public class Capture {
 			if(!pierre.isMegaPierre()) {
 				addCompteur(1);
 			}
+			
 			else {
 				addCompteur(4);
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param pierre
+	 * @param plateau
+	 * @return
+	 */
+	public boolean canBeCaptured(AbstractPierre pierre, AbstractPierre[][] plateau) {
+		pierre.updateLiberte(plateau, taille_goban);
+		
+		if(pierre.getLiberte() > 2) {
+			return false;
+		}
+		
+		else {
+			ArrayList<AbstractPierre> listVoisin = GoPierre.voisins(pierre, plateau, taille_goban);
+			Couleur couleurPierre = pierre.getCouleur();
+			Couleur couleurP = null;
+			boolean debut = true;
+
+			for(AbstractPierre p : listVoisin) {
+				if(debut) {
+					couleurP = p.getCouleur();
+					debut = false;
+				}
+				
+				else {
+					if(couleurP.equals(couleurPierre)) {
+						return false;
+					}
+					
+					else {
+						if(!couleurP.equals(p.getCouleur())) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param chaine
+	 * @param plateau
+	 * @return
+	 */
+	public boolean canBeCaptured(ArrayList<AbstractPierre> chaine, AbstractPierre[][] plateau) {
+		ArrayList<AbstractPierre> voisin;
+		ArrayList<Coordonnee> liste_liberte = new ArrayList<Coordonnee>();
+		Couleur couleurPierre, couleurVoisin = null;
+		boolean debut = true;
+		
+		for(AbstractPierre pierre : chaine) {
+			pierre.updateLiberte(plateau, taille_goban);
+
+			couleurPierre = pierre.getCouleur();
+			
+			for(Coordonnee coord : GoPierre.intersectionVide(pierre, plateau, taille_goban)) {
+				ArrayList<Coordonnee> copy_liste_liberte = new ArrayList<Coordonnee>();
+				copy_liste_liberte.addAll(liste_liberte);
+				
+				if(!liste_liberte.isEmpty()) {
+					for(Coordonnee c : copy_liste_liberte) {
+						if(coord.getX() != c.getX() && coord.getY() != c.getY()) {
+							liste_liberte.add(coord);
+						}
+					} 
+				}
+				
+				else {
+					liste_liberte.add(coord);
+				}
+			}
+			
+			if(liste_liberte.size() > 2) {
+				return false;
+			}
+			
+			voisin = GoPierre.voisins(pierre, plateau, taille_goban);
+			
+			for(AbstractPierre pierreVoisine : voisin) {
+				if(debut) {
+					if(!couleurPierre.equals(pierreVoisine.getCouleur())) {
+						couleurVoisin = pierreVoisine.getCouleur();
+						debut = false;
+					}
+				}
+				
+				else {
+					if(!couleurVoisin.equals(pierreVoisine.getCouleur()) && !couleurPierre.equals(pierreVoisine.getCouleur())) {
+						return false;
+					}
+				}
 			}
 		}
 		

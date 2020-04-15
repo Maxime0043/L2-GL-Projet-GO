@@ -4,11 +4,11 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 /**
- * Utility class used to generate Log4j logger.
+ * Classe utilitaire utilisée pour générer un Log4j logger.
  * 
- * We can generate logs in a text or a html file.
+ * On peut générer des logs en fichier texte ou html.
  * 
- * @author Maxime
+ * @author Maxime, Micael et Houssam
  */
 public class LoggerUtility {
 	private static final String TEXT_LOG_CONFIG = "src/log/log4j-text.properties";
@@ -20,7 +20,7 @@ public class LoggerUtility {
 		} else if (logFileType.equals("html")) {
 			PropertyConfigurator.configure(HTML_LOG_CONFIG);
 		} else {
-			throw new IllegalArgumentException("Unknown log file type !");
+			throw new IllegalArgumentException("Fichier log de type inconnu !");
 		}
 
 		String className = logClass.getName();

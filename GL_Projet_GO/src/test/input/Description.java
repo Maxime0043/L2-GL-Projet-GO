@@ -1,7 +1,20 @@
 package test.input;
 
+/**
+ * Cette classe permet de récupérer chaque description de chaque situation
+ * pour le didacticiel du jeu de go.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class Description {
 	
+	/**
+	 * Pour récupérer la description d'un niveau, grâce à un indice, dans le didacticiel du jeu de go.
+	 * 
+	 * @param index Indice permettant de retourner la description à un endroit du tableau.
+	 * @return Renvoie la description à un indice donné.
+	 */
 	public static String getDescription(int index) {
 		String[] tab = new String[13];
 		
@@ -38,7 +51,8 @@ public class Description {
 				+ "pierre ennemie pour récupérer\n"
 				+ "une ou plusieurs liberté(s)\n"
 				+ "(en vert) ou prolonger\n"
-				+ "votre chaine avec une autre pierre.\n";
+				+ "votre chaine avec une autre pierre\n"
+				+ "(en rouge).";
 	
 		tab[3] = "Une Mega-Pierre peut prendre un\n"
 				+ "ensemble d’intersections (2x2) où il\n"

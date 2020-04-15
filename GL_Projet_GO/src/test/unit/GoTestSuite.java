@@ -4,11 +4,12 @@ import org.junit.runners.Suite;
 import org.junit.runner.RunWith;
 
 /**
- * This is the global test suite of unit tests.
+ * Cette classe est la suite globale des testes unitaires.
  * 
- * It includes two test cases : {@link TestTreeBuild} and {@link TestTreeVisitor}.
+ * Il inclut quatres cas : {@link GoTestPosePierre}, {@link GoTestRetirePierre}, {@link GoTestChaine} et {@link GoTestCapture}.
  * 
- * @author Tianxiao.Liu@u-cergy.fr
+ * @author Maxime, Micael et Houssam
+ * 
  */
 
 @RunWith(Suite.class)

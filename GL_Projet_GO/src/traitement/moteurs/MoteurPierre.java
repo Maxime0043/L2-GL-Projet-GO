@@ -31,9 +31,11 @@ public class MoteurPierre {
 	
 	private ArrayList<Cercle> cercle;
 	private ArrayList<Cercle> position_jouable;
+	private ArrayList<AbstractPierre> dernieres_pierres_mortes;
 	private Cercle survole;
 	
 	private boolean isDidacticiel;
+	private boolean is_tour_ordi = false;
 	private boolean isMegaPierre = false;
 	private boolean suicide = false;
 	
@@ -52,19 +54,11 @@ public class MoteurPierre {
 		ecart_window_horizontal = CalculFactory.getCoordEcartHorizontal(taille_goban, cellule, isDidacticiel);
 		
 		cercle = new ArrayList<Cercle>();
+		dernieres_pierres_mortes = new ArrayList<AbstractPierre>();
 	}
 	
-	private void incrementeKoCompteur() {
-		if(isKo) {
-			Ko_compteur++;
-			
-			if(Ko_compteur == nb_joueurs) {
-				setKo(null);
-				
-				isKo = false;
-				Ko_compteur = 0;
-			}
-		}
+	public void setTourOrdi(boolean bool) {
+		is_tour_ordi = bool;
 	}
 	
 	public boolean isMegaPierre() {
@@ -79,8 +73,33 @@ public class MoteurPierre {
 		position_jouable = cercle;
 	}
 	
-	private void setSuicide(boolean bool) {
+	public void initDernieresPierresMortes() {
+		dernieres_pierres_mortes.clear();
+	}
+	
+	public ArrayList<AbstractPierre> getDernieresPierresMortes(){
+		return dernieres_pierres_mortes;
+	}
+	
+	public boolean isSuicide() {
+		return suicide;
+	}
+	
+	public void setSuicide(boolean bool) {
 		suicide = bool;
+	}
+	
+	private void incrementeKoCompteur() {
+		if(isKo) {
+			Ko_compteur++;
+			
+			if(Ko_compteur == nb_joueurs) {
+				setKo(null);
+				
+				isKo = false;
+				Ko_compteur = 0;
+			}
+		}
 	}
 	
 	private void setKo (AbstractPierre pierre) {
@@ -165,11 +184,69 @@ public class MoteurPierre {
 		int x = CalculFactory.getCoordTableau(coordY, ParametrePartie.ECART_VERTICAL, cellule);
 		int y = CalculFactory.getCoordTableau(coordX, ecart_window_horizontal, cellule);
 		
+		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
+			posePierre(x, y, moteur_joueur.currentCouleur());
+		}
+		
+		if(!isDidacticiel) {
+			setPoseMegaPierre(false);
+		}
+		
+		setSuicide(false);
+		goban.updateChaines();
+		
+		Go.logger.info("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
+	}
+	
+	public void posePierre(int x, int y, Couleur couleur) {
 		boolean canPose = true;
 		
-		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
-			if(!isMegaPierre && !goban.existPierre(x, y)) {
-				AbstractPierre pierre = new Pierre(moteur_joueur.currentCouleur(), x, y);
+		if(is_tour_ordi) {
+			dernieres_pierres_mortes.clear();
+		}
+		
+		if(!isMegaPierre && !goban.existPierre(x, y)) {
+			AbstractPierre pierre = new Pierre(couleur, x, y);
+			
+			if(isDidacticiel) {
+				boolean exist = false;
+				
+				for(Cercle pos : position_jouable) {
+					if((pos.getX() == x) && (pos.getY() == y)) {
+						exist = true;
+					}
+				}
+				
+				if(!exist) {
+					canPose = false;
+				}
+			}
+			
+			if(canPose) {
+				addPierre(pierre);
+				
+				if(!suicide) {
+					if(!is_tour_ordi) {
+						moteur_joueur.changeJoueur();
+						System.out.println("Changement de Joueur");
+					}
+					
+					incrementeKoCompteur();
+				}
+			}
+		}
+		
+		else if(isMegaPierre) {
+			if(x == taille_goban - 1) {
+				x--;
+			}
+			
+			if(y == taille_goban - 1) {
+				y--;
+			}
+			
+			if(!goban.existPierre(x, y) || !goban.existPierre(x+1, y) || !goban.existPierre(x, y+1) || !goban.existPierre(x+1, y+1)) {
+				AbstractPierre pierre = new MegaPierre(couleur, x, y);
 				
 				if(isDidacticiel) {
 					boolean exist = false;
@@ -185,79 +262,40 @@ public class MoteurPierre {
 					}
 				}
 				
-				if(canPose) {
+				if(canPose && canDestruct(x, y)) {
+					destruct(x, y);
+					
 					addPierre(pierre);
-					moteur_joueur.currentJoueur().addPierre(pierre);
-					
-					if(!suicide) {
-						moteur_joueur.changeJoueur();
-						incrementeKoCompteur();
-					}
-				}
-			}
-			
-			else if(isMegaPierre) {
-				if(x == taille_goban - 1) {
-					x--;
-				}
-				
-				if(y == taille_goban - 1) {
-					y--;
-				}
-				
-				if(!goban.existPierre(x, y) || !goban.existPierre(x+1, y) || !goban.existPierre(x, y+1) || !goban.existPierre(x+1, y+1)) {
-					AbstractPierre pierre = new MegaPierre(moteur_joueur.currentCouleur(), x, y);
-					
-					if(isDidacticiel) {
-						boolean exist = false;
-						
-						for(Cercle pos : position_jouable) {
-							if((pos.getX() == x) && (pos.getY() == y)) {
-								exist = true;
-							}
-						}
-						
-						if(!exist) {
-							canPose = false;
-						}
-					}
-					
-					if(canPose && canDestruct(x, y)) {
-						destruct(x, y);
-						
-						addPierre(pierre);
-						moteur_joueur.currentJoueur().addPierre(pierre);
 
-						if(!suicide) {
-							if (!isDidacticiel) {
-								moteur_joueur.currentJoueur().playMegaPierre();
-							}
-							
+					if(!suicide) {
+						if(!isDidacticiel) {
+							moteur_joueur.currentJoueur().playMegaPierre();
+						}
+						
+						if(!is_tour_ordi) {
 							moteur_joueur.changeJoueur();
-							incrementeKoCompteur();
-						}						
-					}
+							System.out.println("Changement de Joueur");
+						}
+						
+						incrementeKoCompteur();
+					}						
 				}
 			}
 		}
-		
-		if(!isDidacticiel) {
-			setPoseMegaPierre(false);
-		}
-		setSuicide(false);
-		
-		Go.logger.info("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
 	}
 	
 	public void addPierre(AbstractPierre pierre) {
 		goban.addPierre(pierre);
 		Go.logger.info("Pierre créée aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
+		moteur_joueur.currentJoueur().addPierre(pierre);
 		Go.logger.info("Ajout d'une Pierre / MegaPierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ") au joueur " + moteur_joueur.currentJoueur().getCouleur());
 		
 		Coordonnee coordPierre = new Coordonnee(pierre.getX(), pierre.getY());
 		
-		cercle.add(new Cercle(coordPierre, pierre.getCouleur(), isMegaPierre));
-		Go.logger.info("Cercle créé aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
+		if(!is_tour_ordi) {
+			cercle.add(new Cercle(coordPierre, pierre.getCouleur(), isMegaPierre));
+			Go.logger.info("Cercle créé aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
+		}
 		
 		ArrayList<AbstractPierre> voisin = GoPierre.voisins(goban.getPierre(pierre.getX(), pierre.getY()), goban.getPlateau(), taille_goban);
 		
@@ -279,7 +317,6 @@ public class MoteurPierre {
 				moteur_joueur.currentJoueur().addScore(goban.getScoreCapture());
 				Go.logger.info("Ajout de " + goban.getScoreCapture() + " points au joueur de couleur " + moteur_joueur.currentJoueur().getCouleur());
 			}
-				
 		}
 		
 		if(pierre.hasChaine() && goban.isSuicide(goban.getChaine(pierre.getNomChaine()))) {
@@ -297,27 +334,39 @@ public class MoteurPierre {
 	
 	public void removePierre(AbstractPierre pierre) {
 		if(goban.existPierre(pierre.getX(), pierre.getY())) {
+			if(is_tour_ordi) {
+				dernieres_pierres_mortes.add(pierre);
+			}
+
 			Go.logger.info("Pierre supprimée aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
 			goban.removePierre(pierre);
 
-			Go.logger.info("Pierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ") retirée au joueur " + moteur_joueur.currentJoueur().getCouleur());
-			moteur_joueur.currentJoueur().removePierre(pierre);
+			Go.logger.info("Pierre de coordonnées (" + pierre.getX() + ", " + pierre.getY() + ") retirée au joueur " + moteur_joueur.getJoueur(pierre.getCouleur()).getCouleur());
+			moteur_joueur.getJoueur(pierre.getCouleur()).removePierre(pierre);
 			
-			Cercle c = null;
-			
-			for(Cercle coordCercle : cercle) {
-				if((pierre.getX() == coordCercle.getX()) && (pierre.getY() == coordCercle.getY())) {
-					c = coordCercle;
+			if(!is_tour_ordi) {
+				Cercle c = null;
+				
+				for(Cercle coordCercle : cercle) {
+					if((pierre.getX() == coordCercle.getX()) && (pierre.getY() == coordCercle.getY())) {
+						c = coordCercle;
+					}
 				}
+				
+				if(c != null) {
+					Go.logger.info("Cercle supprimé aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
+					cercle.remove(c);
+				} 
 			}
-
-			Go.logger.info("Cercle supprimé aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
-			cercle.remove(c);
 		}
 	}
 	
 	public void removePierre(ArrayList<AbstractPierre> chaine) {
-		for(AbstractPierre pierre : chaine) {
+		ArrayList<AbstractPierre> c = new ArrayList<AbstractPierre>();
+		
+		c.addAll(chaine);
+		
+		for(AbstractPierre pierre : c) {
 			removePierre(pierre);
 		}
 	}

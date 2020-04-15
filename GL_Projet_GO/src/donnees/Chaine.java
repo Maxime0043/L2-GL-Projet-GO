@@ -1,10 +1,13 @@
-package traitement;
+package donnees;
 
 import java.util.ArrayList;
 
-import donnees.AbstractPierre;
-import donnees.Couleur;
-
+/**
+ * Cette classe représente un groupe d'AbstractPierre.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class Chaine {
 	
 	private boolean twoEyes;
@@ -30,12 +33,22 @@ public class Chaine {
 		return chaine;
 	}
 	
+	/**
+	 * Permet d'ajouter une pierre / méga-pierre à la chaine.
+	 * 
+	 * @param pierre Pierre / Méga-pierre qui sera ajoutée à la chaine.
+	 */
 	public void addPierre(AbstractPierre pierre) {
 		if(!chaine.contains(pierre)) {
 			chaine.add(pierre);
 		}
 	}
 	
+	/**
+	 * Permet de supprimer une pierre / méga-pierre de la chaine.
+	 * 
+	 * @param pierre Pierre / Méga-pierre qui sera supprimée de la chaine.
+	 */
 	public void removePierre(AbstractPierre pierre) {
 		if(chaine.contains(pierre)) {
 			chaine.remove(pierre);

@@ -38,29 +38,6 @@ public class Liberte {
 		return nb_liberte;
 	}
 	
-//	/**
-//	 * 
-//	 * @param nomChaine
-//	 * @param hmChaine
-//	 * @param plateau
-//	 * @return
-//	 */
-//	public boolean liberteChaine(int nomChaine, HashMap<Integer, Chaine> hmChaine, AbstractPierre[][] plateau) {
-//		int liberte = 0;
-//		
-//		for (AbstractPierre p : hmChaine.get(nomChaine).getChaine()) {
-//			liberte += p.getLiberte();
-//		}
-//		
-//		if(liberte > 0) {
-//			return true;
-//		}
-//		
-//		else {
-//			return false;
-//		}
-//	}
-	
 	/**
 	 * 
 	 * @param plateau

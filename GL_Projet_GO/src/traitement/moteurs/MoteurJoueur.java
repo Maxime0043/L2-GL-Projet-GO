@@ -71,6 +71,18 @@ public class MoteurJoueur {
 		return j;
 	}
 	
+	public Joueur getJoueur(Couleur couleur) {
+		Joueur j = null;
+		
+		for(int i = 0 ; i < nb_joueurs ; i++) {
+			if(joueurs[i].getCouleur().equals(couleur)) {
+				j = joueurs[i];
+			}
+		}
+		
+		return j;
+	}
+	
 	public void changeJoueur() {
 		if(isDidacticiel) {
 			noir = true;
@@ -98,6 +110,29 @@ public class MoteurJoueur {
 				rouge = false;
 				noir = true;
 			}
+		}
+	}
+	
+	public void joueurPrecedent() {
+		if(noir) {
+			noir = false;
+			
+			if(nb_joueurs > 2) {
+				rouge = true;
+			}
+			else {
+				blanc = true;
+			}
+		}
+		
+		else if(blanc) {
+			blanc = false;
+			noir = true;
+		}
+		
+		else if(rouge) {
+			rouge = false;
+			blanc = true;
 		}
 	}
 }

@@ -1,5 +1,12 @@
 package donnees;
 
+/**
+ * Cette classe représente le score qui sera
+ * affecté à chacun des joueurs.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class Score {
 
 	private int score;
@@ -24,11 +31,16 @@ public class Score {
 	public void addScore(int nombre) {
 		score += nombre;
 	}
+	
+	public void setScore(int nombre) {
+		score = nombre;
+	}
 
-	public int total() {
-		int total;
-		total = capture + territoire + komi;
-		return total;
+	/**
+	 * Permet d'ajouter le komi au score du joueur
+	 */
+	public void score_final() {
+		addScore(komi);
 	}
 
 }

@@ -13,6 +13,12 @@ import donnees.ParametrePartie;
 import donnees.Pierre;
 import traitement.Goban;
 
+/**
+ * Cette classe permet des testes unitaires sur l'ajout de pierres et/ou méga-pierres.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class GoTestPosePierre {
 	private Goban goban;
 	private int taille_goban;

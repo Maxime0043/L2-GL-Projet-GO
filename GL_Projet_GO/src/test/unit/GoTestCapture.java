@@ -13,6 +13,12 @@ import donnees.ParametrePartie;
 import donnees.Pierre;
 import traitement.Goban;
 
+/**
+ * Cette classe permet des testes unitaires sur la capture de pierres / méga-pierres.
+ * 
+ * @author Maxime, Micael et Houssam
+ *
+ */
 public class GoTestCapture {
 	
 	private Goban goban;
