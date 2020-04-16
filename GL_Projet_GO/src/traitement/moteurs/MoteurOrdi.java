@@ -3,7 +3,6 @@ package traitement.moteurs;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.Stack;
 
 import donnees.AbstractPierre;
 import donnees.Chaine;
@@ -33,8 +32,6 @@ public class MoteurOrdi {
 	private int tour;
 	private Couleur couleur_ordi;
 	
-	private Stack<ArrayList<AbstractPierre>> stack_pierres_mortes;
-	private Stack<int[]> stack_scores;
 	private AbstractPierre cherche_coup;
 	private int meilleur_score;
 	
@@ -59,9 +56,6 @@ public class MoteurOrdi {
 		this.goban = goban;
 		this.taille_goban = taille_goban;
 		this.difficulte = difficulte;
-		
-		stack_pierres_mortes = new Stack<ArrayList<AbstractPierre>>();
-		stack_scores = new Stack<int[]>();
 		
 		territoire_noir = new ArrayList<Coordonnee>();
 		territoire_blanc = new ArrayList<Coordonnee>();
@@ -147,9 +141,6 @@ public class MoteurOrdi {
 		meilleur_score = Integer.MIN_VALUE;
 		cherche_coup = null;
 		couleur_ordi = moteur_joueur.currentCouleur();
-		
-		stack_pierres_mortes.clear();
-		stack_scores.clear();
 		
 		territoire_noir.clear();
 		territoire_blanc.clear();
@@ -325,11 +316,11 @@ public class MoteurOrdi {
 		for(int i = 0 ; i < taille_goban ; i++) {
 			for(int j = 0 ; j < taille_goban ; j++) {
 				if(!goban.existPierre(i, j) && tour <= difficulte) {
-					HashMap<Integer, Chaine> save_chaines = new HashMap<Integer, Chaine>();
-					boolean has_pierre_mortes = false;
-					int nb_liste_pierres_mortes = stack_pierres_mortes.size();
+					HashMap<Integer, Chaine> save_chaines = null;
+					ArrayList<AbstractPierre> save_pierres_mortes = null;
+					int[] scores = null;
 					
-					sauvegarde_scores();
+					scores = sauvegarde_scores();
 					moteur_pierre.setSuicide(false);
 					moteur_pierre.posePierre(i, j, moteur_joueur.currentCouleur());
 					save_chaines = sauvegarde_chaines();
@@ -337,13 +328,8 @@ public class MoteurOrdi {
 					if(isCoupValide(i, j)) {
 						AbstractPierre pierre = goban.getPierre(i, j);
 
-						sauvegarde_pierres_mortes();
-//						System.out.println("Avant");
-//						liste_pierre_morte();
-
-						if(nb_liste_pierres_mortes != stack_pierres_mortes.size()) {
-							has_pierre_mortes = true;
-						}
+						save_pierres_mortes = sauvegarde_pierres_mortes();
+						liste_pierre_morte(save_pierres_mortes);
 
 						if(tour == 1) {
 							premiere_pierre = pierre;
@@ -360,13 +346,8 @@ public class MoteurOrdi {
 
 						moteur_pierre.removePierre(pierre);
 						goban.updateLibertePlateau();
-						restore_scores();
-						
-						if(has_pierre_mortes) {
-//							System.out.println("Apres");
-//							liste_pierre_morte();
-							restore_pierres_mortes();
-						}
+						restore_scores(scores);
+						restore_pierres_mortes(save_pierres_mortes);
 					}
 					
 					if(goban.existPierre(i, j)) {
@@ -386,11 +367,11 @@ public class MoteurOrdi {
 		tour--;
 	}
 	
-	private void liste_pierre_morte() {
-		if(!stack_pierres_mortes.isEmpty()) {
-			System.out.print("taille : " + stack_pierres_mortes.size() + " {");
+	private void liste_pierre_morte(ArrayList<AbstractPierre> pierre_mortes) {
+		if(!pierre_mortes.isEmpty()) {
+			System.out.print("taille : " + pierre_mortes.size() + " {");
 			
-			for(AbstractPierre pm : stack_pierres_mortes.peek()) {
+			for(AbstractPierre pm : pierre_mortes) {
 				System.out.print(pm.getCouleur() + " (" + pm.getX() + ", " + pm.getY() + ")");
 			}
 			
@@ -694,13 +675,12 @@ public class MoteurOrdi {
 		ArrayList<Coordonnee> intersection_libre;
 		AbstractPierre pierre_final = null;
 		Coordonnee coord_pierre = null;
+		int[] scores = null;
 		
-		System.out.println("Taille 1 Joueur : " + moteur_joueur.getJoueur(moteur_joueur.currentCouleur()).getListePierre().size());
 		moteur_joueur.updateJoueurs();
 		copy_pierres.addAll(moteur_joueur.getJoueur(moteur_joueur.currentCouleur()).getListePierre());
 		
 		for(AbstractPierre pierre : copy_pierres) {
-			System.out.println("Danger Pierre en " + pierre.getX() + " " + pierre.getY());
 			AbstractPierre tmp;
 			
 			if(pierres_parcourus.contains(pierre)) {
@@ -712,7 +692,7 @@ public class MoteurOrdi {
 				
 				if(!intersection_libre.isEmpty()) {
 					coord_pierre = intersection_libre.get(0);
-					sauvegarde_scores();
+					scores = sauvegarde_scores();
 					moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
 					save_chaines = sauvegarde_chaines();
 					
@@ -735,7 +715,7 @@ public class MoteurOrdi {
 						moteur_pierre.posePierre(pm.getX(), pm.getY(), pm.getCouleur());
 					}
 					
-					restore_scores();
+					restore_scores(scores);
 				}
 			}
 			
@@ -751,7 +731,7 @@ public class MoteurOrdi {
 							
 							if(!intersection_libre.isEmpty()) {
 								coord_pierre = intersection_libre.get(0);
-								sauvegarde_scores();
+								scores = sauvegarde_scores();
 								moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
 								save_chaines = sauvegarde_chaines();
 
@@ -775,7 +755,7 @@ public class MoteurOrdi {
 									moteur_pierre.posePierre(pm.getX(), pm.getY(), pm.getCouleur());
 								}
 								
-								restore_scores();
+								restore_scores(scores);
 							} 
 						}
 						
@@ -786,7 +766,7 @@ public class MoteurOrdi {
 									
 									if(!intersection_libre.isEmpty()) {
 										coord_pierre = intersection_libre.get(0);
-										sauvegarde_scores();
+										scores = sauvegarde_scores();
 										moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
 										save_chaines = sauvegarde_chaines();
 
@@ -810,7 +790,7 @@ public class MoteurOrdi {
 											moteur_pierre.posePierre(pm.getX(), pm.getY(), pm.getCouleur());
 										}
 										
-										restore_scores();
+										restore_scores(scores);
 									}
 								} 
 							}
@@ -823,7 +803,7 @@ public class MoteurOrdi {
 									
 									if(!intersection_libre.isEmpty()) {
 										coord_pierre = intersection_libre.get(0);
-										sauvegarde_scores();
+										scores = sauvegarde_scores();
 										moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
 										save_chaines = sauvegarde_chaines();
 
@@ -849,7 +829,7 @@ public class MoteurOrdi {
 											moteur_pierre.posePierre(pm.getX(), pm.getY(), pm.getCouleur());
 										}
 										
-										restore_scores();
+										restore_scores(scores);
 									}
 								}
 							}
@@ -963,59 +943,63 @@ public class MoteurOrdi {
 	 * @param hm_chaines Définit les chaines sous forme non fusionnées. 
 	 */
 	private void restore_chaines(HashMap<Integer, Chaine> hm_chaines) {
-		for(Integer nom_chaine : hm_chaines.keySet()) {
-			if(goban.getHmChaine().containsKey(nom_chaine)) {
-				goban.getHmChaine().replace(nom_chaine, hm_chaines.get(nom_chaine));
-			}
-
-			else {
-				goban.getHmChaine().put(nom_chaine, hm_chaines.get(nom_chaine));
-			}
-			
-			for(AbstractPierre pierre_chaine : goban.getHmChaine().get(nom_chaine).getChaine()) {
-				pierre_chaine.setNomChaine(nom_chaine);
-				goban.getPlateau()[pierre_chaine.getX()][pierre_chaine.getY()] = pierre_chaine;
-			}
-		} 
-	}
+		if(hm_chaines != null) {
+			for(Integer nom_chaine : hm_chaines.keySet()) {
+				if(goban.getHmChaine().containsKey(nom_chaine)) {
+					goban.getHmChaine().replace(nom_chaine, hm_chaines.get(nom_chaine));
+				}
 	
-	/**
-	 * Permet de sauvegarder les pierres et méga-pierres précédemments mortes.
-	 */
-	private void sauvegarde_pierres_mortes() {
-		if(!moteur_pierre.getDernieresPierresMortes().isEmpty()) {
-			stack_pierres_mortes.push(moteur_pierre.getDernieresPierresMortes());
-		}
-	}
-	
-	/**
-	 * Permet de restaurer les pierres et méga-pierres précédemments mortes.
-	 */
-	private void restore_pierres_mortes() {
-		if(!stack_pierres_mortes.empty()) {
-			ArrayList<AbstractPierre> pierres_mortes = new ArrayList<AbstractPierre>();
-			
-			pierres_mortes.addAll(stack_pierres_mortes.pop());
-			
-			if(!pierres_mortes.isEmpty()) {
-				for(AbstractPierre pierre : pierres_mortes) {
-					if(pierre.getCouleur() != moteur_joueur.currentCouleur()) {
-						if(pierre.isMegaPierre()) {
-							moteur_pierre.setPoseMegaPierre(true);
-						}
-						
-						moteur_pierre.posePierre(pierre.getX(), pierre.getY(), pierre.getCouleur());
-						moteur_pierre.setPoseMegaPierre(false);
-					}
+				else {
+					goban.getHmChaine().put(nom_chaine, hm_chaines.get(nom_chaine));
+				}
+				
+				for(AbstractPierre pierre_chaine : goban.getHmChaine().get(nom_chaine).getChaine()) {
+					pierre_chaine.setNomChaine(nom_chaine);
+					goban.getPlateau()[pierre_chaine.getX()][pierre_chaine.getY()] = pierre_chaine;
 				}
 			}
 		}
 	}
 	
 	/**
-	 * Permet de sauvegarder 
+	 * Permet de sauvegarder les pierres et méga-pierres précédemments mortes.
+	 * 
+	 * @return Renvoie la liste de pierres mortes présentes.
 	 */
-	private void sauvegarde_scores() {
+	private ArrayList<AbstractPierre> sauvegarde_pierres_mortes() {
+		ArrayList<AbstractPierre> pierres_mortes = new ArrayList<AbstractPierre>();
+		
+		if(!moteur_pierre.getDernieresPierresMortes().isEmpty()) {
+			pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
+		}
+		
+		return pierres_mortes;
+	}
+	
+	/**
+	 * Permet de restaurer les pierres et méga-pierres précédemments mortes.
+	 * 
+	 * @param pierres_mortes Définit la liste de pierres et de méga-pierres que l'on veut restaurer.
+	 */
+	private void restore_pierres_mortes(ArrayList<AbstractPierre> pierres_mortes) {
+		for(AbstractPierre pierre : pierres_mortes) {
+			if(pierre.getCouleur() != moteur_joueur.currentCouleur()) {
+				if(pierre.isMegaPierre()) {
+					moteur_pierre.setPoseMegaPierre(true);
+				}
+				
+				moteur_pierre.posePierre(pierre.getX(), pierre.getY(), pierre.getCouleur());
+				moteur_pierre.setPoseMegaPierre(false);
+			}
+		}
+	}
+	
+	/**
+	 * Permet de sauvegarder les scores courants de tous les joueurs.
+	 * 
+	 * @return Revoie la liste des scores des joueurs de la partie.
+	 */
+	private int[] sauvegarde_scores() {
 		int n = moteur_joueur.getJoueurs().length;
 		int[] scores_precedents = new int[n];
 				
@@ -1023,15 +1007,19 @@ public class MoteurOrdi {
 			scores_precedents[i] = (int)moteur_joueur.getJoueurs()[i].getScore();
 		}
 		
-		stack_scores.push(scores_precedents);
+		return scores_precedents;
 	}
 	
-	private void restore_scores() {
+	/**
+	 * Permet de sauvegarder les scores précédemments sauvegardés.
+	 * 
+	 * @param scores Définit les scores des joueurs à restaurer.
+	 */
+	private void restore_scores(int[] scores) {
 		int n = moteur_joueur.getJoueurs().length;
-		int[] scores_precedents = stack_scores.pop();
 				
 		for(int i = 0 ; i < n ; i++) {
-			moteur_joueur.getJoueurs()[i].setScore(scores_precedents[i]);
+			moteur_joueur.getJoueurs()[i].setScore(scores[i]);
 		}
 	}
 }

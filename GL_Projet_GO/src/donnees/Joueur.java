@@ -89,8 +89,16 @@ public class Joueur {
 	 * @param pierreDésigne la pierre / méga-pierre qui va être supprimée
 	 */
 	public void removePierre(AbstractPierre pierre) {
-		if(listePierre.contains(pierre)) {
-			listePierre.remove(pierre);
+		AbstractPierre p = null;
+		
+		for(AbstractPierre pierre_liste : listePierre) {
+			if(pierre_liste.getX() == pierre.getX() && pierre_liste.getY() == pierre.getY()) {
+				p = pierre_liste;
+			}
+		}
+		
+		if(p != null) {
+			listePierre.remove(p);
 		}
 	}
 	

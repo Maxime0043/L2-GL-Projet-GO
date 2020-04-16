@@ -204,7 +204,6 @@ public class MoteurJoueur {
 		int nom;
 		
 		for(int i = 0 ; i < nb_joueurs ; i++) {
-			System.out.println("Taille 1 Joueur " + getJoueurs()[i].getCouleur() + ": " + getJoueurs()[i].getListePierre().size());
 			for(AbstractPierre pierre : getJoueurs()[i].getListePierre()) {
 				if(goban.existPierre(pierre.getX(), pierre.getY())) {
 					nom = goban.getPierre(pierre.getX(), pierre.getY()).getNomChaine();
