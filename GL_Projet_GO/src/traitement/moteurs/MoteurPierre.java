@@ -41,16 +41,6 @@ public class MoteurPierre {
 	private int Ko_compteur = 0;
 	private boolean isKo = false;
 	
-	/**
-	 * 
-	 * 
-	 * @param moteur_joueur
-	 * @param goban
-	 * @param taille_goban
-	 * @param nb_joueur
-	 * @param nb_ordi
-	 * @param isDidacticiel
-	 */
 	public MoteurPierre(MoteurJoueur moteur_joueur, Goban goban, int taille_goban, int nb_joueur, int nb_ordi, boolean isDidacticiel) {
 		this.goban = goban;
 		this.moteur_joueur = moteur_joueur;
@@ -84,14 +74,6 @@ public class MoteurPierre {
 	}
 	
 	public ArrayList<AbstractPierre> getDernieresPierresMortes(){
-//		System.out.print("taille : " + dernieres_pierres_mortes.size() + " {");
-//		
-//		for(AbstractPierre pm : dernieres_pierres_mortes) {
-//			System.out.print(pm.getCouleur() + " (" + pm.getX() + ", " + pm.getY() + ")");
-//		}
-//		
-//		System.out.print("}\n");
-		
 		return dernieres_pierres_mortes;
 	}
 	
@@ -103,6 +85,9 @@ public class MoteurPierre {
 		suicide = bool;
 	}
 	
+	/**
+	 * Permet de gérer les situations de ko.
+	 */
 	private void incrementeKoCompteur() {
 		if(isKo) {
 			Ko_compteur++;
@@ -136,6 +121,12 @@ public class MoteurPierre {
 		return croix;
 	}
 	
+	/**
+	 * Permet de vérifier avec des coordonnées si une intersection est jouable ou non.
+	 * 
+	 * @param x Désigne la ligne du plateau que l'on va analyser.
+	 * @param y Désigne la colonne du plateau que l'on va analyser.
+	 */
 	public void survoleZone(int x, int y) {
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
 			if(!isMegaPierre && !goban.existPierre(x, y) && !goban.isSuicide(x, y, moteur_joueur.currentCouleur(), isMegaPierre)) {
@@ -188,6 +179,12 @@ public class MoteurPierre {
 		}
 	}
 	
+	/**
+	 * Permet d'ajouter une pierre ou une méga-pierre sur le plateau à partir de coordonnées.
+	 * 
+	 * @param x Désigne la ligne du plateau que l'on va ajouter.
+	 * @param y Désigne la colonne du plateau que l'on va ajouter.
+	 */
 	public void clicEvent(int x, int y) {
 		long startTime = System.currentTimeMillis();
 
@@ -199,22 +196,7 @@ public class MoteurPierre {
 			setPoseMegaPierre(false);
 		}
 		
-//		goban.updateChaines();
-		
 		Go.logger.info("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
-		
-		for(int i = 0 ; i < taille_goban ; i++) {
-			for(int j = 0 ; j < taille_goban ; j++) {
-				if(goban.existPierre(i, j)) {
-					System.out.print("\t" + goban.getPierre(i, j).getNomChaine());
-				}
-				
-				else {
-					System.out.print("\tX");
-				}
-			}
-			System.out.println();
-		}
 	}
 	
 	public void posePierre(int x, int y, Couleur couleur) {
@@ -247,7 +229,6 @@ public class MoteurPierre {
 				if(!suicide) {
 					if(!is_tour_ordi) {
 						moteur_joueur.changeJoueur();
-						System.out.println("Changement de Joueur");
 					}
 					
 					incrementeKoCompteur();
@@ -292,7 +273,6 @@ public class MoteurPierre {
 					
 					if(!is_tour_ordi) {
 						moteur_joueur.changeJoueur();
-						System.out.println("Changement de Joueur");
 					}
 					
 					incrementeKoCompteur();
@@ -303,6 +283,11 @@ public class MoteurPierre {
 		setSuicide(false);
 	}
 	
+	/**
+	 * Permet d'ajouter la pierre ou méga-pierre au plateau et de vérifier si les pierres autours ont été capturées.
+	 * 
+	 * @param pierre Définit la pierre ou méga-pierre que l'on ajoute au plateau et qui aura un effet sur les pierres autour.
+	 */
 	public void addPierre(AbstractPierre pierre) {
 		goban.addPierre(pierre);
 		Go.logger.info("Pierre créée aux coordonnées : (" + pierre.getX() + ", " + pierre.getY() + ")");
@@ -351,6 +336,11 @@ public class MoteurPierre {
 		}
 	}
 	
+	/**
+	 * Permet de retirer une pierre ou méga-pierre du plateau.
+	 * 
+	 * @param pierre Désigne la pierre ou méga-pierre que l'on veut supprimer.
+	 */
 	public void removePierre(AbstractPierre pierre) {
 		if(goban.existPierre(pierre.getX(), pierre.getY())) {
 			if(is_tour_ordi) {
@@ -380,6 +370,11 @@ public class MoteurPierre {
 		}
 	}
 	
+	/**
+	 * Permet de retirer une chaine du plateau.
+	 * 
+	 * @param chaine Désigne la chaine que l'on veut supprimer.
+	 */
 	public void removePierre(ArrayList<AbstractPierre> chaine) {
 		ArrayList<AbstractPierre> c = new ArrayList<AbstractPierre>();
 		
@@ -390,6 +385,13 @@ public class MoteurPierre {
 		}
 	}
 	
+	/**
+	 * Permet de vérifier avec des coordonnées si une méga-pierre peut détruire les pierres ennemies autour si elles existent.
+	 * 
+	 * @param x Désigne la ligne du plateau que l'on va analyser.
+	 * @param y Désigne la colonne du plateau que l'on va analyser.
+	 * @return Indique si la méga-pierre pourra être posée ou non.
+	 */
 	private boolean canDestruct(int x, int y) {
 		boolean exist_voisin = false;
 		int compteur = 0;
@@ -462,6 +464,12 @@ public class MoteurPierre {
 		return false;
 	}
 	
+	/**
+	 * Permet de supprimer les pierres qui vont être remplacées par la méga-pierre du joueur courant.
+	 * 
+	 * @param x Désigne la ligne du plateau où l'on va détruire les pierres.
+	 * @param y Désigne la colonne du plateau où l'on va détruire les pierres.
+	 */
 	private void destruct(int x, int y) {
 		Go.logger.debug("Destruction en cours !");
 		

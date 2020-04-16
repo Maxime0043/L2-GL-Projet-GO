@@ -108,32 +108,34 @@ public class MoteurOrdi {
 			moteur.passer();
 		}
 		
-//		for(int i = 0 ; i < taille_goban ; i++) {
-//			for(int j = 0 ; j < taille_goban ; j++) {
-//				if(goban.existPierre(i, j)) {
-//					System.out.print("\t" + goban.getPierre(i, j).getNomChaine());
-//				}
-//				
-//				else {
-//					System.out.print("\tX");
-//				}
-//			}
-//			System.out.println();
-//		}
+		for(int i = 0 ; i < taille_goban ; i++) {
+			for(int j = 0 ; j < taille_goban ; j++) {
+				if(goban.existPierre(i, j)) {
+					System.out.print("\t" + goban.getPierre(i, j).getNomChaine());
+				}
+				
+				else {
+					System.out.print("\tX");
+				}
+			}
+			System.out.println();
+		}
 		
-//		for(int i = 0; i < taille_goban; i++) {
-//			for(int j = 0; j < taille_goban; j++) {
-//				if(goban.existPierre(i, j)) {
-//					System.out.print("\t" + goban.getPierre(i, j).getCouleur());
-//				}
-//
-//				else {
-//					System.out.print("\t-");
-//				}
-//			}
-//			System.out.println();
-//		}
-//		System.out.println();
+		System.out.println();
+		
+		for(int i = 0; i < taille_goban; i++) {
+			for(int j = 0; j < taille_goban; j++) {
+				if(goban.existPierre(i, j)) {
+					System.out.print("\t" + goban.getPierre(i, j).getCouleur());
+				}
+
+				else {
+					System.out.print("\t-");
+				}
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 	
 	private void initTour() {
