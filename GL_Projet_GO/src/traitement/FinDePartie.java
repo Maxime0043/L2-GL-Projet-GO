@@ -13,7 +13,7 @@ import traitement.moteurs.MoteurJoueur;
 import traitement.moteurs.MoteurPierre;
 
 /**
- * 
+ * Cette classe effectue les différents traitements de la fin de partie.
  * 
  * @author Maxime, Micael et Houssam
  *
@@ -33,6 +33,14 @@ public class FinDePartie {
 	
 	private ArrayList<AbstractPierre> pierres_mortes;
 	
+	/**
+	 * Permet d'initialiser la fin de partie
+	 * 
+	 * @param taille_goban
+	 * @param goban
+	 * @param moteur_joueur
+	 * @param moteur_pierre
+	 */
 	public FinDePartie(int taille_goban, Goban goban, MoteurJoueur moteur_joueur, MoteurPierre moteur_pierre) {
 		this.taille_goban = taille_goban;
 		this.goban = goban;
@@ -43,7 +51,7 @@ public class FinDePartie {
 	}
 	
 	/**
-	 * 
+	 * Permet d'effectuer les différentes actions de la fin de partie
 	 * 
 	 * @param plateau
 	 * @param hmChaine
@@ -58,7 +66,7 @@ public class FinDePartie {
 	}
 	
 	/**
-	 * 
+	 * Détermine les chaîne qui ont des yeux
 	 * 
 	 * @param plateau
 	 * @param hmChaine
@@ -170,7 +178,7 @@ public class FinDePartie {
 	}
 	
 	/**
-	 * 
+	 * Détermine les pierres qui sont mortes
 	 * 
 	 * @param plateau
 	 * @param hmChaine
@@ -360,7 +368,7 @@ public class FinDePartie {
 	}
 	
 	/**
-	 * 
+	 * Permet de calculer le territoire et donc de définir le score final de la partie
 	 * 
 	 * @param plateau
 	 * @param hmChaine
@@ -606,10 +614,10 @@ public class FinDePartie {
 	}
 	
 	/**
+	 * Permet de vérifier si une coordonnée existe déjà dans une liste donnée
 	 * 
-	 * 
-	 * @param nc
-	 * @param InterVideDejaParcourue
+	 * @param nc  la coordonnée dont on veut vérifié l'existence
+	 * @param InterVideDejaParcourue liste de coordonnée
 	 * @return
 	 */
 	public boolean dejaParcourue(Coordonnee nc, ArrayList<Coordonnee> InterVideDejaParcourue) {
