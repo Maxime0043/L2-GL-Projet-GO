@@ -192,9 +192,22 @@ public class MoteurPierre {
 		}
 		
 		setSuicide(false);
-		goban.updateChaines();
+//		goban.updateChaines();
 		
 		Go.logger.info("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
+		
+		for(int i = 0 ; i < taille_goban ; i++) {
+			for(int j = 0 ; j < taille_goban ; j++) {
+				if(goban.existPierre(i, j)) {
+					System.out.print("\t" + goban.getPierre(i, j).getNomChaine());
+				}
+				
+				else {
+					System.out.print("\tX");
+				}
+			}
+			System.out.println();
+		}
 	}
 	
 	public void posePierre(int x, int y, Couleur couleur) {

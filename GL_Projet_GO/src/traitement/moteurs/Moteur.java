@@ -34,6 +34,7 @@ public class Moteur /*implements Runnable*/ {
 	private String description;
 
 	private ArrayList<Cercle> position_jouable;
+	private Moteur instance = this;
 	
 	private boolean didacticiel_fini = false;
 //	private boolean is_tour_ordi = false;
@@ -54,7 +55,7 @@ public class Moteur /*implements Runnable*/ {
 		fin = new FinDePartie(taille_goban, goban, moteur_joueur, moteur_pierre);
 		
 		if(nb_ordi > 0) {
-			moteur_ordi = new MoteurOrdi(moteur_joueur, moteur_pierre, goban, taille_goban, 2);
+			moteur_ordi = new MoteurOrdi(instance, moteur_joueur, moteur_pierre, goban, taille_goban, 1);
 		}
 		
 		nb_joueurs = nb_joueur + nb_ordi; 

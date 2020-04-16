@@ -24,6 +24,7 @@ public class Goban {
 	private Plateau plateau;
 	private ArrayList<Coordonnee> hoshis;
 	private HashMap<Integer, Chaine> hmChaine;
+	private HashMap<Integer, Chaine> sauvegarde_chaines;
 	private Capture capture;
 	
 	private int taille_goban;
@@ -41,6 +42,7 @@ public class Goban {
 		plateau = new Plateau(taille_goban);
 		hoshis = new ArrayList<Coordonnee>();
 		hmChaine = new HashMap <Integer, Chaine>();
+		sauvegarde_chaines = new HashMap <Integer, Chaine>();
 		capture = new Capture(taille_goban);
 		
 		initHoshis();
@@ -87,8 +89,12 @@ public class Goban {
 		return hoshis;
 	}
 	
-	public HashMap<Integer, Chaine> getHmChaine (){
+	public HashMap<Integer, Chaine> getHmChaine(){
 		return hmChaine;
+	}
+	
+	public HashMap<Integer, Chaine> getSauvegardeChaines(){
+		return sauvegarde_chaines;
 	}
 	
 	/**
@@ -232,6 +238,7 @@ public class Goban {
 		Couleur couleurVoisin;
 		
 		ArrayList<AbstractPierre> liste_voisin = GoPierre.voisins(pierre, plateau.getPlateau(), taille_goban);
+		sauvegarde_chaines.clear();
 		
 		if(liste_voisin.size() != 0) {
 			for(AbstractPierre pierreVoisine : liste_voisin) {
@@ -241,13 +248,8 @@ public class Goban {
 					if(pierreVoisine.hasChaine()) {
 						
 						if(pierre.hasChaine() && (pierre.getNomChaine() != pierreVoisine.getNomChaine())) {
-							if(pierre.getNomChaine() < pierreVoisine.getNomChaine() ) {
-								this.chaineFusion(pierre, pierreVoisine);
-							}
-							
-							else {
-								this.chaineFusion(pierreVoisine, pierre);
-							}
+							copy_chaine_avant_fusion(pierre, pierre.getNomChaine(), pierreVoisine.getNomChaine());
+							this.chaineFusion(pierre, pierreVoisine);
 						}
 						
 						else {
@@ -409,6 +411,28 @@ public class Goban {
 				hmChaine.remove(nom_chaine);
 			}
 		}
+		
+//		copy_hm.clear();
+//		copy_hm.putAll(hmChaine);
+//		
+//		for(Integer cle : copy_hm.keySet()) {
+//			ArrayList<AbstractPierre> copy_chaine = new ArrayList<AbstractPierre>();
+//			copy_chaine.addAll(copy_hm.get(cle).getChaine());
+//			
+//			int compteur = 0;
+//			
+//			for(AbstractPierre pierre : copy_chaine) {
+//				hmChaine.get(cle).getChaine().remove(pierre);
+//				
+//				if(compteur > 0) {
+//					pierre.setNomChaine(-1);
+//				}
+//				
+//				addToChaine(pierre);
+//				
+//				compteur++;
+//			}
+//		}
 	}
 	
 	/**
@@ -421,6 +445,48 @@ public class Goban {
 					getPierre(i, j).updateLiberte(getPlateau(), taille_goban);
 				}
 			}
+		}
+	}
+	
+	private void copy_chaine_avant_fusion(AbstractPierre pierre, int nom_chaine_1, int nom_chaine_2) {
+		Chaine chaine = new Chaine();
+		
+		if(!sauvegarde_chaines.containsKey(nom_chaine_1)) {
+			for(AbstractPierre pierre_chaine : hmChaine.get(nom_chaine_1).getChaine()) {
+				if(pierre_chaine != pierre) {
+					if(!pierre_chaine.isMegaPierre()) {
+						chaine.addPierre(new Pierre(pierre_chaine.getCouleur(), pierre_chaine.getX(), pierre_chaine.getY()));
+					}
+					
+					else {
+						chaine.addPierre(new MegaPierre(pierre_chaine.getCouleur(), pierre_chaine.getX(), pierre_chaine.getY()));
+					}
+				}
+			}
+			
+			System.out.println("Taille chaine 1 : " + chaine.getChaine().size() + " et num " + nom_chaine_1);
+			
+			sauvegarde_chaines.put(nom_chaine_1, chaine);
+		}
+		
+		if(!sauvegarde_chaines.containsKey(nom_chaine_2)) {
+			chaine = new Chaine();
+			
+			for(AbstractPierre pierre_chaine : hmChaine.get(nom_chaine_2).getChaine()) {
+				if(pierre_chaine != pierre) {
+					if(!pierre_chaine.isMegaPierre()) {
+						chaine.addPierre(new Pierre(pierre_chaine.getCouleur(), pierre_chaine.getX(), pierre_chaine.getY()));
+					}
+					
+					else {
+						chaine.addPierre(new MegaPierre(pierre_chaine.getCouleur(), pierre_chaine.getX(), pierre_chaine.getY()));
+					}
+				}
+			}
+			
+			System.out.println("Taille chaine 2 : " + chaine.getChaine().size() + " et num " + nom_chaine_2);
+	
+			sauvegarde_chaines.put(nom_chaine_2, chaine);
 		}
 	}
 }

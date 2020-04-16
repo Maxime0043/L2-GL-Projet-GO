@@ -627,7 +627,7 @@ public class FinDePartie {
 			}
 		}
 		if(taille_goban == 9) {
-			if(moteur_joueur.getNbJoueurs() == 3) {
+			if(moteur_joueur.getJoueurs().length == 3) {
 				moteur_joueur.getJoueurs()[1].addScore(Komi.BLANC_9);
 				moteur_joueur.getJoueurs()[2].addScore(Komi.ROUGE_9);
 			}
@@ -636,7 +636,7 @@ public class FinDePartie {
 			}
 		}
 		else {
-			if(moteur_joueur.getNbJoueurs() == 3) {
+			if(moteur_joueur.getJoueurs().length == 3) {
 				moteur_joueur.getJoueurs()[1].addScore(Komi.BLANC_19);
 				moteur_joueur.getJoueurs()[2].addScore(Komi.ROUGE_19);
 			}

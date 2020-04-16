@@ -61,10 +61,6 @@ public class MoteurJoueur {
 		return joueurs;
 	}
 	
-	public int getNbJoueurs() {
-		return nb_joueurs;
-	}
-	
 	/**
 	 * Permet de savoir si le joueur courant possède une méga-pierre ou non.
 	 * 
