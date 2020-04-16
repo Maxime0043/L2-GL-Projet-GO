@@ -84,6 +84,14 @@ public class MoteurPierre {
 	}
 	
 	public ArrayList<AbstractPierre> getDernieresPierresMortes(){
+//		System.out.print("taille : " + dernieres_pierres_mortes.size() + " {");
+//		
+//		for(AbstractPierre pm : dernieres_pierres_mortes) {
+//			System.out.print(pm.getCouleur() + " (" + pm.getX() + ", " + pm.getY() + ")");
+//		}
+//		
+//		System.out.print("}\n");
+		
 		return dernieres_pierres_mortes;
 	}
 	
@@ -191,7 +199,6 @@ public class MoteurPierre {
 			setPoseMegaPierre(false);
 		}
 		
-		setSuicide(false);
 //		goban.updateChaines();
 		
 		Go.logger.info("Temps pour jouer un coup: " + (System.currentTimeMillis() - startTime));
@@ -292,6 +299,8 @@ public class MoteurPierre {
 				}						
 			}
 		}
+		
+		setSuicide(false);
 	}
 	
 	public void addPierre(AbstractPierre pierre) {

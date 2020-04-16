@@ -1,8 +1,10 @@
 package traitement.moteurs;
 
+import donnees.AbstractPierre;
 import donnees.Couleur;
 import donnees.Joueur;
 import gui.Go;
+import traitement.Goban;
 
 /**
  * Cette classe permet la gestion des joueurs de la partie avec la classe {@link Joueur}.
@@ -12,6 +14,7 @@ import gui.Go;
  */
 public class MoteurJoueur {
 
+	private Goban goban;
 	private Joueur[] joueurs;
 	
 	private int nb_joueur;
@@ -23,15 +26,17 @@ public class MoteurJoueur {
 	private boolean isDidacticiel;
 	
 	/**
-	 * Pour créer le moteur de joueur il nous faut le nombre de joueurs (humain),
-	 * le nombre d'ordinateurs et on doit savoir si on est en partie ou
-	 * dans le didacticiel.
+	 * Pour créer le moteur de joueur il nous faut la classe permettant de gérer le plateau,
+	 * le nombre de joueurs (humain), le nombre d'ordinateurs et on doit savoir 
+	 * si on est en partie ou dans le didacticiel.
 	 * 
+	 * @param goban Définit la classe qui permet de gérer le plateau du jeu.
 	 * @param nb_joueur Définit le nombre de joueurs (humain).
 	 * @param nb_ordi Définit le nombre d'ordinateurs.
 	 * @param isDidacticiel Définit si on est dans le didacticiel.
 	 */
-	public MoteurJoueur(int nb_joueur, int nb_ordi, boolean isDidacticiel) {
+	public MoteurJoueur(Goban goban, int nb_joueur, int nb_ordi, boolean isDidacticiel) {
+		this.goban = goban;
 		nb_joueurs = nb_joueur + nb_ordi;
 		joueurs = new Joueur[nb_joueurs];
 		
@@ -189,5 +194,23 @@ public class MoteurJoueur {
 		}
 		
 		return scores;
+	}
+	
+	/**
+	 * Permet de mettre à jour chaque pierre et méga-pierre que les joueurs
+	 * ont posé sur le plateau.
+	 */
+	public void updateJoueurs() {
+		int nom;
+		
+		for(int i = 0 ; i < nb_joueurs ; i++) {
+			System.out.println("Taille 1 Joueur " + getJoueurs()[i].getCouleur() + ": " + getJoueurs()[i].getListePierre().size());
+			for(AbstractPierre pierre : getJoueurs()[i].getListePierre()) {
+				if(goban.existPierre(pierre.getX(), pierre.getY())) {
+					nom = goban.getPierre(pierre.getX(), pierre.getY()).getNomChaine();
+					pierre.setNomChaine(nom);
+				}
+			}
+		}
 	}
 }

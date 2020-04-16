@@ -18,7 +18,6 @@ import donnees.Couleur;
 import donnees.ParametrePartie;
 import traitement.CalculFactory;
 import traitement.moteurs.Moteur;
-import traitement.FinDePartie;
 
 /**
  * Cette classe gère l'affichage graphique lié au jeu de go.
@@ -35,7 +34,6 @@ public class GoPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private Moteur moteur;
-	private FinDePartie Fin;
 	
 	private int cellule;
 	private int ecart_window_horizontal;
@@ -86,7 +84,6 @@ public class GoPanel extends JPanel{
 		}
 		
 		this.moteur = moteur;
-		this.Fin = moteur.getFin();
 		this.nb_joueurs = nb_joueurs;
 		this.isDidacticiel = isDidacticiel;
 
@@ -122,12 +119,12 @@ public class GoPanel extends JPanel{
 	}
 	
 	/**
-	 * Dessine les territoires de chaque joueur
-	 * @param g
+	 * Dessine les territoires de chaque joueur dans la sous-fenêtre GoPanel.
 	 */
 	private void drawterritoire(Graphics g) {
 		int x, y;
-		for(Coordonnee c : Fin.getTerritoireNoir()) {
+		
+		for(Coordonnee c : moteur.getFin().getTerritoireNoir()) {
 			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, decalage_territoire);
 			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, decalage_territoire);
 			
@@ -135,9 +132,10 @@ public class GoPanel extends JPanel{
 			
 			g.fillOval(x, y, taille_territoire, taille_territoire);
 
-			Go.logger.trace("Le hoshi de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
+			Go.logger.trace("Le territoire NOIR de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
 		}
-		for(Coordonnee c : Fin.getTerritoireBlanc()) {
+		
+		for(Coordonnee c : moteur.getFin().getTerritoireBlanc()) {
 			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, decalage_territoire);
 			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, decalage_territoire);
 			
@@ -145,9 +143,10 @@ public class GoPanel extends JPanel{
 			
 			g.fillOval(x, y, taille_territoire, taille_territoire);
 
-			Go.logger.trace("Le hoshi de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
+			Go.logger.trace("Le territoire BLANC de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
 		}
-		for(Coordonnee c : Fin.getTerritoireRouge()) {
+		
+		for(Coordonnee c : moteur.getFin().getTerritoireRouge()) {
 			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, decalage_territoire);
 			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, decalage_territoire);
 			
@@ -155,9 +154,10 @@ public class GoPanel extends JPanel{
 			
 			g.fillOval(x, y, taille_territoire, taille_territoire);
 
-			Go.logger.trace("Le hoshi de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
+			Go.logger.trace("Le territoire ROUGE de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
 		}
 	}
+	
 	/**
 	 * Dessine les cercles des pierres / méga-pierres du goban sur la sous-fenêtre GoPanel.
 	 */	

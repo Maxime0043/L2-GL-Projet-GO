@@ -38,7 +38,7 @@ public class FinDePartie {
 	private ArrayList<Coordonnee> Rouge; 
 	
 	/**
-	 * Permet d'initialiser la fin de partie
+	 * Permet d'initialiser la fin de partie.
 	 * 
 	 * @param taille_goban
 	 * @param goban
@@ -58,7 +58,7 @@ public class FinDePartie {
 	}
 	
 	/**
-	 * Permet d'effectuer les différentes actions de la fin de partie
+	 * Permet d'effectuer les différentes actions de la fin de partie.
 	 * 
 	 * @param plateau
 	 * @param hmChaine
@@ -85,7 +85,7 @@ public class FinDePartie {
 	}
 	
 	/**
-	 * Détermine les chaîne qui ont des yeux
+	 * Détermine les chaîne qui ont des yeux.
 	 * 
 	 * @param plateau
 	 * @param hmChaine
@@ -197,7 +197,7 @@ public class FinDePartie {
 	}
 	
 	/**
-	 * Détermine les pierres qui sont mortes
+	 * Détermine les pierres qui sont mortes.
 	 * 
 	 * @param plateau
 	 * @param hmChaine
@@ -387,7 +387,7 @@ public class FinDePartie {
 	}
 	
 	/**
-	 * Permet de calculer le territoire et donc de définir le score final de la partie
+	 * Permet de calculer le territoire et donc de définir le score final de la partie.
 	 * 
 	 * @param plateau
 	 * @param hmChaine
@@ -647,7 +647,7 @@ public class FinDePartie {
 	}
 	
 	/**
-	 * Permet de vérifier si une coordonnée existe déjà dans une liste donnée
+	 * Permet de vérifier si une coordonnée existe déjà dans une liste donnée.
 	 * 
 	 * @param nc  la coordonnée dont on veut vérifié l'existence
 	 * @param InterVideDejaParcourue liste de coordonnée

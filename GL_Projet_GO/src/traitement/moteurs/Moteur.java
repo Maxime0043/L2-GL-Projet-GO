@@ -50,7 +50,7 @@ public class Moteur /*implements Runnable*/ {
 	 */
 	public Moteur(int cellule, int taille_goban, int nb_joueur, int nb_ordi, boolean isDidacticiel) {
 		goban = new Goban(taille_goban);
-		moteur_joueur = new MoteurJoueur(nb_joueur, nb_ordi, isDidacticiel);
+		moteur_joueur = new MoteurJoueur(goban, nb_joueur, nb_ordi, isDidacticiel);
 		moteur_pierre = new MoteurPierre(moteur_joueur, goban, taille_goban, nb_joueur, nb_ordi, isDidacticiel);
 		fin = new FinDePartie(taille_goban, goban, moteur_joueur, moteur_pierre);
 		

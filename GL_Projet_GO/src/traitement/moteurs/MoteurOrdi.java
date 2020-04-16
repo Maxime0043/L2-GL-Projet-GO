@@ -42,6 +42,16 @@ public class MoteurOrdi {
 	private ArrayList<Coordonnee> territoire_blanc;
 	private ArrayList<Coordonnee> territoire_rouge;
 	
+	/**
+	 * 
+	 * 
+	 * @param moteur
+	 * @param moteur_joueur
+	 * @param moteur_pierre
+	 * @param goban
+	 * @param taille_goban
+	 * @param difficulte
+	 */
 	public MoteurOrdi(Moteur moteur, MoteurJoueur moteur_joueur, MoteurPierre moteur_pierre, Goban goban, int taille_goban, int difficulte) {
 		this.moteur = moteur;
 		this.moteur_joueur = moteur_joueur;
@@ -61,6 +71,9 @@ public class MoteurOrdi {
 		}
 	}
 	
+	/**
+	 * Permet à l'ordinateur courant de jouer une pierre ou une méga-pierre.
+	 */
 	public void jouer() {		
 		moteur_pierre.setTourOrdi(true);
 		initTour();
@@ -71,7 +84,9 @@ public class MoteurOrdi {
 			}
 
 			else {
+				System.out.println("Danger commence");
 				cherche_coup = enDanger();
+				System.out.println("Danger Fini");
 
 				if(cherche_coup != null) {
 					System.out.println("Pierre/Chaine en danger !");
@@ -99,32 +114,32 @@ public class MoteurOrdi {
 			moteur.passer();
 		}
 		
-		for(int i = 0 ; i < taille_goban ; i++) {
-			for(int j = 0 ; j < taille_goban ; j++) {
-				if(goban.existPierre(i, j)) {
-					System.out.print("\t" + goban.getPierre(i, j).getNomChaine());
-				}
-				
-				else {
-					System.out.print("\tX");
-				}
-			}
-			System.out.println();
-		}
+//		for(int i = 0 ; i < taille_goban ; i++) {
+//			for(int j = 0 ; j < taille_goban ; j++) {
+//				if(goban.existPierre(i, j)) {
+//					System.out.print("\t" + goban.getPierre(i, j).getNomChaine());
+//				}
+//				
+//				else {
+//					System.out.print("\tX");
+//				}
+//			}
+//			System.out.println();
+//		}
 		
-		for(int i = 0; i < taille_goban; i++) {
-			for(int j = 0; j < taille_goban; j++) {
-				if(goban.existPierre(i, j)) {
-					System.out.print("\t" + goban.getPierre(i, j).getCouleur());
-				}
-
-				else {
-					System.out.print("\t-");
-				}
-			}
-			System.out.println();
-		}
-		System.out.println();
+//		for(int i = 0; i < taille_goban; i++) {
+//			for(int j = 0; j < taille_goban; j++) {
+//				if(goban.existPierre(i, j)) {
+//					System.out.print("\t" + goban.getPierre(i, j).getCouleur());
+//				}
+//
+//				else {
+//					System.out.print("\t-");
+//				}
+//			}
+//			System.out.println();
+//		}
+//		System.out.println();
 	}
 	
 	private void initTour() {
@@ -146,6 +161,12 @@ public class MoteurOrdi {
 		moteur_pierre.initDernieresPierresMortes();
 	}
 	
+	/**
+	 * Permet de savoir si, au moment où c'est au tour de l'ordinateur de jouer,
+	 * nous sommes en début de partie ou non.
+	 * 
+	 * @return Indique si nous sommes en début de partie.
+	 */
 	private boolean isDebut() {
 		int compteur = 0;
 		
@@ -164,12 +185,17 @@ public class MoteurOrdi {
 		return false;
 	}
 	
+	/**
+	 * Permet de savoir si un coup peu être joué ou non.
+	 * 
+	 * @return Indique si un coup peut être joué.
+	 */
 	private boolean canPlay() {
 		ArrayList<Coordonnee> intersections_vides = new ArrayList<Coordonnee>();
 		
 		for(int i = 0 ; i < taille_goban ; i++) {
 			for(int j = 0 ; j < taille_goban ; j++) {
-				if(goban.existPierre(i, j)) {
+				if(!goban.existPierre(i, j)) {
 					intersections_vides.add(new Coordonnee(i, j));
 				}
 			}
@@ -192,6 +218,9 @@ public class MoteurOrdi {
 		return true;
 	}
 	
+	/**
+	 * Permet de trouvé le premier coup qui va être jouer par l'ordinateur courant.
+	 */
 	private void recherche_coup_debut() {
 		ArrayList<Coordonnee> list = new ArrayList<Coordonnee>();
 
@@ -264,6 +293,15 @@ public class MoteurOrdi {
 		cherche_coup = new Pierre(moteur_joueur.currentCouleur(), list.get(index));
 	}
 	
+	/**
+	 * Permet de savoir si il y a des pierres présentes dans une certaine zone.
+	 * 
+	 * @param debutX Définit la ligne du plateau à laquelle on commence la vérification.
+	 * @param finX Définit la ligne du plateau à laquelle on termine la vérification.
+	 * @param debutY Définit la colonne du plateau à laquelle on commence la vérification.
+	 * @param finY Définit la colonne du plateau à laquelle on termine la vérification.
+	 * @return Indique si il y a une pierre dans la zone.
+	 */
 	private boolean ennemi_present_autour(int debutX, int finX, int debutY, int finY) {
 		for(int i = debutX ; i < finX ; i++) {
 			for(int j = debutY ; j < finY ; j++) {
@@ -276,6 +314,11 @@ public class MoteurOrdi {
 		return false;
 	}
 	
+	/**
+	 * Permet de trouver le meilleur coup possible à jouer pour l'ordinateur courant tout en gardant la première pierre jouée.
+	 * 
+	 * @param premiere_pierre Définit la pierre que l'on va retenir.
+	 */
 	private void recherche_coup(AbstractPierre premiere_pierre) {
 		tour++;
 		
@@ -295,6 +338,8 @@ public class MoteurOrdi {
 						AbstractPierre pierre = goban.getPierre(i, j);
 
 						sauvegarde_pierres_mortes();
+//						System.out.println("Avant");
+//						liste_pierre_morte();
 
 						if(nb_liste_pierres_mortes != stack_pierres_mortes.size()) {
 							has_pierre_mortes = true;
@@ -318,6 +363,8 @@ public class MoteurOrdi {
 						restore_scores();
 						
 						if(has_pierre_mortes) {
+//							System.out.println("Apres");
+//							liste_pierre_morte();
 							restore_pierres_mortes();
 						}
 					}
@@ -339,6 +386,25 @@ public class MoteurOrdi {
 		tour--;
 	}
 	
+	private void liste_pierre_morte() {
+		if(!stack_pierres_mortes.isEmpty()) {
+			System.out.print("taille : " + stack_pierres_mortes.size() + " {");
+			
+			for(AbstractPierre pm : stack_pierres_mortes.peek()) {
+				System.out.print(pm.getCouleur() + " (" + pm.getX() + ", " + pm.getY() + ")");
+			}
+			
+			System.out.print("}\n");
+		}
+	}
+	
+	/**
+	 * Permet de savoir si le coup voulant être joué est valide ou non grâce à ses coordonnées.
+	 * 
+	 * @param x Définit la ligne à laquelle on va vérifier la validité du coup.
+	 * @param y Définit la colonne à laquelle on va vérifier la validité du coup.
+	 * @return Indique si le coup est valide.
+	 */
 	private boolean isCoupValide(int x, int y) {
 		if(!goban.existPierre(x, y) || moteur_pierre.isSuicide()) {
 			return false;
@@ -355,6 +421,12 @@ public class MoteurOrdi {
 		}
 	}
 	
+	/**
+	 * Permet de définir le meilleur coup possible en comparant
+	 * le score avec ceux précédemment trouvés.
+	 * 
+	 * @param pierre Définit la pierre que l'on souhaite possiblement garder.
+	 */
 	private void compare_score(AbstractPierre pierre) {
 		int current_score = (int)moteur_joueur.getJoueur(couleur_ordi).getScore() + estimeScoreTerritoire();
 		
@@ -364,6 +436,11 @@ public class MoteurOrdi {
 		}
 	}
 	
+	/**
+	 * Permet d'obtenir une estimation du territoire que contrôle chaque joueur.
+	 * 
+	 * @return Renvoie le nombre de territoires que possède l'ordinateur courant.
+	 */
 	private int estimeScoreTerritoire() {
 		ArrayList<AbstractPierre> pierres = new ArrayList<AbstractPierre>();
 		ArrayList<Coordonnee> territoire;
@@ -600,10 +677,17 @@ public class MoteurOrdi {
 		return 0;
 	}
 	
+	/**
+	 * Permet de savoir si l'ordinateur courant à une pierre, une méga-pierre
+	 * ou une chaine sur le point de se faire capturer et renvoie le coup à jouer.
+	 * 
+	 * @return Renvoie le meilleur coup à jouer pour sauver ses pierres.
+	 */
 	private AbstractPierre enDanger() {
 		int priorite = 3;
 		int max_taille_chaine = 0;
 
+		HashMap<Integer, Chaine> save_chaines = new HashMap<Integer, Chaine>();
 		ArrayList<AbstractPierre> copy_pierres = new ArrayList<AbstractPierre>();
 		ArrayList<AbstractPierre> pierres_parcourus = new ArrayList<AbstractPierre>();
 		ArrayList<AbstractPierre> pierres_mortes = new ArrayList<AbstractPierre>();
@@ -611,9 +695,12 @@ public class MoteurOrdi {
 		AbstractPierre pierre_final = null;
 		Coordonnee coord_pierre = null;
 		
+		System.out.println("Taille 1 Joueur : " + moteur_joueur.getJoueur(moteur_joueur.currentCouleur()).getListePierre().size());
+		moteur_joueur.updateJoueurs();
 		copy_pierres.addAll(moteur_joueur.getJoueur(moteur_joueur.currentCouleur()).getListePierre());
 		
 		for(AbstractPierre pierre : copy_pierres) {
+			System.out.println("Danger Pierre en " + pierre.getX() + " " + pierre.getY());
 			AbstractPierre tmp;
 			
 			if(pierres_parcourus.contains(pierre)) {
@@ -627,6 +714,7 @@ public class MoteurOrdi {
 					coord_pierre = intersection_libre.get(0);
 					sauvegarde_scores();
 					moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
+					save_chaines = sauvegarde_chaines();
 					
 					pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
 					
@@ -639,6 +727,8 @@ public class MoteurOrdi {
 						}
 
 						moteur_pierre.removePierre(tmp);
+						restore_chaines(save_chaines);
+						goban.updateChaines();
 					}
 					
 					for(AbstractPierre pm : pierres_mortes) {
@@ -655,7 +745,6 @@ public class MoteurOrdi {
 				copy_chaine.addAll(goban.getChaine(pierre.getNomChaine()));
 				
 				for(AbstractPierre pierre_chaine : copy_chaine) {
-					System.out.println("Pierre Chaine (" + pierre_chaine.getX() + ", " + pierre_chaine.getY() + ")");
 					if(!pierres_parcourus.contains(pierre_chaine)) {
 						if(priorite > 1) {
 							intersection_libre = GoPierre.intersectionVide(pierre_chaine, goban.getPlateau(), taille_goban);
@@ -664,6 +753,7 @@ public class MoteurOrdi {
 								coord_pierre = intersection_libre.get(0);
 								sauvegarde_scores();
 								moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
+								save_chaines = sauvegarde_chaines();
 
 								pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
 								
@@ -677,6 +767,8 @@ public class MoteurOrdi {
 									}
 
 									moteur_pierre.removePierre(tmp);
+									restore_chaines(save_chaines);
+									goban.updateChaines();
 								}
 								
 								for(AbstractPierre pm : pierres_mortes) {
@@ -688,7 +780,6 @@ public class MoteurOrdi {
 						}
 						
 						for(AbstractPierre pierre_voisin : GoPierre.voisins(pierre_chaine, goban.getPlateau(), taille_goban)) {
-							System.out.println("Pierre Voisin (" + pierre_voisin.getX() + ", " + pierre_voisin.getY() + ")");
 							if(!pierre_voisin.hasChaine() && priorite > 0) {
 								if(goban.canBeCaptured(pierre_voisin)) {
 									intersection_libre = GoPierre.intersectionVide(pierre_voisin, goban.getPlateau(), taille_goban);
@@ -697,6 +788,7 @@ public class MoteurOrdi {
 										coord_pierre = intersection_libre.get(0);
 										sauvegarde_scores();
 										moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
+										save_chaines = sauvegarde_chaines();
 
 										pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
 										
@@ -710,6 +802,8 @@ public class MoteurOrdi {
 											}
 	
 											moteur_pierre.removePierre(tmp);
+											restore_chaines(save_chaines);
+											goban.updateChaines();
 										}
 										
 										for(AbstractPierre pm : pierres_mortes) {
@@ -731,6 +825,7 @@ public class MoteurOrdi {
 										coord_pierre = intersection_libre.get(0);
 										sauvegarde_scores();
 										moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
+										save_chaines = sauvegarde_chaines();
 
 										pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
 										
@@ -746,6 +841,8 @@ public class MoteurOrdi {
 											}
 
 											moteur_pierre.removePierre(tmp);
+											restore_chaines(save_chaines);
+											goban.updateChaines();
 										}
 										
 										for(AbstractPierre pm : pierres_mortes) {
@@ -769,6 +866,10 @@ public class MoteurOrdi {
 		return pierre_final;
 	}
 	
+	/**
+	 * Permet de supprimer les occurences de coordonnées dans les listes
+	 * de territoires de tous les joueurs de la partie.
+	 */
 	private void removeSameTerritoire() {
 		ArrayList<Coordonnee> copy_territoire_noir = new ArrayList<Coordonnee>();
 		ArrayList<Coordonnee> copy_territoire_blanc = new ArrayList<Coordonnee>();
@@ -811,6 +912,13 @@ public class MoteurOrdi {
 		}
 	}
 	
+	/**
+	 * Permet de définir si deux coordonnées sont identiques.
+	 * 
+	 * @param c1 Définit la première coordonnée que l'on va comparer.
+	 * @param c2 Définit la seconde coordonnée que l'on va comparer.
+	 * @return Indique si les deux coordonnées sont identiques.
+	 */
 	private boolean isSameCoordonnee(Coordonnee c1, Coordonnee c2) {
 		if(c1.getX() == c2.getX() && c1.getY() == c2.getY()) {
 			return true;
@@ -821,6 +929,12 @@ public class MoteurOrdi {
 		}
 	}
 	
+	/**
+	 * Permet de récupérer des chaines avant qu'elles aient eu le temps
+	 * de fusionner : ce qui nous permettra de les restaurer les anciennes chaines.
+	 * 
+	 * @return Renvoie les chaine avant une fusion.
+	 */
 	private HashMap<Integer, Chaine> sauvegarde_chaines(){
 		HashMap<Integer, Chaine> hm_chaines = new HashMap<Integer, Chaine>();
 		
@@ -843,9 +957,13 @@ public class MoteurOrdi {
 		return hm_chaines;
 	}
 	
+	/**
+	 * Permet de restaurer les anciennes chaines qui étaient fusionnées.
+	 * 
+	 * @param hm_chaines Définit les chaines sous forme non fusionnées. 
+	 */
 	private void restore_chaines(HashMap<Integer, Chaine> hm_chaines) {
 		for(Integer nom_chaine : hm_chaines.keySet()) {
-			System.out.println("Coucou : " + nom_chaine);
 			if(goban.getHmChaine().containsKey(nom_chaine)) {
 				goban.getHmChaine().replace(nom_chaine, hm_chaines.get(nom_chaine));
 			}
@@ -861,12 +979,18 @@ public class MoteurOrdi {
 		} 
 	}
 	
+	/**
+	 * Permet de sauvegarder les pierres et méga-pierres précédemments mortes.
+	 */
 	private void sauvegarde_pierres_mortes() {
 		if(!moteur_pierre.getDernieresPierresMortes().isEmpty()) {
 			stack_pierres_mortes.push(moteur_pierre.getDernieresPierresMortes());
 		}
 	}
 	
+	/**
+	 * Permet de restaurer les pierres et méga-pierres précédemments mortes.
+	 */
 	private void restore_pierres_mortes() {
 		if(!stack_pierres_mortes.empty()) {
 			ArrayList<AbstractPierre> pierres_mortes = new ArrayList<AbstractPierre>();
@@ -888,6 +1012,9 @@ public class MoteurOrdi {
 		}
 	}
 	
+	/**
+	 * Permet de sauvegarder 
+	 */
 	private void sauvegarde_scores() {
 		int n = moteur_joueur.getJoueurs().length;
 		int[] scores_precedents = new int[n];
