@@ -9,18 +9,13 @@ package donnees;
  */
 public class Score {
 
-	private int score;
-	private int capture;
-	private int territoire;
-	private int komi;
+	private double score;
 	
 	public Score () {
 		this.score = 0;
-		this.capture = 0;
-//		this.komi = komi;
 	}
 	
-	public int getScore() {
+	public double getScore() {
 		return score;
 	}
 	
@@ -28,19 +23,12 @@ public class Score {
 		score = 0;
 	}
 	
-	public void addScore(int nombre) {
+	public void addScore(double nombre) {
 		score += nombre;
 	}
 	
-	public void setScore(int nombre) {
+	public void setScore(double nombre) {
 		score = nombre;
-	}
-
-	/**
-	 * Permet d'ajouter le komi au score du joueur
-	 */
-	public void score_final() {
-		addScore(komi);
 	}
 
 }

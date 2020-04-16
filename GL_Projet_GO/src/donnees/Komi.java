@@ -9,9 +9,9 @@ package donnees;
  */
 public class Komi {
 	
-	public static final double BLANC = 7.5;
-	public static final double ROUGE = 14.0;
-	public static final double H_BLANC = 0.5;
-	public static final double H_ROUGE = 1.0;
+	public static final double BLANC_9 = 3.5;
+	public static final double ROUGE_9 = 6.0;
+	public static final double BLANC_19 = 7.5;
+	public static final double ROUGE_19 = 14.0;
 	
 }

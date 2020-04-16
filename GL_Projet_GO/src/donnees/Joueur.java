@@ -36,7 +36,7 @@ public class Joueur {
 		initNbMegaPierre();
 	}
 	
-	public int getScore() {
+	public double getScore() {
 		return score.getScore();
 	}
 	
@@ -44,11 +44,11 @@ public class Joueur {
 		score.initScore();
 	}
 	
-	public void addScore(int nombre) {
+	public void addScore(double nombre) {
 		score.addScore(nombre);
 	}
 	
-	public void setScore(int nombre) {
+	public void setScore(double nombre) {
 		score.setScore(nombre);
 	}
 	

@@ -11,6 +11,7 @@ import donnees.Pierre;
 import traitement.Goban;
 import traitement.moteurs.MoteurJoueur;
 import traitement.moteurs.MoteurPierre;
+import donnees.Komi;
 
 /**
  * Cette classe effectue les différents traitements de la fin de partie.
@@ -609,6 +610,24 @@ public class FinDePartie {
 				
 				InterVideDejaParcourue.clear();
 				InterVideAutourChaine.clear();
+			}
+		}
+		if(taille_goban == 9) {
+			if(moteur_joueur.getNbJoueurs() == 3) {
+				moteur_joueur.getJoueurs()[1].addScore(Komi.BLANC_9);
+				moteur_joueur.getJoueurs()[2].addScore(Komi.ROUGE_9);
+			}
+			else {
+				moteur_joueur.getJoueurs()[1].addScore(Komi.BLANC_9);
+			}
+		}
+		else {
+			if(moteur_joueur.getNbJoueurs() == 3) {
+				moteur_joueur.getJoueurs()[1].addScore(Komi.BLANC_19);
+				moteur_joueur.getJoueurs()[2].addScore(Komi.ROUGE_19);
+			}
+			else {
+				moteur_joueur.getJoueurs()[1].addScore(Komi.BLANC_19);
 			}
 		}
 	}

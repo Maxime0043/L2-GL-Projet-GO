@@ -241,7 +241,7 @@ public class Moteur /*implements Runnable*/ {
 		position_jouable.add(new Cercle(coord, couleur, isMegaPierre));		
 	}
 	
-	public int[] getScores() {
+	public double[] getScores() {
 		return moteur_joueur.getScores();
 	}
 	

@@ -61,6 +61,10 @@ public class MoteurJoueur {
 		return joueurs;
 	}
 	
+	public int getNbJoueurs() {
+		return nb_joueurs;
+	}
+	
 	/**
 	 * Permet de savoir si le joueur courant possède une méga-pierre ou non.
 	 * 
@@ -181,8 +185,8 @@ public class MoteurJoueur {
 	 * 
 	 * @return Renvoie les scores des joueurs sous forme de tableau.
 	 */
-	public int[] getScores() {
-		int[] scores = new int[nb_joueurs];
+	public double[] getScores() {
+		double[] scores = new double[nb_joueurs];
 		
 		for(int i = 0 ; i < nb_joueurs ; i++) {
 			scores[i] = getJoueurs()[i].getScore();
