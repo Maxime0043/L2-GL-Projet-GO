@@ -33,6 +33,9 @@ public class FinDePartie {
 	private MoteurPierre moteur_pierre;
 	
 	private ArrayList<AbstractPierre> pierres_mortes;
+	private ArrayList<Coordonnee> Noir;
+	private ArrayList<Coordonnee> Blanc; 
+	private ArrayList<Coordonnee> Rouge; 
 	
 	/**
 	 * Permet d'initialiser la fin de partie
@@ -49,6 +52,9 @@ public class FinDePartie {
 		this.moteur_pierre = moteur_pierre;
 		
 		pierres_mortes = new ArrayList<AbstractPierre>();
+		Noir = new ArrayList<Coordonnee>();
+		Blanc = new ArrayList<Coordonnee>();
+		Rouge = new ArrayList<Coordonnee>();
 	}
 	
 	/**
@@ -64,6 +70,18 @@ public class FinDePartie {
 		pierreMorte(plateau, hmChaine);
 		supprimePierreMorte();
 		calculTerritoire(plateau, hmChaine);
+	}
+	
+	public ArrayList<Coordonnee> getTerritoireNoir(){
+		return Noir;
+	}
+	
+	public ArrayList<Coordonnee> getTerritoireBlanc(){
+		return Blanc;
+	}
+	
+	public ArrayList<Coordonnee> getTerritoireRouge(){
+		return Rouge;
 	}
 	
 	/**
@@ -380,10 +398,6 @@ public class FinDePartie {
 		boolean end;
 		boolean endCote;
 		boolean neutre = false;
-		
-		ArrayList<Coordonnee> Noir = new ArrayList<Coordonnee>();
-		ArrayList<Coordonnee> Blanc = new ArrayList<Coordonnee>();
-		ArrayList<Coordonnee> Rouge = new ArrayList<Coordonnee>();
 		
 		ArrayList<AbstractPierre> ListPierre = new ArrayList<AbstractPierre>();
 		ArrayList<Integer> ListChaine = new ArrayList<Integer>();

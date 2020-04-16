@@ -241,6 +241,10 @@ public class Moteur /*implements Runnable*/ {
 		position_jouable.add(new Cercle(coord, couleur, isMegaPierre));		
 	}
 	
+	public FinDePartie getFin(){
+		return fin;
+	}
+	
 	public double[] getScores() {
 		return moteur_joueur.getScores();
 	}

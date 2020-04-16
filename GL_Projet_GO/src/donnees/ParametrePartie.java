@@ -45,6 +45,14 @@ public class ParametrePartie {
 	
 	public static final int LARGEUR_DESCRIPTION = (int)(WINDOW_WIDTH / 2.5);
 	
+	public static final int TAILLE_TERRITOIRE_9 = 20;
+	
+	public static final int DECALAGE_TERRITOIRE_9 = (LARGEUR_CASE_9 - TAILLE_TERRITOIRE_9) / 2;
+	
+	public static final int TAILLE_TERRITOIRE_19 = 10;
+	
+	public static final int DECALAGE_TERRITOIRE_19 = (LARGEUR_CASE_19 - TAILLE_TERRITOIRE_19) / 2;
+	
 	public static final int[] NOMBRE_JOUEUR = {1, 2, 3};
 	
 	public static final int[] NOMBRE_IA = {0, 1, 2};

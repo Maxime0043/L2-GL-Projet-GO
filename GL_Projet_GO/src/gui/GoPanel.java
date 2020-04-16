@@ -18,6 +18,7 @@ import donnees.Couleur;
 import donnees.ParametrePartie;
 import traitement.CalculFactory;
 import traitement.moteurs.Moteur;
+import traitement.FinDePartie;
 
 /**
  * Cette classe gère l'affichage graphique lié au jeu de go.
@@ -34,6 +35,7 @@ public class GoPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private Moteur moteur;
+	private FinDePartie Fin;
 	
 	private int cellule;
 	private int ecart_window_horizontal;
@@ -48,6 +50,8 @@ public class GoPanel extends JPanel{
 	private int petit_decalage;
 	private int taille_hoshi;
 	private int petit_decalage_hoshi;
+	private int taille_territoire;
+	private int decalage_territoire;
 	
 	public GoPanel(Moteur moteur, int choix, int nb_joueurs, boolean isDidacticiel) {
 		initGoPanel(moteur, choix, nb_joueurs, isDidacticiel);
@@ -66,6 +70,8 @@ public class GoPanel extends JPanel{
 			petit_decalage = ParametrePartie.PETITE_DECALAGE_9;
 			taille_hoshi = ParametrePartie.TAILLE_HOSHI_9;
 			petit_decalage_hoshi = ParametrePartie.PETIT_DECALAGE_HOSHI_9;
+			taille_territoire = ParametrePartie.TAILLE_TERRITOIRE_9;
+			decalage_territoire = ParametrePartie.DECALAGE_TERRITOIRE_9;
 		}
 		
 		else {
@@ -75,9 +81,12 @@ public class GoPanel extends JPanel{
 			petit_decalage = ParametrePartie.PETITE_DECALAGE_19;
 			taille_hoshi = ParametrePartie.TAILLE_HOSHI_19;
 			petit_decalage_hoshi = ParametrePartie.PETIT_DECALAGE_HOSHI_19;
+			taille_territoire = ParametrePartie.TAILLE_TERRITOIRE_19;
+			decalage_territoire = ParametrePartie.DECALAGE_TERRITOIRE_19;
 		}
 		
 		this.moteur = moteur;
+		this.Fin = moteur.getFin();
 		this.nb_joueurs = nb_joueurs;
 		this.isDidacticiel = isDidacticiel;
 
@@ -97,6 +106,7 @@ public class GoPanel extends JPanel{
 		drawCercle(g);
 		drawScore(g);
 		drawCouleurJoueur(g);
+		drawterritoire(g);
 	}
 	
 	/**
@@ -111,6 +121,43 @@ public class GoPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * Dessine les territoires de chaque joueur
+	 * @param g
+	 */
+	private void drawterritoire(Graphics g) {
+		int x, y;
+		for(Coordonnee c : Fin.getTerritoireNoir()) {
+			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, decalage_territoire);
+			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, decalage_territoire);
+			
+			setColor(g, Couleur.NOIR, false);
+			
+			g.fillOval(x, y, taille_territoire, taille_territoire);
+
+			Go.logger.trace("Le hoshi de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
+		}
+		for(Coordonnee c : Fin.getTerritoireBlanc()) {
+			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, decalage_territoire);
+			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, decalage_territoire);
+			
+			setColor(g, Couleur.BLANC, false);
+			
+			g.fillOval(x, y, taille_territoire, taille_territoire);
+
+			Go.logger.trace("Le hoshi de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
+		}
+		for(Coordonnee c : Fin.getTerritoireRouge()) {
+			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, decalage_territoire);
+			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, decalage_territoire);
+			
+			setColor(g, Couleur.ROUGE, false);
+			
+			g.fillOval(x, y, taille_territoire, taille_territoire);
+
+			Go.logger.trace("Le hoshi de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
+		}
+	}
 	/**
 	 * Dessine les cercles des pierres / méga-pierres du goban sur la sous-fenêtre GoPanel.
 	 */	

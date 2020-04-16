@@ -30,5 +30,4 @@ public class Score {
 	public void setScore(double nombre) {
 		score = nombre;
 	}
-
 }
