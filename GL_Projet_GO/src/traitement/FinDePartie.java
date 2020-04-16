@@ -36,15 +36,7 @@ public class FinDePartie {
 	private ArrayList<Coordonnee> Noir;
 	private ArrayList<Coordonnee> Blanc; 
 	private ArrayList<Coordonnee> Rouge; 
-	
-	/**
-	 * Permet d'initialiser la fin de partie.
-	 * 
-	 * @param taille_goban
-	 * @param goban
-	 * @param moteur_joueur
-	 * @param moteur_pierre
-	 */
+
 	public FinDePartie(int taille_goban, Goban goban, MoteurJoueur moteur_joueur, MoteurPierre moteur_pierre) {
 		this.taille_goban = taille_goban;
 		this.goban = goban;
@@ -60,8 +52,8 @@ public class FinDePartie {
 	/**
 	 * Permet d'effectuer les différentes actions de la fin de partie.
 	 * 
-	 * @param plateau
-	 * @param hmChaine
+	 * @param plateau Tableau de deux dimensions où les pierres sont enregistrer.
+	 * @param hmChaine Dictionnaire où les chaines sont stoqués.
 	 */
 	public void initFin(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		pierres_mortes.clear();
@@ -87,8 +79,8 @@ public class FinDePartie {
 	/**
 	 * Détermine les chaîne qui ont des yeux.
 	 * 
-	 * @param plateau
-	 * @param hmChaine
+	 * @param plateau Tableau de deux dimensions où les pierres sont enregistrer.
+	 * @param hmChaine Dictionnaire où les chaines sont stoqués.
 	 */
 	public void setChaineTwoEye(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		
@@ -199,8 +191,8 @@ public class FinDePartie {
 	/**
 	 * Détermine les pierres qui sont mortes.
 	 * 
-	 * @param plateau
-	 * @param hmChaine
+	 * @param plateau Tableau de deux dimensions où les pierres sont enregistrer.
+	 * @param hmChaine Dictionnaire où les chaines sont stoqués.
 	 */
 	public void pierreMorte(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		int i, j;
@@ -389,8 +381,8 @@ public class FinDePartie {
 	/**
 	 * Permet de calculer le territoire et donc de définir le score final de la partie.
 	 * 
-	 * @param plateau
-	 * @param hmChaine
+	 * @param plateau Tableau de deux dimensions où les pierres sont enregistrer.
+	 * @param hmChaine Dictionnaire où les chaines sont stoqués.
 	 */
 	public void calculTerritoire(AbstractPierre[][] plateau, HashMap<Integer, Chaine> hmChaine) {
 		
@@ -651,7 +643,7 @@ public class FinDePartie {
 	 * 
 	 * @param nc  la coordonnée dont on veut vérifié l'existence
 	 * @param InterVideDejaParcourue liste de coordonnée
-	 * @return
+	 * @return True si la coordonnée est trouvée dans la liste
 	 */
 	public boolean dejaParcourue(Coordonnee nc, ArrayList<Coordonnee> InterVideDejaParcourue) {
 		boolean ajouter = true; 
