@@ -238,7 +238,6 @@ public class Goban {
 		Couleur couleurVoisin;
 		
 		ArrayList<AbstractPierre> liste_voisin = GoPierre.voisins(pierre, plateau.getPlateau(), taille_goban);
-		updateChaines();
 		sauvegarde_chaines.clear();
 		
 		if(liste_voisin.size() != 0) {
@@ -400,17 +399,19 @@ public class Goban {
 	public void updateChaines() {
 		for(int i = 0 ; i < taille_goban ; i++) {
 			for(int j = 0 ; j < taille_goban ; j++) {
-				if(existPierre(i, j) && getPierre(i, j).hasChaine()) {
-					boolean hasChaine = false;
-					
-					for(AbstractPierre p : GoPierre.voisins(getPierre(i, j), getPlateau(), taille_goban)) {
-						if(p.getCouleur() == getPierre(i, j).getCouleur()) {
-							hasChaine = true;
+				if(existPierre(i, j)) {
+					if(getPierre(i, j).hasChaine()) {
+						boolean hasChaine = false;
+						
+						for(AbstractPierre p : GoPierre.voisins(getPierre(i, j), getPlateau(), taille_goban)) {
+							if(p.getCouleur() == getPierre(i, j).getCouleur()) {
+								hasChaine = true;
+							}
 						}
-					}
-					
-					if(!hasChaine) {
-						removePierreChaine(getPierre(i, j));
+						
+						if(!hasChaine) {
+							removePierreChaine(getPierre(i, j));
+						}
 					}
 				}
 			}

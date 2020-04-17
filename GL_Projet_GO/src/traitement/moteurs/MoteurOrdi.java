@@ -683,6 +683,7 @@ public class MoteurOrdi {
 		copy_pierres.addAll(moteur_joueur.getJoueur(moteur_joueur.currentCouleur()).getListePierre());
 		
 		for(AbstractPierre pierre : copy_pierres) {
+			ArrayList<AbstractPierre> save_pierres_mortes = null;
 			AbstractPierre tmp;
 			
 			if(pierres_parcourus.contains(pierre)) {
@@ -701,6 +702,7 @@ public class MoteurOrdi {
 					pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
 					
 					if(goban.existPierre(coord_pierre.getX(), coord_pierre.getY())) {
+						save_pierres_mortes = sauvegarde_pierres_mortes();
 						tmp = goban.getPierre(coord_pierre.getX(), coord_pierre.getY());
 						
 						if(isCoupValide(coord_pierre.getX(), coord_pierre.getY())) {
@@ -709,6 +711,7 @@ public class MoteurOrdi {
 						}
 
 						moteur_pierre.removePierre(tmp);
+						restore_pierres_mortes(save_pierres_mortes);
 						restore_chaines(save_chaines);
 						goban.updateChaines();
 					}
@@ -740,6 +743,7 @@ public class MoteurOrdi {
 								pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
 								
 								if(goban.existPierre(coord_pierre.getX(), coord_pierre.getY())) {
+									save_pierres_mortes = sauvegarde_pierres_mortes();
 									tmp = goban.getPierre(coord_pierre.getX(), coord_pierre.getY());
 									
 									if(isCoupValide(coord_pierre.getX(), coord_pierre.getY())) {
@@ -749,6 +753,7 @@ public class MoteurOrdi {
 									}
 
 									moteur_pierre.removePierre(tmp);
+									restore_pierres_mortes(pierres_mortes);
 									restore_chaines(save_chaines);
 									goban.updateChaines();
 								}
@@ -775,6 +780,7 @@ public class MoteurOrdi {
 										pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
 										
 										if(goban.existPierre(coord_pierre.getX(), coord_pierre.getY())) {
+											save_pierres_mortes = sauvegarde_pierres_mortes();
 											tmp = goban.getPierre(coord_pierre.getX(), coord_pierre.getY());
 											
 											if(isCoupValide(coord_pierre.getX(), coord_pierre.getY())) {
@@ -784,6 +790,7 @@ public class MoteurOrdi {
 											}
 	
 											moteur_pierre.removePierre(tmp);
+											restore_pierres_mortes(pierres_mortes);
 											restore_chaines(save_chaines);
 											goban.updateChaines();
 										}
@@ -812,6 +819,7 @@ public class MoteurOrdi {
 										pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
 										
 										if(goban.existPierre(coord_pierre.getX(), coord_pierre.getY())) {
+											save_pierres_mortes = sauvegarde_pierres_mortes();
 											tmp = goban.getPierre(coord_pierre.getX(), coord_pierre.getY());
 											
 											if(isCoupValide(coord_pierre.getX(), coord_pierre.getY())) {
@@ -823,6 +831,7 @@ public class MoteurOrdi {
 											}
 
 											moteur_pierre.removePierre(tmp);
+											restore_pierres_mortes(pierres_mortes);
 											restore_chaines(save_chaines);
 											goban.updateChaines();
 										}

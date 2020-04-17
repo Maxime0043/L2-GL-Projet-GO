@@ -204,10 +204,13 @@ public class MoteurJoueur {
 		int nom;
 		
 		for(int i = 0 ; i < nb_joueurs ; i++) {
+//			System.out.println("Joueur " + getJoueurs()[i].getCouleur());
+//			System.out.println("{");
 			for(AbstractPierre pierre : getJoueurs()[i].getListePierre()) {
 				if(goban.existPierre(pierre.getX(), pierre.getY())) {
 					nom = goban.getPierre(pierre.getX(), pierre.getY()).getNomChaine();
 					pierre.setNomChaine(nom);
+//					System.out.print("Pierre de " + pierre.getNomChaine() + " en " + pierre.getX() + " " + pierre.getY());
 				}
 			}
 		}
