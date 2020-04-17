@@ -1081,14 +1081,12 @@ public class MoteurOrdi {
 	 */
 	private void restore_pierres_mortes(ArrayList<AbstractPierre> pierres_mortes) {
 		for(AbstractPierre pierre : pierres_mortes) {
-			if(pierre.getCouleur() != moteur_joueur.currentCouleur()) {
-				if(pierre.isMegaPierre()) {
-					moteur_pierre.setPoseMegaPierre(true);
-				}
-				
-				moteur_pierre.posePierre(pierre.getX(), pierre.getY(), pierre.getCouleur());
-				moteur_pierre.setPoseMegaPierre(false);
+			if(pierre.isMegaPierre()) {
+				moteur_pierre.setPoseMegaPierre(true);
 			}
+			
+			moteur_pierre.posePierre(pierre.getX(), pierre.getY(), pierre.getCouleur());
+			moteur_pierre.setPoseMegaPierre(false);
 		}
 	}
 	
