@@ -325,11 +325,11 @@ public class MoteurOrdi {
 					moteur_pierre.setSuicide(false);
 					moteur_pierre.posePierre(i, j, moteur_joueur.currentCouleur());
 					save_chaines = sauvegarde_chaines();
+					save_pierres_mortes = sauvegarde_pierres_mortes();
 					
 					if(isCoupValide(i, j)) {
 						AbstractPierre pierre = goban.getPierre(i, j);
 
-						save_pierres_mortes = sauvegarde_pierres_mortes();
 						liste_pierre_morte(save_pierres_mortes);
 
 						if(tour == 1) {
@@ -348,13 +348,13 @@ public class MoteurOrdi {
 						moteur_pierre.removePierre(pierre);
 						goban.updateLibertePlateau();
 						restore_scores(scores);
-						restore_pierres_mortes(save_pierres_mortes);
 					}
 					
 					if(goban.existPierre(i, j)) {
 						moteur_pierre.removePierre(goban.getPierre(i, j));
 					}
 					
+					restore_pierres_mortes(save_pierres_mortes);
 					restore_chaines(save_chaines);
 					goban.updateChaines();
 				}
