@@ -261,9 +261,9 @@ public class Go extends JFrame implements Runnable {
 				System.out.println(e.getMessage());
 			}
 
-			if (!stop) {				
+			if (!stop) {
+				moteur.run();				
 				update();
-				moteur.run();
 				
 				if(moteur.isFinPartie()) {
 					JOptionPane.showMessageDialog(null, moteur.texteFinPartie(), "FIN DE LA PARTIE", JOptionPane.INFORMATION_MESSAGE); 
