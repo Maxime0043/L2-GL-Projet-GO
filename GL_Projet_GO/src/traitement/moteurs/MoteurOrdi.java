@@ -319,7 +319,8 @@ public class MoteurOrdi {
 					HashMap<Integer, Chaine> save_chaines = null;
 					ArrayList<AbstractPierre> save_pierres_mortes = null;
 					int[] scores = null;
-					
+
+					goban.updateChaines();
 					scores = sauvegarde_scores();
 					moteur_pierre.setSuicide(false);
 					moteur_pierre.posePierre(i, j, moteur_joueur.currentCouleur());
@@ -682,7 +683,7 @@ public class MoteurOrdi {
 		copy_pierres.addAll(moteur_joueur.getJoueur(moteur_joueur.currentCouleur()).getListePierre());
 		
 		for(AbstractPierre pierre : copy_pierres) {
-			System.out.println("Pierre danger en " + pierre.getX() + " " + pierre.getY() + " | " + pierre.getNomChaine() + " et " + goban.getPierre(pierre.getX(), pierre.getY()).getNomChaine());
+//			System.out.println("Pierre danger en " + pierre.getX() + " " + pierre.getY() + " | " + pierre.getNomChaine() + " et " + goban.getPierre(pierre.getX(), pierre.getY()).getNomChaine());
 			ArrayList<AbstractPierre> save_pierres_mortes = null;
 			AbstractPierre tmp;
 			

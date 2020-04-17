@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -43,7 +44,7 @@ public class Go extends JFrame implements Runnable {
 	 */
 	private Moteur moteur;
 	
-	private JPanel menuPanel, menuGauchePanel, menuDroitPanel, goPanel, actionPanel;
+	private JPanel menuPanel, goPanel, actionPanel;
 	
 	/**
 	 * Les prarties gobanPanel et descPanel sont gérées dans d'autres classes.
@@ -80,8 +81,6 @@ public class Go extends JFrame implements Runnable {
 		super("Jeu de GO");
 		
 		menuPanel = new JPanel();
-		menuGauchePanel = new JPanel();
-		menuDroitPanel = new JPanel();
 		goPanel = new JPanel();
 		actionPanel = new JPanel();
 		
@@ -265,6 +264,12 @@ public class Go extends JFrame implements Runnable {
 			if (!stop) {				
 				update();
 				moteur.run();
+				
+				if(moteur.isFinPartie()) {
+					JOptionPane.showMessageDialog(null, moteur.texteFinPartie(), "FIN DE LA PARTIE", JOptionPane.INFORMATION_MESSAGE); 
+					
+					revenirMenu();
+				}
 			}
 		}
 	}

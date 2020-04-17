@@ -199,6 +199,25 @@ public class MoteurJoueur {
 	}
 	
 	/**
+	 * Permet de récupérer le meilleur joueur de la partie.
+	 * 
+	 * @return Renvoie le joueur avec le meilleur score.
+	 */
+	public Joueur getMeilleurJoueur() {
+		Joueur meilleur = null;
+		double score = -1;
+		
+		for(int i = 0 ; i < nb_joueurs ; i++) {
+			if(getJoueurs()[i].getScore() > score) {
+				score = getJoueurs()[i].getScore();
+				meilleur = getJoueurs()[i];
+			}
+		}
+		
+		return meilleur;
+	}
+	
+	/**
 	 * Permet de mettre à jour chaque pierre et méga-pierre que les joueurs
 	 * ont posé sur le plateau.
 	 */

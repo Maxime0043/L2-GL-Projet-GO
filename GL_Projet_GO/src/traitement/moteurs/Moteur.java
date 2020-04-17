@@ -37,8 +37,9 @@ public class Moteur /*implements Runnable*/ {
 	private Moteur instance = this;
 	
 	private boolean didacticiel_fini = false;
-//	private boolean is_tour_ordi = false;
-//	private Moteur instance = this;
+	private boolean is_fin_partie = false;
+	
+	private String info_texte;
 	
 	/**
 	 * Pour créer le moteur du jeu nous aurons besoin de plusieurs variables.
@@ -82,39 +83,23 @@ public class Moteur /*implements Runnable*/ {
 	 * Définit ce qu'il faut faire pour le joueur courant : il fait jouer l'ordinateur si c'est son tour,
 	 * sinon il attend d'avoir les coordonnées de clique de l'utilisateur.
 	 */
-//	@Override
 	public void run() {
-//		boolean isRunning = true;
-//		
-//		while (isRunning) {
-//			try {
-//				Thread.sleep(ParametrePartie.FPS);
-//				
-//			} catch (InterruptedException e) {
-//				System.out.println(e.getMessage());
-//			}
-//
-//			if (isRunning) {
-				if(currentJoueur().isOrdi()) {
-					long startTime = System.currentTimeMillis();
-					
-					System.out.println("-------Ordi Début--------" + moteur_joueur.currentCouleur() + "\n");
-					moteur_ordi.jouer();
-					System.out.println("\n-------Ordi Fin--------");
-					
-//					moteur_pierre.addPierre(moteur_ordi.getCoup());
-					
-					System.out.println("Temps ordi: " + (System.currentTimeMillis() - startTime) + "\n\n");
-				}
-				
-				else {
-					if(x != -1 && y != -1) {
-						clicEvent(x, y);
-						initCoord();
-					}
-				}
-//			}
-//		}
+		if(currentJoueur().isOrdi()) {
+			long startTime = System.currentTimeMillis();
+			
+			System.out.println("-------Ordi Début--------" + moteur_joueur.currentCouleur() + "\n");
+			moteur_ordi.jouer();
+			System.out.println("\n-------Ordi Fin--------");
+			
+			System.out.println("Temps ordi: " + (System.currentTimeMillis() - startTime) + "\n\n");
+		}
+		
+		else {
+			if(x != -1 && y != -1) {
+				clicEvent(x, y);
+				initCoord();
+			}
+		}
 	}
 	
 	/**
@@ -139,29 +124,39 @@ public class Moteur /*implements Runnable*/ {
 	 */
 	public void passer() {
 		System.out.println("Le joueur " + currentCouleur() + " vient de passer");
+		
+		initInfoTexte();		
 		moteur_joueur.changeJoueur();
 		pass_compteur++;
 		
 		if(pass_compteur == nb_joueurs) {
 			initPassCompteur();
 			fin.initFin(goban.getPlateau(), goban.getHmChaine());
-			System.out.println("Fini");
+			is_fin_partie = true;
 		}
 	}
 	
-//	public void tourOrdi() {
-//		if(!is_tour_ordi) {
-//			System.out.println("-------Ordi Début--------");
-//			is_tour_ordi = true;
-//			moteur_pierre.setTourOrdi(true);
-//		}
-//		
-//		else {
-//			System.out.println("-------Ordi Fin--------");
-//			is_tour_ordi = false;
-//			moteur_pierre.setTourOrdi(false);
-//		}
-//	}
+	private void initInfoTexte() {
+		info_texte = "Le Joueur " + moteur_joueur.currentCouleur() + " vient de passer son tour";
+	}
+	
+	public String getJoueurPasse() {
+		if(pass_compteur > 0) {
+			return info_texte;
+		}
+		
+		return "";
+	}
+	
+	public boolean isFinPartie() {
+		return is_fin_partie;
+	}
+	
+	public String texteFinPartie() {
+		Joueur gagnant = moteur_joueur.getMeilleurJoueur();
+		
+		return "Bravo au joueur " + gagnant.getCouleur() + " qui remporte la partie avec un score de " + gagnant.getScore() + ".\nLes territoires de chaque joueur sont affichées par cercles\nde la même couleur de chaque joueurs.";
+	}
 	
 	/**
 	 * Permet de définir les coordonnées de la zone survolée avec la souris.

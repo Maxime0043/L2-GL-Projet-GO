@@ -102,6 +102,11 @@ public class GoPanel extends JPanel{
 		drawGrille(g);
 		drawCercle(g);
 		drawScore(g);
+		
+		if(!isDidacticiel) {
+			drawInfo(g);
+		}
+		
 		drawCouleurJoueur(g);
 		drawterritoire(g);
 	}
@@ -313,6 +318,16 @@ public class GoPanel extends JPanel{
 			score = "Rouge: " + moteur.getScores()[2];
 			g.drawString(score, x, y);
 		}
+	}
+	
+	private void drawInfo(Graphics g) {
+		g.setColor(Color.BLACK);		
+		g.setFont(new Font("Arial", Font.PLAIN, 16));
+		
+		int x = 210;
+		int y = ParametrePartie.WINDOW_HEIGHT - 75;
+		
+		g.drawString(moteur.getJoueurPasse(), x, y);
 	}
 	
 	/**

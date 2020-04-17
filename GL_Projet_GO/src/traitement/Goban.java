@@ -222,7 +222,7 @@ public class Goban {
 	}
 	
 	public ArrayList<AbstractPierre> getChaine(int nom){
-		System.out.println("Chaine de numéro " + nom);
+//		System.out.println("Chaine de numéro " + nom);
 		return hmChaine.get(nom).getChaine();
 	}
 	
