@@ -34,6 +34,7 @@ public class MoteurOrdi {
 	
 	private AbstractPierre cherche_coup;
 	private int meilleur_score;
+	private int max_detruit;
 	
 	private ArrayList<Coordonnee> territoire_noir;
 	private ArrayList<Coordonnee> territoire_blanc;
@@ -82,11 +83,7 @@ public class MoteurOrdi {
 				cherche_coup = enDanger();
 				System.out.println("Danger Fini");
 
-				if(cherche_coup != null) {
-					System.out.println("Pierre/Chaine en danger !");
-				}
-
-				else{
+				if(cherche_coup == null) {
 					recherche_coup(null);
 				}
 			}
@@ -94,14 +91,21 @@ public class MoteurOrdi {
 			moteur_pierre.setTourOrdi(false);
 			goban.updateLibertePlateau();
 			
-			if(cherche_coup.isMegaPierre()) {
-				moteur_pierre.setPoseMegaPierre(true);
+			if(cherche_coup != null) {
+				if(cherche_coup.isMegaPierre()) {
+					moteur_pierre.setPoseMegaPierre(true);
+				}
+				
+				moteur_pierre.posePierre(cherche_coup.getX(), cherche_coup.getY(), moteur_joueur.currentCouleur());
+				moteur_pierre.setPoseMegaPierre(false);
+				moteur.initPassCompteur();
+				
+				System.out.println("Pierre Ordi ajouté en " + cherche_coup.getX() + " " + cherche_coup.getY());
 			}
 			
-			moteur_pierre.posePierre(cherche_coup.getX(), cherche_coup.getY(), moteur_joueur.currentCouleur());
-			moteur_pierre.setPoseMegaPierre(false);
-			
-			System.out.println("Pierre Ordi ajouté en " + cherche_coup.getX() + " " + cherche_coup.getY());
+			else {
+				moteur.passer();
+			}
 		}
 		
 		else {
@@ -194,20 +198,14 @@ public class MoteurOrdi {
 			}
 		}
 		
-		if(intersections_vides.size() < 5) {
-			boolean result = false;
+		for(Coordonnee c : intersections_vides) {
+			AbstractPierre pierre = new Pierre(moteur_joueur.currentCouleur(), c);
 			
-			for(Coordonnee c : intersections_vides) {
-				AbstractPierre pierre = new Pierre(moteur_joueur.currentCouleur(), c);
-				
-				if(!goban.canBeCaptured(pierre) && !goban.isSuicide(pierre)) {
-					return true;
-				}
+			if(!goban.canBeCaptured(pierre) && !goban.isSuicide(pierre)) {
+				return true;
 			}
-			
-			return result;
 		}
-		
+			
 		return true;
 	}
 	
@@ -676,6 +674,7 @@ public class MoteurOrdi {
 		ArrayList<AbstractPierre> pierres_mortes = new ArrayList<AbstractPierre>();
 		ArrayList<Coordonnee> intersection_libre;
 		AbstractPierre pierre_final = null;
+		AbstractPierre mega_pierre = null;
 		Coordonnee coord_pierre = null;
 		int[] scores = null;
 		
@@ -683,6 +682,7 @@ public class MoteurOrdi {
 		copy_pierres.addAll(moteur_joueur.getJoueur(moteur_joueur.currentCouleur()).getListePierre());
 		
 		for(AbstractPierre pierre : copy_pierres) {
+			System.out.println("Pierre danger en " + pierre.getX() + " " + pierre.getY() + " | " + pierre.getNomChaine() + " et " + goban.getPierre(pierre.getX(), pierre.getY()).getNomChaine());
 			ArrayList<AbstractPierre> save_pierres_mortes = null;
 			AbstractPierre tmp;
 			
@@ -807,40 +807,48 @@ public class MoteurOrdi {
 							else if(pierre_voisin.hasChaine()) {
 								ArrayList<AbstractPierre> chaine = goban.getChaine(pierre_voisin.getNomChaine());
 								
-								if(goban.canBeCaptured(chaine) && !pierre_voisin.getCouleur().equals(pierre_chaine.getCouleur()) && chaine.size() > max_taille_chaine) {
-									intersection_libre = GoPierre.intersectionVide(pierre_voisin, goban.getPlateau(), taille_goban);
-									
-									if(!intersection_libre.isEmpty()) {
-										coord_pierre = intersection_libre.get(0);
-										scores = sauvegarde_scores();
-										moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
-										save_chaines = sauvegarde_chaines();
-
-										pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
+								if(chaine.size() > max_taille_chaine) {
+									if(goban.canBeCaptured(chaine) && !pierre_voisin.getCouleur().equals(pierre_chaine.getCouleur())) {
+										intersection_libre = GoPierre.intersectionVide(pierre_voisin, goban.getPlateau(), taille_goban);
 										
-										if(goban.existPierre(coord_pierre.getX(), coord_pierre.getY())) {
-											save_pierres_mortes = sauvegarde_pierres_mortes();
-											tmp = goban.getPierre(coord_pierre.getX(), coord_pierre.getY());
+										if(!intersection_libre.isEmpty()) {
+											coord_pierre = intersection_libre.get(0);
+											scores = sauvegarde_scores();
+											moteur_pierre.posePierre(coord_pierre.getX(), coord_pierre.getY(), moteur_joueur.currentCouleur());
+											save_chaines = sauvegarde_chaines();
+	
+											pierres_mortes.addAll(moteur_pierre.getDernieresPierresMortes());
 											
-											if(isCoupValide(coord_pierre.getX(), coord_pierre.getY())) {
+											if(goban.existPierre(coord_pierre.getX(), coord_pierre.getY())) {
+												save_pierres_mortes = sauvegarde_pierres_mortes();
 												tmp = goban.getPierre(coord_pierre.getX(), coord_pierre.getY());
-												pierre_final = tmp;
-												max_taille_chaine = chaine.size();
-												priorite = 0;
-												System.out.println("Danger " + priorite + " en (" + pierre.getX() + ", " + pierre.getY() + ")");
+												
+												if(isCoupValide(coord_pierre.getX(), coord_pierre.getY())) {
+													tmp = goban.getPierre(coord_pierre.getX(), coord_pierre.getY());
+													pierre_final = tmp;
+													max_taille_chaine = chaine.size();
+													priorite = 0;
+													System.out.println("Danger " + priorite + " en (" + pierre.getX() + ", " + pierre.getY() + ")");
+												}
+	
+												moteur_pierre.removePierre(tmp);
+												restore_pierres_mortes(pierres_mortes);
+												restore_chaines(save_chaines);
+												goban.updateChaines();
 											}
-
-											moteur_pierre.removePierre(tmp);
-											restore_pierres_mortes(pierres_mortes);
-											restore_chaines(save_chaines);
-											goban.updateChaines();
+											
+											for(AbstractPierre pm : pierres_mortes) {
+												moteur_pierre.posePierre(pm.getX(), pm.getY(), pm.getCouleur());
+											}
+											
+											restore_scores(scores);
 										}
-										
-										for(AbstractPierre pm : pierres_mortes) {
-											moteur_pierre.posePierre(pm.getX(), pm.getY(), pm.getCouleur());
+									}
+									
+									else {
+										if(moteur_joueur.currentJoueur().hasMegaPierre()) {
+											mega_pierre = recherche_coup_mega_pierre(chaine);
 										}
-										
-										restore_scores(scores);
 									}
 								}
 							}
@@ -854,7 +862,85 @@ public class MoteurOrdi {
 			pierres_parcourus.add(pierre);
 		}
 		
+		if(pierre_final == null) {
+			return mega_pierre;
+		}
+		
 		return pierre_final;
+	}
+	
+	/**
+	 * Permet de chercher le meilleur coup possible avec une méga-pierre.
+	 * 
+	 * @param chaine Définit la chaine que où l'on va potentiellement détruire une partie.
+	 * @return Renvoie le coup à jouer si il existe.
+	 */
+	private AbstractPierre recherche_coup_mega_pierre(ArrayList<AbstractPierre> chaine) {
+		ArrayList<Coordonnee> intersections_vides;
+		AbstractPierre result = null;
+		max_detruit = 0;
+		
+		for(AbstractPierre pierre : chaine) {
+			AbstractPierre tmp1 = null;
+			
+			intersections_vides = GoPierre.intersectionVide(pierre, goban.getPlateau(), taille_goban);
+			
+			if(pierre.getX() < taille_goban - 1 && pierre.getY() < taille_goban - 1) {
+				tmp1 = coup_mega_pierre_valide(pierre.getX(), pierre.getY());
+			}
+			
+			if(tmp1 != null && !goban.canBeCaptured(tmp1)) {
+				result = tmp1;
+			}
+			
+			if(!intersections_vides.isEmpty() && max_detruit < 3) {
+				for(Coordonnee c : intersections_vides) {
+					if(c.getX() < taille_goban - 1 && c.getY() < taille_goban - 1) {
+						AbstractPierre tmp2 = coup_mega_pierre_valide(c.getX(), c.getY());
+						
+						if(tmp2 != null && !goban.canBeCaptured(tmp2)) {
+							result = tmp2;
+						} 
+					}
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Permet avec des coordonnées de définir si l'intersection est jouable ou non.
+	 * 
+	 * @param x Définit la ligne à laquelle on va regarder l'intersection.
+	 * @param y Définit la colonne à laquelle on va regarder l'intersection.
+	 * @return Renvoir une méga-pierre lorsque l'intersection est jouable.
+	 */
+	private AbstractPierre coup_mega_pierre_valide(int x, int y) {
+		AbstractPierre result = null;
+		
+		if(moteur_pierre.canDestruct(x, y)) {
+			if(max_detruit < moteur_pierre.getNbPierresDetruites()) {
+				boolean canTouchChaine = false;
+				
+				max_detruit = moteur_pierre.getNbPierresDetruites();
+				System.out.println("Peut détruire : " + max_detruit);
+				result = new MegaPierre(moteur_joueur.currentCouleur(), x, y);
+				
+				for(AbstractPierre pierre_voisin : GoPierre.voisins(result, goban.getPlateau(), taille_goban)) {
+					if(pierre_voisin.getCouleur() == result.getCouleur()) {
+						canTouchChaine = true;
+						break;
+					}
+				}
+				
+				if(!canTouchChaine) {
+					result = null;
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	/**

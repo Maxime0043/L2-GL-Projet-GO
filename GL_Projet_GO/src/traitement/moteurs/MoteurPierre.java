@@ -40,6 +40,7 @@ public class MoteurPierre {
 	private AbstractPierre Ko = null;
 	private int Ko_compteur = 0;
 	private boolean isKo = false;
+	private int nb_pierres_detruites;
 	
 	public MoteurPierre(MoteurJoueur moteur_joueur, Goban goban, int taille_goban, int nb_joueur, int nb_ordi, boolean isDidacticiel) {
 		this.goban = goban;
@@ -107,6 +108,10 @@ public class MoteurPierre {
 	
 	private AbstractPierre getKo () {
 		return Ko;
+	}
+	
+	public int getNbPierresDetruites() {
+		return nb_pierres_detruites;
 	}
 	
 	public ArrayList<Cercle> getCercleList(){
@@ -392,9 +397,9 @@ public class MoteurPierre {
 	 * @param y Désigne la colonne du plateau que l'on va analyser.
 	 * @return Indique si la méga-pierre pourra être posée ou non.
 	 */
-	private boolean canDestruct(int x, int y) {
+	public boolean canDestruct(int x, int y) {
 		boolean exist_voisin = false;
-		int compteur = 0;
+		nb_pierres_detruites = 0;
 		
 		if(goban.existPierre(x, y) && goban.existPierre(x+1, y) && goban.existPierre(x, y+1) && goban.existPierre(x+1, y+1)) {
 			return false;
@@ -411,7 +416,7 @@ public class MoteurPierre {
 				}
 				
 				if(goban.getPierre(x, y).getLiberte() > 0) {
-					compteur++;
+					nb_pierres_detruites++;
 				}
 				
 				exist_voisin = true;
@@ -424,7 +429,7 @@ public class MoteurPierre {
 				}
 				
 				if(goban.getPierre(x+1, y).getLiberte() > 0) {
-					compteur++;
+					nb_pierres_detruites++;
 				}
 				
 				exist_voisin = true;
@@ -437,7 +442,7 @@ public class MoteurPierre {
 				}
 				
 				if(goban.getPierre(x, y+1).getLiberte() > 0) {
-					compteur++;
+					nb_pierres_detruites++;
 				}
 				
 				exist_voisin = true;
@@ -450,14 +455,14 @@ public class MoteurPierre {
 				}
 				
 				if(goban.getPierre(x+1, y+1).getLiberte() > 0) {
-					compteur++;
+					nb_pierres_detruites++;
 				}
 				
 				exist_voisin = true;
 			}
 		}
 		
-		if(!exist_voisin || (compteur > 0)) {
+		if(!exist_voisin || (nb_pierres_detruites > 0)) {
 			return true;
 		}
 		

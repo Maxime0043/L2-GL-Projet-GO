@@ -130,7 +130,7 @@ public class Moteur /*implements Runnable*/ {
 	/**
 	 * Initialise le nombre de fois où les joueurs passent consécutivement leur tour.
 	 */
-	private void initPassCompteur() {
+	public void initPassCompteur() {
 		pass_compteur = 0;
 	}
 	
@@ -138,6 +138,7 @@ public class Moteur /*implements Runnable*/ {
 	 * Permet à un joueur de passer son tour ou de finir la partie.
 	 */
 	public void passer() {
+		System.out.println("Le joueur " + currentCouleur() + " vient de passer");
 		moteur_joueur.changeJoueur();
 		pass_compteur++;
 		

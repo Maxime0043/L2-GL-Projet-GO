@@ -1,5 +1,7 @@
 package traitement.moteurs;
 
+import java.util.ArrayList;
+
 import donnees.AbstractPierre;
 import donnees.Couleur;
 import donnees.Joueur;
@@ -201,16 +203,16 @@ public class MoteurJoueur {
 	 * ont posé sur le plateau.
 	 */
 	public void updateJoueurs() {
-		int nom;
+		ArrayList<AbstractPierre> copy_liste = new ArrayList<AbstractPierre>();
 		
 		for(int i = 0 ; i < nb_joueurs ; i++) {
-//			System.out.println("Joueur " + getJoueurs()[i].getCouleur());
-//			System.out.println("{");
-			for(AbstractPierre pierre : getJoueurs()[i].getListePierre()) {
+			copy_liste.clear();
+			copy_liste.addAll(getJoueurs()[i].getListePierre());
+			getJoueurs()[i].getListePierre().clear();
+			
+			for(AbstractPierre pierre : copy_liste) {
 				if(goban.existPierre(pierre.getX(), pierre.getY())) {
-					nom = goban.getPierre(pierre.getX(), pierre.getY()).getNomChaine();
-					pierre.setNomChaine(nom);
-//					System.out.print("Pierre de " + pierre.getNomChaine() + " en " + pierre.getX() + " " + pierre.getY());
+					getJoueurs()[i].addPierre(goban.getPierre(pierre.getX(), pierre.getY()));
 				}
 			}
 		}
