@@ -134,7 +134,7 @@ public class MoteurPierre {
 	 */
 	public void survoleZone(int x, int y) {
 		if((x >= 0) && (x < taille_goban) && (y >= 0) && (y < taille_goban)) {
-			if(!isMegaPierre && !goban.existPierre(x, y) && !goban.isSuicide(x, y, moteur_joueur.currentCouleur(), isMegaPierre)) {
+			if(!isMegaPierre && !goban.existPierre(x, y)) {
 				survole = new Coordonnee(x, y);
 				croix = null;
 			}

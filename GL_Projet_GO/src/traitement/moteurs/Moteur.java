@@ -19,7 +19,7 @@ import traitement.Goban;
  * @author Maxime, Micael et Houssam
  *
  */
-public class Moteur /*implements Runnable*/ {
+public class Moteur {
 	private Goban goban;
 	private Didacticiel didacticiel;
 	private MoteurJoueur moteur_joueur;
@@ -74,9 +74,6 @@ public class Moteur /*implements Runnable*/ {
 		}
 		
 		initCoord();
-		
-//		Thread moteurThread = new Thread(instance);
-//		moteurThread.start();
 	}
 	
 	/**
@@ -134,6 +131,10 @@ public class Moteur /*implements Runnable*/ {
 			fin.initFin(goban.getPlateau(), goban.getHmChaine());
 			is_fin_partie = true;
 		}
+	}
+	
+	public int getPassCompteur() {
+		return pass_compteur;
 	}
 	
 	private void initInfoTexte() {

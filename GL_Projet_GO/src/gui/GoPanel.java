@@ -9,6 +9,7 @@ import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -180,6 +181,9 @@ public class GoPanel extends JPanel{
 			Go.logger.trace("Le hoshi de coordonnées (" + x + ", " + y + ") vient d'être dessinée");
 		}
 		
+		ArrayList<Cercle> copy_cercle = new ArrayList<Cercle>();
+		copy_cercle.addAll(moteur.getCercleList());
+		
 		for(Cercle c : moteur.getCercleList()) {
 			x = CalculFactory.getCoordWindow(c.getY(), ecart_window_horizontal, cellule, petit_decalage);
 			y = CalculFactory.getCoordWindow(c.getX(), ecart_window_vertical, cellule, petit_decalage);
@@ -325,7 +329,7 @@ public class GoPanel extends JPanel{
 		g.setFont(new Font("Arial", Font.PLAIN, 16));
 		
 		int x = 210;
-		int y = ParametrePartie.WINDOW_HEIGHT - 75;
+		int y = ParametrePartie.WINDOW_HEIGHT - 70;
 		
 		g.drawString(moteur.getJoueurPasse(), x, y);
 	}

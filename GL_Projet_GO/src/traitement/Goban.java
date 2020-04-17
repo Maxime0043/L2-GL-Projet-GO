@@ -222,7 +222,6 @@ public class Goban {
 	}
 	
 	public ArrayList<AbstractPierre> getChaine(int nom){
-//		System.out.println("Chaine de numéro " + nom);
 		return hmChaine.get(nom).getChaine();
 	}
 	
@@ -448,8 +447,6 @@ public class Goban {
 				}
 			}
 			
-//			System.out.println("Taille chaine 1 : " + chaine.getChaine().size() + " et num " + nom_chaine_1 + " et en " + chaine.getChaine().get(0).getX() + " " + chaine.getChaine().get(0).getY());
-			
 			sauvegarde_chaines.put(nom_chaine_1, chaine);
 		}
 		
@@ -467,8 +464,6 @@ public class Goban {
 					}
 				}
 			}
-			
-//			System.out.println("Taille chaine 2 : " + chaine.getChaine().size() + " et num " + nom_chaine_2 + " et en " + chaine.getChaine().get(0).getX() + " " + chaine.getChaine().get(0).getY());
 	
 			sauvegarde_chaines.put(nom_chaine_2, chaine);
 		}

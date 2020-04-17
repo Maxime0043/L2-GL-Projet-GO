@@ -11,6 +11,7 @@ import donnees.Couleur;
 import donnees.MegaPierre;
 import donnees.ParametrePartie;
 import donnees.Pierre;
+import gui.Go;
 import traitement.GoPierre;
 import traitement.Goban;
 
@@ -79,9 +80,9 @@ public class MoteurOrdi {
 			}
 
 			else {
-				System.out.println("Danger commence");
+				Go.logger.info("La verification de pierres en danger a commence");
 				cherche_coup = enDanger();
-				System.out.println("Danger Fini");
+				Go.logger.info("La verification de pierres en danger s'est termine");
 
 				if(cherche_coup == null) {
 					recherche_coup(null);
@@ -99,8 +100,6 @@ public class MoteurOrdi {
 				moteur_pierre.posePierre(cherche_coup.getX(), cherche_coup.getY(), moteur_joueur.currentCouleur());
 				moteur_pierre.setPoseMegaPierre(false);
 				moteur.initPassCompteur();
-				
-				System.out.println("Pierre Ordi ajouté en " + cherche_coup.getX() + " " + cherche_coup.getY());
 			}
 			
 			else {
@@ -111,35 +110,6 @@ public class MoteurOrdi {
 		else {
 			moteur.passer();
 		}
-		
-		for(int i = 0 ; i < taille_goban ; i++) {
-			for(int j = 0 ; j < taille_goban ; j++) {
-				if(goban.existPierre(i, j)) {
-					System.out.print("\t" + goban.getPierre(i, j).getNomChaine());
-				}
-				
-				else {
-					System.out.print("\tX");
-				}
-			}
-			System.out.println();
-		}
-		
-		System.out.println();
-		
-		for(int i = 0; i < taille_goban; i++) {
-			for(int j = 0; j < taille_goban; j++) {
-				if(goban.existPierre(i, j)) {
-					System.out.print("\t" + goban.getPierre(i, j).getCouleur());
-				}
-
-				else {
-					System.out.print("\t-");
-				}
-			}
-			System.out.println();
-		}
-		System.out.println();
 	}
 	
 	private void initTour() {
@@ -188,6 +158,24 @@ public class MoteurOrdi {
 	 * @return Indique si un coup peut être joué.
 	 */
 	private boolean canPlay() {
+		if(moteur.getPassCompteur() > 0) {
+			boolean canPose = false;
+			
+			for(int i = 0 ; i < taille_goban ; i++) {
+				for(int j = 0 ; j < taille_goban ; j++) {
+					if(goban.existPierre(i, j) && goban.getPierre(i, j).getCouleur() != moteur_joueur.currentCouleur()) {
+						if(goban.canBeCaptured(goban.getPierre(i, j))) {
+							canPose = true;
+						}
+					}
+				}
+			}
+			
+			if(!canPose) {
+				return false;
+			}
+		}
+		
 		ArrayList<Coordonnee> intersections_vides = new ArrayList<Coordonnee>();
 		
 		for(int i = 0 ; i < taille_goban ; i++) {
@@ -206,7 +194,7 @@ public class MoteurOrdi {
 			}
 		}
 			
-		return true;
+		return false;
 	}
 	
 	/**
@@ -330,8 +318,6 @@ public class MoteurOrdi {
 					if(isCoupValide(i, j)) {
 						AbstractPierre pierre = goban.getPierre(i, j);
 
-						liste_pierre_morte(save_pierres_mortes);
-
 						if(tour == 1) {
 							premiere_pierre = pierre;
 						}
@@ -366,18 +352,6 @@ public class MoteurOrdi {
 		}
 		
 		tour--;
-	}
-	
-	private void liste_pierre_morte(ArrayList<AbstractPierre> pierre_mortes) {
-		if(!pierre_mortes.isEmpty()) {
-			System.out.print("taille : " + pierre_mortes.size() + " {");
-			
-			for(AbstractPierre pm : pierre_mortes) {
-				System.out.print(pm.getCouleur() + " (" + pm.getX() + ", " + pm.getY() + ")");
-			}
-			
-			System.out.print("}\n");
-		}
 	}
 	
 	/**
@@ -488,6 +462,7 @@ public class MoteurOrdi {
 						for(int j = colonne ; j >= pierre.getY() - max_taille_Y ; j--) {
 							if(!goban.existPierre(i, j)) {
 								territoire.add(new Coordonnee(i, j));
+								Go.logger.debug("L'intersection de coordonnee (" + i + ", " + j + ") vient d'être ajoutee au joueur " + pierre.getCouleur());
 							}
 						}
 					}
@@ -510,6 +485,7 @@ public class MoteurOrdi {
 						for(int j = colonne ; j <= pierre.getY() + max_taille_Y ; j++) {
 							if(!goban.existPierre(i, j)) {
 								territoire.add(new Coordonnee(i, j));
+								Go.logger.debug("L'intersection de coordonnee (" + i + ", " + j + ") vient d'être ajoutee au joueur " + pierre.getCouleur());
 							}
 						}
 					}
@@ -542,6 +518,7 @@ public class MoteurOrdi {
 						for(int j = colonne ; j >= pierre.getY() - max_taille_Y ; j--) {
 							if(!goban.existPierre(i, j)) {
 								territoire.add(new Coordonnee(i, j));
+								Go.logger.debug("L'intersection de coordonnee (" + i + ", " + j + ") vient d'être ajoutee au joueur " + pierre.getCouleur());
 							}
 						}
 					}
@@ -564,6 +541,7 @@ public class MoteurOrdi {
 						for(int j = colonne ; j <= pierre.getY() + max_taille_Y ; j++) {
 							if(!goban.existPierre(i, j)) {
 								territoire.add(new Coordonnee(i, j));
+								Go.logger.debug("L'intersection de coordonnee (" + i + ", " + j + ") vient d'être ajoutee au joueur " + pierre.getCouleur());
 							}
 						}
 					}
@@ -587,6 +565,7 @@ public class MoteurOrdi {
 					for(int j = colonne ; j <= pierre.getY() + max_taille_Y ; j++) {
 						if(!goban.existPierre(i, j)) {
 							territoire.add(new Coordonnee(i, j));
+							Go.logger.debug("L'intersection de coordonnee (" + i + ", " + j + ") vient d'être ajoutee au joueur " + pierre.getCouleur());
 						}
 					}
 				}
@@ -609,6 +588,7 @@ public class MoteurOrdi {
 					for(int j = colonne ; j >= pierre.getY() - max_taille_Y ; j--) {
 						if(!goban.existPierre(i, j)) {
 							territoire.add(new Coordonnee(i, j));
+							Go.logger.debug("L'intersection de coordonnee (" + i + ", " + j + ") vient d'être ajoutee au joueur " + pierre.getCouleur());
 						}
 					}
 				}
@@ -624,6 +604,7 @@ public class MoteurOrdi {
 					for(int j = colonne ; j <= pierre.getY() + max_taille_Y ; j++) {
 						if(!goban.existPierre(i, j)) {
 							territoire.add(new Coordonnee(i, j));
+							Go.logger.debug("L'intersection de coordonnee (" + i + ", " + j + ") vient d'être ajoutee au joueur " + pierre.getCouleur());
 						}
 					}
 				}
@@ -683,7 +664,6 @@ public class MoteurOrdi {
 		copy_pierres.addAll(moteur_joueur.getJoueur(moteur_joueur.currentCouleur()).getListePierre());
 		
 		for(AbstractPierre pierre : copy_pierres) {
-//			System.out.println("Pierre danger en " + pierre.getX() + " " + pierre.getY() + " | " + pierre.getNomChaine() + " et " + goban.getPierre(pierre.getX(), pierre.getY()).getNomChaine());
 			ArrayList<AbstractPierre> save_pierres_mortes = null;
 			AbstractPierre tmp;
 			
@@ -708,7 +688,6 @@ public class MoteurOrdi {
 						
 						if(isCoupValide(coord_pierre.getX(), coord_pierre.getY())) {
 							pierre_final = tmp;
-							System.out.println("Danger " + priorite + " en (" + pierre.getX() + ", " + pierre.getY() + ")");
 						}
 
 						moteur_pierre.removePierre(tmp);
@@ -750,7 +729,6 @@ public class MoteurOrdi {
 									if(isCoupValide(coord_pierre.getX(), coord_pierre.getY())) {
 										pierre_final = tmp;
 										priorite = 2;
-										System.out.println("Danger " + priorite + " en (" + pierre.getX() + ", " + pierre.getY() + ")");
 									}
 
 									moteur_pierre.removePierre(tmp);
@@ -787,7 +765,6 @@ public class MoteurOrdi {
 											if(isCoupValide(coord_pierre.getX(), coord_pierre.getY())) {
 												pierre_final = tmp;
 												priorite = 1;
-												System.out.println("Danger " + priorite + " en (" + pierre.getX() + ", " + pierre.getY() + ")");
 											}
 	
 											moteur_pierre.removePierre(tmp);
@@ -829,7 +806,6 @@ public class MoteurOrdi {
 													pierre_final = tmp;
 													max_taille_chaine = chaine.size();
 													priorite = 0;
-													System.out.println("Danger " + priorite + " en (" + pierre.getX() + ", " + pierre.getY() + ")");
 												}
 	
 												moteur_pierre.removePierre(tmp);
@@ -925,7 +901,6 @@ public class MoteurOrdi {
 				boolean canTouchChaine = false;
 				
 				max_detruit = moteur_pierre.getNbPierresDetruites();
-				System.out.println("Peut détruire : " + max_detruit);
 				result = new MegaPierre(moteur_joueur.currentCouleur(), x, y);
 				
 				for(AbstractPierre pierre_voisin : GoPierre.voisins(result, goban.getPlateau(), taille_goban)) {
@@ -1030,6 +1005,7 @@ public class MoteurOrdi {
 			}
 			
 			hm_chaines.put(nom_chaine, chaine);
+			Go.logger.debug("La chaine de numero " + nom_chaine + " vient d'etre sauvegardee");
 		}
 		
 		return hm_chaines;
@@ -1055,6 +1031,8 @@ public class MoteurOrdi {
 					pierre_chaine.setNomChaine(nom_chaine);
 					goban.getPlateau()[pierre_chaine.getX()][pierre_chaine.getY()] = pierre_chaine;
 				}
+				
+				Go.logger.debug("La chaine de numero " + nom_chaine + " vient d'etre restauree");
 			}
 		}
 	}
